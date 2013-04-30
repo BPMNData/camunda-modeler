@@ -68,8 +68,8 @@ public class GraphicsUtil {
 	private static Map<Diagram, SizeTemplate> diagramSizeMap;
 
 	// TODO move all size properties to separate interface
-	public static int DATA_WIDTH = 36;
-	public static int DATA_HEIGHT = 50;
+	public static int DATA_WIDTH = 84;
+	public static int DATA_HEIGHT = 100;
 
 	public static int CHOREOGRAPHY_WIDTH = 150;
 	public static int CHOREOGRAPHY_HEIGHT = 150;
