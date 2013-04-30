@@ -5,6 +5,7 @@ import org.camunda.bpm.modeler.ui.property.tabs.builder.ActivityPropertiesBuilde
 import org.camunda.bpm.modeler.ui.property.tabs.builder.CallActivityPropertiesBuilder;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.DecisionGatewayPropertiesBuilder;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.IdPropertyBuilder;
+import org.camunda.bpm.modeler.ui.property.tabs.builder.ItemAwareElementPropertiesBuilder;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.LanePropertiesBuilder;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.NamePropertyBuilder;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.ParticipantPropertiesBuilder;
@@ -32,6 +33,7 @@ import org.eclipse.bpmn2.ExclusiveGateway;
 import org.eclipse.bpmn2.Gateway;
 import org.eclipse.bpmn2.InclusiveGateway;
 import org.eclipse.bpmn2.IntermediateCatchEvent;
+import org.eclipse.bpmn2.ItemAwareElement;
 import org.eclipse.bpmn2.Lane;
 import org.eclipse.bpmn2.ManualTask;
 import org.eclipse.bpmn2.Participant;
@@ -101,7 +103,15 @@ public class GeneralTabCompositeFactory extends AbstractTabCompositeFactory<Base
 			createGatewayComposite((Gateway) businessObject);
 		}
 		
+		if (businessObject instanceof ItemAwareElement) {
+			createItemAwareElementComposite((ItemAwareElement) businessObject);
+		}
+		
 		return parent;
+	}
+
+	private void createItemAwareElementComposite(ItemAwareElement itemAwareElement) {
+		new ItemAwareElementPropertiesBuilder(parent, section, itemAwareElement).create();
 	}
 
 	private void createParticipantComposite(Participant participant) {
