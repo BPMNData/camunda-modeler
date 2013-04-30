@@ -6,7 +6,7 @@
 		<maven>3.0</maven>
 	</prerequisites>
 
-	<groupId>org.camunda.bpm.modeler</groupId>
+	<groupId>de.unipotsdam.hpi.bpmndata.modeler</groupId>
 	<artifactId>org.camunda.bpm.modeler.parent</artifactId>
 	<version>2.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>

@@ -3,11 +3,10 @@
 
   <parent>
     <artifactId>org.camunda.bpm.modeler.parent</artifactId>
-    <groupId>org.camunda.bpm.modeler</groupId>
+    <groupId>de.unipotsdam.hpi.bpmndata.modeler</groupId>
     <version>2.1.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.camunda.bpm.modeler</groupId>
   <artifactId>org.camunda.bpm.modeler.feature</artifactId>
   <packaging>eclipse-feature</packaging>
   <name>camunda modeler feature</name>
