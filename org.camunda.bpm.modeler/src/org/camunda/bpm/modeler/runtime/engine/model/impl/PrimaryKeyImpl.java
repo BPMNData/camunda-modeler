@@ -3,27 +3,29 @@
 package org.camunda.bpm.modeler.runtime.engine.model.impl;
 
 import org.camunda.bpm.modeler.runtime.engine.model.ModelPackage;
-import org.camunda.bpm.modeler.runtime.engine.model.ValueType;
+import org.camunda.bpm.modeler.runtime.engine.model.PrimaryKey;
+
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Value Type</b></em>'.
+ * An implementation of the model object '<em><b>Primary Key</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.impl.ValueTypeImpl#getId <em>Id</em>}</li>
- *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.impl.ValueTypeImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.impl.PrimaryKeyImpl#getId <em>Id</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class ValueTypeImpl extends EObjectImpl implements ValueType {
+public class PrimaryKeyImpl extends EObjectImpl implements PrimaryKey {
 	/**
      * The default value of the '{@link #getId() <em>Id</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -45,31 +47,11 @@ public class ValueTypeImpl extends EObjectImpl implements ValueType {
 	protected String id = ID_EDEFAULT;
 
 	/**
-     * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @see #getName()
-     * @generated
-     * @ordered
-     */
-	protected static final String NAME_EDEFAULT = null;
-
-	/**
-     * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @see #getName()
-     * @generated
-     * @ordered
-     */
-	protected String name = NAME_EDEFAULT;
-
-	/**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
-	protected ValueTypeImpl() {
+	protected PrimaryKeyImpl() {
         super();
     }
 
@@ -80,7 +62,7 @@ public class ValueTypeImpl extends EObjectImpl implements ValueType {
      */
 	@Override
 	protected EClass eStaticClass() {
-        return ModelPackage.Literals.VALUE_TYPE;
+        return ModelPackage.Literals.PRIMARY_KEY;
     }
 
 	/**
@@ -101,28 +83,7 @@ public class ValueTypeImpl extends EObjectImpl implements ValueType {
         String oldId = id;
         id = newId;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.VALUE_TYPE__ID, oldId, id));
-    }
-
-	/**
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     */
-	public String getName() {
-        return name;
-    }
-
-	/**
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     */
-	public void setName(String newName) {
-        String oldName = name;
-        name = newName;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.VALUE_TYPE__NAME, oldName, name));
+            eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.PRIMARY_KEY__ID, oldId, id));
     }
 
 	/**
@@ -133,10 +94,8 @@ public class ValueTypeImpl extends EObjectImpl implements ValueType {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case ModelPackage.VALUE_TYPE__ID:
+            case ModelPackage.PRIMARY_KEY__ID:
                 return getId();
-            case ModelPackage.VALUE_TYPE__NAME:
-                return getName();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -149,11 +108,8 @@ public class ValueTypeImpl extends EObjectImpl implements ValueType {
 	@Override
 	public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case ModelPackage.VALUE_TYPE__ID:
+            case ModelPackage.PRIMARY_KEY__ID:
                 setId((String)newValue);
-                return;
-            case ModelPackage.VALUE_TYPE__NAME:
-                setName((String)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -167,11 +123,8 @@ public class ValueTypeImpl extends EObjectImpl implements ValueType {
 	@Override
 	public void eUnset(int featureID) {
         switch (featureID) {
-            case ModelPackage.VALUE_TYPE__ID:
+            case ModelPackage.PRIMARY_KEY__ID:
                 setId(ID_EDEFAULT);
-                return;
-            case ModelPackage.VALUE_TYPE__NAME:
-                setName(NAME_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -185,10 +138,8 @@ public class ValueTypeImpl extends EObjectImpl implements ValueType {
 	@Override
 	public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case ModelPackage.VALUE_TYPE__ID:
+            case ModelPackage.PRIMARY_KEY__ID:
                 return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
-            case ModelPackage.VALUE_TYPE__NAME:
-                return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
         }
         return super.eIsSet(featureID);
     }
@@ -205,10 +156,8 @@ public class ValueTypeImpl extends EObjectImpl implements ValueType {
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (id: ");
         result.append(id);
-        result.append(", name: ");
-        result.append(name);
         result.append(')');
         return result.toString();
     }
 
-} //ValueTypeImpl
+} //PrimaryKeyImpl
