@@ -784,7 +784,7 @@ public interface DocumentRoot extends org.eclipse.bpmn2.DocumentRoot {
      * @see #setPrimaryKey(PrimaryKey)
      * @see org.camunda.bpm.modeler.runtime.engine.model.ModelPackage#getDocumentRoot_PrimaryKey()
      * @model containment="true" upper="-2" transient="true" volatile="true" derived="true"
-     *        extendedMetaData="kind='element' name='privateKey' namespace='https://bpt.hpi.uni-potsdam.de'"
+     *        extendedMetaData="kind='element' name='primaryKey' namespace='http://bpt.hpi.uni-potsdam.de'"
      * @generated
      */
 	PrimaryKey getPrimaryKey();

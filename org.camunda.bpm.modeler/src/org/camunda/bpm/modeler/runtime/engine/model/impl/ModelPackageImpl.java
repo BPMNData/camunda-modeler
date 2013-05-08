@@ -1575,8 +1575,8 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
            source, 
            new String[] {
              "kind", "element",
-             "name", "privateKey",
-             "namespace", "https://bpt.hpi.uni-potsdam.de"
+             "name", "primaryKey",
+             "namespace", "http://bpt.hpi.uni-potsdam.de"
            });		
         addAnnotation
           (getDocumentRoot_Cardinality(), 
