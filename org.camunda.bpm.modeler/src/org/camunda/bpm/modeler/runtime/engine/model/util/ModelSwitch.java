@@ -159,12 +159,6 @@ public class ModelSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case ModelPackage.PRIMARY_KEY: {
-                PrimaryKey primaryKey = (PrimaryKey)theEObject;
-                T result = casePrimaryKey(primaryKey);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
             default: return defaultCase(theEObject);
         }
     }
@@ -466,21 +460,6 @@ public class ModelSwitch<T> extends Switch<T> {
      * @generated
      */
 	public T caseValueType(ValueType object) {
-        return null;
-    }
-
-	/**
-     * Returns the result of interpreting the object as an instance of '<em>Primary Key</em>'.
-     * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Primary Key</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-	public T casePrimaryKey(PrimaryKey object) {
         return null;
     }
 

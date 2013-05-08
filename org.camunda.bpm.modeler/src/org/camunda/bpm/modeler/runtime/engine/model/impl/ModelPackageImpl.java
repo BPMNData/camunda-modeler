@@ -19,10 +19,11 @@ import org.camunda.bpm.modeler.runtime.engine.model.InType;
 import org.camunda.bpm.modeler.runtime.engine.model.ModelFactory;
 import org.camunda.bpm.modeler.runtime.engine.model.ModelPackage;
 import org.camunda.bpm.modeler.runtime.engine.model.OutType;
-import org.camunda.bpm.modeler.runtime.engine.model.PrimaryKey;
 import org.camunda.bpm.modeler.runtime.engine.model.TaskListenerType;
 import org.camunda.bpm.modeler.runtime.engine.model.TypeType;
 import org.camunda.bpm.modeler.runtime.engine.model.ValueType;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.BptPackageImpl;
 import org.camunda.bpm.modeler.runtime.engine.model.fox.FoxPackage;
 import org.camunda.bpm.modeler.runtime.engine.model.fox.impl.FoxPackageImpl;
 import org.camunda.bpm.modeler.runtime.engine.model.util.ModelValidator;
@@ -110,13 +111,6 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
      * @generated
      */
 	private EClass valueTypeEClass = null;
-
-	/**
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     */
-	private EClass primaryKeyEClass = null;
 
 	/**
      * <!-- begin-user-doc -->
@@ -240,14 +234,17 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 
         // Obtain or create and register interdependencies
         FoxPackageImpl theFoxPackage = (FoxPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FoxPackage.eNS_URI) instanceof FoxPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FoxPackage.eNS_URI) : FoxPackage.eINSTANCE);
+        BptPackageImpl theBptPackage = (BptPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(BptPackage.eNS_URI) instanceof BptPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(BptPackage.eNS_URI) : BptPackage.eINSTANCE);
 
         // Create package meta-data objects
         theModelPackage.createPackageContents();
         theFoxPackage.createPackageContents();
+        theBptPackage.createPackageContents();
 
         // Initialize created meta-data
         theModelPackage.initializePackageContents();
         theFoxPackage.initializePackageContents();
+        theBptPackage.initializePackageContents();
 
         // Register package validator
         EValidator.Registry.INSTANCE.put
@@ -511,6 +508,33 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
     }
 
 	/**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getDocumentRoot_Cardinality() {
+        return (EReference)documentRootEClass.getEStructuralFeatures().get(26);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getDocumentRoot_Condition() {
+        return (EReference)documentRootEClass.getEStructuralFeatures().get(27);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getDocumentRoot_ScopeInformation() {
+        return (EReference)documentRootEClass.getEStructuralFeatures().get(28);
+    }
+
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -938,24 +962,6 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
      * @generated
      */
-	public EClass getPrimaryKey() {
-        return primaryKeyEClass;
-    }
-
-	/**
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     */
-	public EAttribute getPrimaryKey_Id() {
-        return (EAttribute)primaryKeyEClass.getEStructuralFeatures().get(0);
-    }
-
-	/**
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     */
 	public EEnum getEventType() {
         return eventTypeEEnum;
     }
@@ -1105,6 +1111,9 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
         createEAttribute(documentRootEClass, DOCUMENT_ROOT__RESULT_VARIABLE_NAME);
         createEReference(documentRootEClass, DOCUMENT_ROOT__FAILED_JOB_RETRY_TIME_CYCLE);
         createEReference(documentRootEClass, DOCUMENT_ROOT__PRIMARY_KEY);
+        createEReference(documentRootEClass, DOCUMENT_ROOT__CARDINALITY);
+        createEReference(documentRootEClass, DOCUMENT_ROOT__CONDITION);
+        createEReference(documentRootEClass, DOCUMENT_ROOT__SCOPE_INFORMATION);
 
         executionListenerTypeEClass = createEClass(EXECUTION_LISTENER_TYPE);
         createEAttribute(executionListenerTypeEClass, EXECUTION_LISTENER_TYPE__GROUP);
@@ -1162,9 +1171,6 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
         createEAttribute(valueTypeEClass, VALUE_TYPE__ID);
         createEAttribute(valueTypeEClass, VALUE_TYPE__NAME);
 
-        primaryKeyEClass = createEClass(PRIMARY_KEY);
-        createEAttribute(primaryKeyEClass, PRIMARY_KEY__ID);
-
         // Create enums
         eventTypeEEnum = createEEnum(EVENT_TYPE);
         eventType1EEnum = createEEnum(EVENT_TYPE1);
@@ -1206,11 +1212,13 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 
         // Obtain other dependent packages
         FoxPackage theFoxPackage = (FoxPackage)EPackage.Registry.INSTANCE.getEPackage(FoxPackage.eNS_URI);
+        BptPackage theBptPackage = (BptPackage)EPackage.Registry.INSTANCE.getEPackage(BptPackage.eNS_URI);
         Bpmn2Package theBpmn2Package = (Bpmn2Package)EPackage.Registry.INSTANCE.getEPackage(Bpmn2Package.eNS_URI);
         XMLTypePackage theXMLTypePackage = (XMLTypePackage)EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
 
         // Add subpackages
         getESubpackages().add(theFoxPackage);
+        getESubpackages().add(theBptPackage);
 
         // Create type parameters
 
@@ -1248,7 +1256,10 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
         initEAttribute(getDocumentRoot_Priority(), ecorePackage.getEInt(), "priority", "50", 0, 1, null, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getDocumentRoot_ResultVariableName(), ecorePackage.getEString(), "resultVariableName", null, 0, 1, null, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getDocumentRoot_FailedJobRetryTimeCycle(), theFoxPackage.getFailedJobRetryTimeCycleType(), null, "failedJobRetryTimeCycle", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-        initEReference(getDocumentRoot_PrimaryKey(), this.getPrimaryKey(), null, "primaryKey", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEReference(getDocumentRoot_PrimaryKey(), theBptPackage.getPrimaryKey(), null, "primaryKey", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEReference(getDocumentRoot_Cardinality(), theBptPackage.getCardinality(), null, "cardinality", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEReference(getDocumentRoot_Condition(), theBptPackage.getCondition(), null, "condition", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEReference(getDocumentRoot_ScopeInformation(), theBptPackage.getScopeInformation(), null, "scopeInformation", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
         initEClass(executionListenerTypeEClass, ExecutionListenerType.class, "ExecutionListenerType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getExecutionListenerType_Group(), ecorePackage.getEFeatureMapEntry(), "group", null, 0, -1, ExecutionListenerType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1305,9 +1316,6 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
         initEClass(valueTypeEClass, ValueType.class, "ValueType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getValueType_Id(), theXMLTypePackage.getString(), "id", null, 0, 1, ValueType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getValueType_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, ValueType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        initEClass(primaryKeyEClass, PrimaryKey.class, "PrimaryKey", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getPrimaryKey_Id(), theXMLTypePackage.getString(), "id", null, 0, 1, PrimaryKey.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         initEEnum(eventTypeEEnum, EventType.class, "EventType");
@@ -1568,7 +1576,31 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
            new String[] {
              "kind", "element",
              "name", "privateKey",
-             "namespace", "http://bpt.uni-potsdam.de"
+             "namespace", "https://bpt.hpi.uni-potsdam.de"
+           });		
+        addAnnotation
+          (getDocumentRoot_Cardinality(), 
+           source, 
+           new String[] {
+             "kind", "element",
+             "name", "cardinality",
+             "namespace", "https://bpt.hpi.uni-potsdam.de"
+           });		
+        addAnnotation
+          (getDocumentRoot_Condition(), 
+           source, 
+           new String[] {
+             "kind", "element",
+             "name", "condition",
+             "namespace", "https://bpt.hpi.uni-potsdam.de"
+           });		
+        addAnnotation
+          (getDocumentRoot_ScopeInformation(), 
+           source, 
+           new String[] {
+             "kind", "element",
+             "name", "scopeInformation",
+             "namespace", "https://bpt.hpi.uni-potsdam.de"
            });		
         addAnnotation
           (classTypeEDataType, 
@@ -1966,20 +1998,6 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
            new String[] {
              "kind", "attribute",
              "name", "name"
-           });		
-        addAnnotation
-          (primaryKeyEClass, 
-           source, 
-           new String[] {
-             "name", "value_._type",
-             "kind", "empty"
-           });				
-        addAnnotation
-          (getPrimaryKey_Id(), 
-           source, 
-           new String[] {
-             "kind", "attribute",
-             "name", "id"
            });
     }
 

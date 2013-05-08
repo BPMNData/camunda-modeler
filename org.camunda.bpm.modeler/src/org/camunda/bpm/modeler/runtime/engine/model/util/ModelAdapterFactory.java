@@ -139,10 +139,6 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
                 return createValueTypeAdapter();
             }
             @Override
-            public Adapter casePrimaryKey(PrimaryKey object) {
-                return createPrimaryKeyAdapter();
-            }
-            @Override
             public Adapter caseBpmn2_DocumentRoot(org.eclipse.bpmn2.DocumentRoot object) {
                 return createBpmn2_DocumentRootAdapter();
             }
@@ -479,20 +475,6 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
 	public Adapter createValueTypeAdapter() {
-        return null;
-    }
-
-	/**
-     * Creates a new adapter for an object of class '{@link org.camunda.bpm.modeler.runtime.engine.model.PrimaryKey <em>Primary Key</em>}'.
-     * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see org.camunda.bpm.modeler.runtime.engine.model.PrimaryKey
-     * @generated
-     */
-	public Adapter createPrimaryKeyAdapter() {
         return null;
     }
 
