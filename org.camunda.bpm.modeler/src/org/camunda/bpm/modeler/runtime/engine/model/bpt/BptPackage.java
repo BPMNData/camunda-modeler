@@ -289,15 +289,14 @@ public interface BptPackage extends EPackage {
     int SCOPE_INFORMATION_FEATURE_COUNT = 2;
 
     /**
-     * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyTypes <em>Primary Key Types</em>}' enum.
+     * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType <em>Primary Key Type</em>}' enum.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyTypes
-     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.BptPackageImpl#getPrimaryKeyTypes()
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.BptPackageImpl#getPrimaryKeyType()
      * @generated
      */
-    int PRIMARY_KEY_TYPES = 6;
-
+    int PRIMARY_KEY_TYPE = 6;
 
     /**
      * Returns the meta object for class '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey <em>Primary Key</em>}'.
@@ -459,14 +458,14 @@ public interface BptPackage extends EPackage {
     EAttribute getScopeInformation_CaseObject();
 
     /**
-     * Returns the meta object for enum '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyTypes <em>Primary Key Types</em>}'.
+     * Returns the meta object for enum '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType <em>Primary Key Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for enum '<em>Primary Key Types</em>'.
-     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyTypes
+     * @return the meta object for enum '<em>Primary Key Type</em>'.
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType
      * @generated
      */
-    EEnum getPrimaryKeyTypes();
+    EEnum getPrimaryKeyType();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -623,14 +622,14 @@ public interface BptPackage extends EPackage {
         EAttribute SCOPE_INFORMATION__CASE_OBJECT = eINSTANCE.getScopeInformation_CaseObject();
 
         /**
-         * The meta object literal for the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyTypes <em>Primary Key Types</em>}' enum.
+         * The meta object literal for the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType <em>Primary Key Type</em>}' enum.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyTypes
-         * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.BptPackageImpl#getPrimaryKeyTypes()
+         * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType
+         * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.BptPackageImpl#getPrimaryKeyType()
          * @generated
          */
-        EEnum PRIMARY_KEY_TYPES = eINSTANCE.getPrimaryKeyTypes();
+        EEnum PRIMARY_KEY_TYPE = eINSTANCE.getPrimaryKeyType();
 
     }
 

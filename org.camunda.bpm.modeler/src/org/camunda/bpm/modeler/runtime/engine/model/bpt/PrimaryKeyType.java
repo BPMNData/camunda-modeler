@@ -10,14 +10,14 @@ import org.eclipse.emf.common.util.Enumerator;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the literals of the enumeration '<em><b>Primary Key Types</b></em>',
+ * A representation of the literals of the enumeration '<em><b>Primary Key Type</b></em>',
  * and utility methods for working with them.
  * <!-- end-user-doc -->
- * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage#getPrimaryKeyTypes()
+ * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage#getPrimaryKeyType()
  * @model extendedMetaData="name='tPrimaryKeyTypes'"
  * @generated
  */
-public enum PrimaryKeyTypes implements Enumerator {
+public enum PrimaryKeyType implements Enumerator {
     /**
      * The '<em><b>Default</b></em>' literal object.
      * <!-- begin-user-doc -->
@@ -94,35 +94,35 @@ public enum PrimaryKeyTypes implements Enumerator {
     public static final int DELETE_VALUE = 2;
 
     /**
-     * An array of all the '<em><b>Primary Key Types</b></em>' enumerators.
+     * An array of all the '<em><b>Primary Key Type</b></em>' enumerators.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    private static final PrimaryKeyTypes[] VALUES_ARRAY =
-        new PrimaryKeyTypes[] {
+    private static final PrimaryKeyType[] VALUES_ARRAY =
+        new PrimaryKeyType[] {
             DEFAULT,
             NEW,
             DELETE,
         };
 
     /**
-     * A public read-only list of all the '<em><b>Primary Key Types</b></em>' enumerators.
+     * A public read-only list of all the '<em><b>Primary Key Type</b></em>' enumerators.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    public static final List<PrimaryKeyTypes> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+    public static final List<PrimaryKeyType> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
     /**
-     * Returns the '<em><b>Primary Key Types</b></em>' literal with the specified literal value.
+     * Returns the '<em><b>Primary Key Type</b></em>' literal with the specified literal value.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    public static PrimaryKeyTypes get(String literal) {
+    public static PrimaryKeyType get(String literal) {
         for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-            PrimaryKeyTypes result = VALUES_ARRAY[i];
+            PrimaryKeyType result = VALUES_ARRAY[i];
             if (result.toString().equals(literal)) {
                 return result;
             }
@@ -131,14 +131,14 @@ public enum PrimaryKeyTypes implements Enumerator {
     }
 
     /**
-     * Returns the '<em><b>Primary Key Types</b></em>' literal with the specified name.
+     * Returns the '<em><b>Primary Key Type</b></em>' literal with the specified name.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    public static PrimaryKeyTypes getByName(String name) {
+    public static PrimaryKeyType getByName(String name) {
         for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-            PrimaryKeyTypes result = VALUES_ARRAY[i];
+            PrimaryKeyType result = VALUES_ARRAY[i];
             if (result.getName().equals(name)) {
                 return result;
             }
@@ -147,12 +147,12 @@ public enum PrimaryKeyTypes implements Enumerator {
     }
 
     /**
-     * Returns the '<em><b>Primary Key Types</b></em>' literal with the specified integer value.
+     * Returns the '<em><b>Primary Key Type</b></em>' literal with the specified integer value.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    public static PrimaryKeyTypes get(int value) {
+    public static PrimaryKeyType get(int value) {
         switch (value) {
             case DEFAULT_VALUE: return DEFAULT;
             case NEW_VALUE: return NEW;
@@ -188,7 +188,7 @@ public enum PrimaryKeyTypes implements Enumerator {
      * <!-- end-user-doc -->
      * @generated
      */
-    private PrimaryKeyTypes(int value, String name, String literal) {
+    private PrimaryKeyType(int value, String name, String literal) {
         this.value = value;
         this.name = name;
         this.literal = literal;
@@ -232,4 +232,4 @@ public enum PrimaryKeyTypes implements Enumerator {
         return literal;
     }
     
-} //PrimaryKeyTypes
+} //PrimaryKeyType

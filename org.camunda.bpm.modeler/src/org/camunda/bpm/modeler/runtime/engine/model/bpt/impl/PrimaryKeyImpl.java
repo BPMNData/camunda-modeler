@@ -4,14 +4,10 @@ package org.camunda.bpm.modeler.runtime.engine.model.bpt.impl;
 
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey;
-
-import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyTypes;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType;
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -35,7 +31,7 @@ public class PrimaryKeyImpl extends RelationalKeyImpl implements PrimaryKey {
      * @generated
      * @ordered
      */
-    protected static final PrimaryKeyTypes TYPE_EDEFAULT = PrimaryKeyTypes.DEFAULT;
+    protected static final PrimaryKeyType TYPE_EDEFAULT = PrimaryKeyType.DEFAULT;
     /**
      * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -44,7 +40,7 @@ public class PrimaryKeyImpl extends RelationalKeyImpl implements PrimaryKey {
      * @generated
      * @ordered
      */
-    protected PrimaryKeyTypes type = TYPE_EDEFAULT;
+    protected PrimaryKeyType type = TYPE_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -70,7 +66,7 @@ public class PrimaryKeyImpl extends RelationalKeyImpl implements PrimaryKey {
      * <!-- end-user-doc -->
      * @generated
      */
-    public PrimaryKeyTypes getType() {
+    public PrimaryKeyType getType() {
         return type;
     }
 
@@ -79,8 +75,8 @@ public class PrimaryKeyImpl extends RelationalKeyImpl implements PrimaryKey {
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setType(PrimaryKeyTypes newType) {
-        PrimaryKeyTypes oldType = type;
+    public void setType(PrimaryKeyType newType) {
+        PrimaryKeyType oldType = type;
         type = newType == null ? TYPE_EDEFAULT : newType;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, BptPackage.PRIMARY_KEY__TYPE, oldType, type));
@@ -109,7 +105,7 @@ public class PrimaryKeyImpl extends RelationalKeyImpl implements PrimaryKey {
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case BptPackage.PRIMARY_KEY__TYPE:
-                setType((PrimaryKeyTypes)newValue);
+                setType((PrimaryKeyType)newValue);
                 return;
         }
         super.eSet(featureID, newValue);

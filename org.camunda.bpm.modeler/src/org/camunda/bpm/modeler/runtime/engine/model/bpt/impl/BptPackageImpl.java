@@ -11,7 +11,7 @@ import org.camunda.bpm.modeler.runtime.engine.model.bpt.Condition;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.ForeignKey;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey;
 
-import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyTypes;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.RelationalKey;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.ScopeInformation;
 import org.camunda.bpm.modeler.runtime.engine.model.fox.FoxPackage;
@@ -90,7 +90,7 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    private EEnum primaryKeyTypesEEnum = null;
+    private EEnum primaryKeyTypeEEnum = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -308,8 +308,8 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EEnum getPrimaryKeyTypes() {
-        return primaryKeyTypesEEnum;
+    public EEnum getPrimaryKeyType() {
+        return primaryKeyTypeEEnum;
     }
 
     /**
@@ -362,7 +362,7 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
         createEAttribute(scopeInformationEClass, SCOPE_INFORMATION__CASE_OBJECT);
 
         // Create enums
-        primaryKeyTypesEEnum = createEEnum(PRIMARY_KEY_TYPES);
+        primaryKeyTypeEEnum = createEEnum(PRIMARY_KEY_TYPE);
     }
 
     /**
@@ -401,7 +401,7 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
 
         // Initialize classes and features; add operations and parameters
         initEClass(primaryKeyEClass, PrimaryKey.class, "PrimaryKey", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getPrimaryKey_Type(), this.getPrimaryKeyTypes(), "type", "", 0, 1, PrimaryKey.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getPrimaryKey_Type(), this.getPrimaryKeyType(), "type", "", 0, 1, PrimaryKey.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(relationalKeyEClass, RelationalKey.class, "RelationalKey", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getRelationalKey_Id(), theXMLTypePackage.getString(), "id", null, 0, 1, RelationalKey.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -422,10 +422,10 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
         initEAttribute(getScopeInformation_CaseObject(), theXMLTypePackage.getString(), "caseObject", "", 0, 1, ScopeInformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
-        initEEnum(primaryKeyTypesEEnum, PrimaryKeyTypes.class, "PrimaryKeyTypes");
-        addEEnumLiteral(primaryKeyTypesEEnum, PrimaryKeyTypes.DEFAULT);
-        addEEnumLiteral(primaryKeyTypesEEnum, PrimaryKeyTypes.NEW);
-        addEEnumLiteral(primaryKeyTypesEEnum, PrimaryKeyTypes.DELETE);
+        initEEnum(primaryKeyTypeEEnum, PrimaryKeyType.class, "PrimaryKeyType");
+        addEEnumLiteral(primaryKeyTypeEEnum, PrimaryKeyType.DEFAULT);
+        addEEnumLiteral(primaryKeyTypeEEnum, PrimaryKeyType.NEW);
+        addEEnumLiteral(primaryKeyTypeEEnum, PrimaryKeyType.DELETE);
 
         // Create annotations
         // http:///org/eclipse/emf/ecore/util/ExtendedMetaData
@@ -483,7 +483,7 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
              "kind", "simple"
            });			
         addAnnotation
-          (primaryKeyTypesEEnum, 
+          (primaryKeyTypeEEnum, 
            source, 
            new String[] {
              "name", "tPrimaryKeyTypes"
