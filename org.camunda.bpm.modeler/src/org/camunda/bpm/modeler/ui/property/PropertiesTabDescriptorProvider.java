@@ -27,12 +27,14 @@ import org.camunda.bpm.modeler.ui.property.tabs.EventTabSection;
 import org.camunda.bpm.modeler.ui.property.tabs.GeneralTabSection;
 import org.camunda.bpm.modeler.ui.property.tabs.ListenerTabSection;
 import org.camunda.bpm.modeler.ui.property.tabs.MultiInstanceTabSection;
+import org.camunda.bpm.modeler.ui.property.tabs.ScopeInformationTabSection;
 import org.eclipse.bpmn2.Activity;
 import org.eclipse.bpmn2.Event;
 import org.eclipse.bpmn2.Gateway;
 import org.eclipse.bpmn2.Participant;
 import org.eclipse.bpmn2.Process;
 import org.eclipse.bpmn2.SequenceFlow;
+import org.eclipse.bpmn2.SubProcess;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.jface.viewers.ISelection;
@@ -85,6 +87,11 @@ public class PropertiesTabDescriptorProvider implements ITabDescriptorProvider {
 					tabs.add(createListenerTabDescriptor());
 				}
 			}
+			
+			// BPMNData ScopeInformation property
+			if (businessObject instanceof Process || businessObject instanceof SubProcess) {
+				tabs.add(createScopeInformationTabDescriptor());
+			}
 		}
 		
 		return tabs.toArray(new ITabDescriptor[]{});
@@ -117,6 +124,10 @@ public class PropertiesTabDescriptorProvider implements ITabDescriptorProvider {
 
 	private ITabDescriptor createDefinitionsTabDescriptor() {
 		return createTabDescriptor("definitionsTab", "Definitions", new DefinitionsTabSection());
+	}
+	
+	private ITabDescriptor createScopeInformationTabDescriptor() {
+		return createTabDescriptor("scopeInformationTab", "BPMN Data Scope", new ScopeInformationTabSection());
 	}
 
 }
