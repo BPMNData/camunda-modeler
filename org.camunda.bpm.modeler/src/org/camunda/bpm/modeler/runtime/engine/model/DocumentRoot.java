@@ -6,7 +6,10 @@
  */
 package org.camunda.bpm.modeler.runtime.engine.model;
 
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.Cardinality;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.Condition;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.ScopeInformation;
 import org.camunda.bpm.modeler.runtime.engine.model.fox.FailedJobRetryTimeCycleType;
 
 /**
@@ -43,6 +46,9 @@ import org.camunda.bpm.modeler.runtime.engine.model.fox.FailedJobRetryTimeCycleT
  *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot#getResultVariableName <em>Result Variable Name</em>}</li>
  *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot#getFailedJobRetryTimeCycle <em>Failed Job Retry Time Cycle</em>}</li>
  *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot#getPrimaryKey <em>Primary Key</em>}</li>
+ *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot#getCardinality <em>Cardinality</em>}</li>
+ *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot#getCondition <em>Condition</em>}</li>
+ *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot#getScopeInformation <em>Scope Information</em>}</li>
  * </ul>
  * </p>
  *
@@ -778,7 +784,7 @@ public interface DocumentRoot extends org.eclipse.bpmn2.DocumentRoot {
      * @see #setPrimaryKey(PrimaryKey)
      * @see org.camunda.bpm.modeler.runtime.engine.model.ModelPackage#getDocumentRoot_PrimaryKey()
      * @model containment="true" upper="-2" transient="true" volatile="true" derived="true"
-     *        extendedMetaData="kind='element' name='privateKey' namespace='http://bpt.uni-potsdam.de'"
+     *        extendedMetaData="kind='element' name='privateKey' namespace='https://bpt.hpi.uni-potsdam.de'"
      * @generated
      */
 	PrimaryKey getPrimaryKey();
@@ -792,5 +798,86 @@ public interface DocumentRoot extends org.eclipse.bpmn2.DocumentRoot {
      * @generated
      */
     void setPrimaryKey(PrimaryKey value);
+
+    /**
+     * Returns the value of the '<em><b>Cardinality</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Cardinality</em>' containment reference isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Cardinality</em>' containment reference.
+     * @see #setCardinality(Cardinality)
+     * @see org.camunda.bpm.modeler.runtime.engine.model.ModelPackage#getDocumentRoot_Cardinality()
+     * @model containment="true" upper="-2" transient="true" volatile="true" derived="true"
+     *        extendedMetaData="kind='element' name='cardinality' namespace='https://bpt.hpi.uni-potsdam.de'"
+     * @generated
+     */
+    Cardinality getCardinality();
+
+    /**
+     * Sets the value of the '{@link org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot#getCardinality <em>Cardinality</em>}' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Cardinality</em>' containment reference.
+     * @see #getCardinality()
+     * @generated
+     */
+    void setCardinality(Cardinality value);
+
+    /**
+     * Returns the value of the '<em><b>Condition</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Condition</em>' containment reference isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Condition</em>' containment reference.
+     * @see #setCondition(Condition)
+     * @see org.camunda.bpm.modeler.runtime.engine.model.ModelPackage#getDocumentRoot_Condition()
+     * @model containment="true" upper="-2" transient="true" volatile="true" derived="true"
+     *        extendedMetaData="kind='element' name='condition' namespace='https://bpt.hpi.uni-potsdam.de'"
+     * @generated
+     */
+    Condition getCondition();
+
+    /**
+     * Sets the value of the '{@link org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot#getCondition <em>Condition</em>}' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Condition</em>' containment reference.
+     * @see #getCondition()
+     * @generated
+     */
+    void setCondition(Condition value);
+
+    /**
+     * Returns the value of the '<em><b>Scope Information</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Scope Information</em>' containment reference isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Scope Information</em>' containment reference.
+     * @see #setScopeInformation(ScopeInformation)
+     * @see org.camunda.bpm.modeler.runtime.engine.model.ModelPackage#getDocumentRoot_ScopeInformation()
+     * @model containment="true" upper="-2" transient="true" volatile="true" derived="true"
+     *        extendedMetaData="kind='element' name='scopeInformation' namespace='https://bpt.hpi.uni-potsdam.de'"
+     * @generated
+     */
+    ScopeInformation getScopeInformation();
+
+    /**
+     * Sets the value of the '{@link org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot#getScopeInformation <em>Scope Information</em>}' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Scope Information</em>' containment reference.
+     * @see #getScopeInformation()
+     * @generated
+     */
+    void setScopeInformation(ScopeInformation value);
 
 } // DocumentRoot

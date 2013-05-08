@@ -1,9 +1,14 @@
 package org.camunda.bpm.modeler.ui.property.tabs.builder;
 
+import java.util.List;
+import java.util.UUID;
+import java.util.logging.Logger;
+
 import org.camunda.bpm.modeler.core.utils.ExtensionUtil;
 import org.camunda.bpm.modeler.runtime.engine.model.ModelPackage;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptFactory;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyTypes;
 import org.camunda.bpm.modeler.ui.property.tabs.binding.ModelAttributeTextBinding;
 import org.camunda.bpm.modeler.ui.property.tabs.binding.ModelTextBinding;
 import org.camunda.bpm.modeler.ui.property.tabs.util.PropertyUtil;
@@ -17,6 +22,7 @@ import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.graphiti.ui.platform.GFPropertySection;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
@@ -43,9 +49,14 @@ public class ItemAwareElementPropertiesBuilder extends
 
         Text primaryKeyText = PropertyUtil.createUnboundText(section, parent,
                 "Primary Key");
-        PrimaryKeyFieldBinding primaryKeyFieldBinding = new PrimaryKeyFieldBinding(
+        PrimaryKeyNameTextBinding primaryKeyFieldBinding = new PrimaryKeyNameTextBinding(
                 bo, PRIMARY_KEY_FEATURE, primaryKeyText);
         primaryKeyFieldBinding.establish();
+
+        CCombo pkTypeCombo = PropertyUtil.createDropDown(section, parent,
+                "Type");
+        // PrimaryKeyTypeBinding pkTypeBinding = new PrimaryKeyTypeBinding(bo,
+        // pkTypeCombo)
     }
 
     private class DataStateFieldBinding extends
@@ -80,9 +91,9 @@ public class ItemAwareElementPropertiesBuilder extends
      * Binding which binds the PrimaryKey's id of an ItemAwareElement to the
      * given text field.
      */
-    private class PrimaryKeyFieldBinding extends ModelTextBinding<String> {
+    private class PrimaryKeyNameTextBinding extends ModelTextBinding<String> {
 
-        public PrimaryKeyFieldBinding(EObject model,
+        public PrimaryKeyNameTextBinding(EObject model,
                 EStructuralFeature feature, Text control) {
             super(model, feature, control);
         }
@@ -121,10 +132,18 @@ public class ItemAwareElementPropertiesBuilder extends
         }
     }
 
-    protected void updatePrimaryKey(String id) {
-        PrimaryKey pk = BptFactory.eINSTANCE.createPrimaryKey();
-        pk.setId(id.trim());
-        pk.setValue(id.trim());
+    protected void updateName(String name) {
+        List<PrimaryKey> pks = ExtensionUtil.getExtensions(bo,
+                PrimaryKey.class);
+        if (pks.size() > 1)
+            Logger.getAnonymousLogger().warning(
+                    "There is more than one primary key for " + bo);
+
+        PrimaryKey pk = pks.isEmpty() ? BptFactory.eINSTANCE.createPrimaryKey()
+                : pks.get(0);
+        pk.setId("pk-" + UUID.fromString(name));
+        pk.setValue(name);
+        pk.setType(PrimaryKeyTypes.DELETE);
         ExtensionUtil.updateExtension(bo, PRIMARY_KEY_FEATURE, pk);
     }
 
@@ -150,7 +169,7 @@ public class ItemAwareElementPropertiesBuilder extends
             if (newValue == null || newValue.trim().isEmpty()) {
                 removePrimaryKey();
             } else {
-                updatePrimaryKey(newValue);
+                updateName(newValue);
             }
         }
     }

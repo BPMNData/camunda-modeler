@@ -16,7 +16,10 @@ import org.camunda.bpm.modeler.runtime.engine.model.ModelPackage;
 import org.camunda.bpm.modeler.runtime.engine.model.OutType;
 import org.camunda.bpm.modeler.runtime.engine.model.TaskListenerType;
 import org.camunda.bpm.modeler.runtime.engine.model.TypeType;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.Cardinality;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.Condition;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.ScopeInformation;
 import org.camunda.bpm.modeler.runtime.engine.model.fox.FailedJobRetryTimeCycleType;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -58,6 +61,9 @@ import org.eclipse.emf.ecore.util.FeatureMap;
  *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.impl.DocumentRootImpl#getResultVariableName <em>Result Variable Name</em>}</li>
  *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.impl.DocumentRootImpl#getFailedJobRetryTimeCycle <em>Failed Job Retry Time Cycle</em>}</li>
  *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.impl.DocumentRootImpl#getPrimaryKey <em>Primary Key</em>}</li>
+ *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.impl.DocumentRootImpl#getCardinality <em>Cardinality</em>}</li>
+ *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.impl.DocumentRootImpl#getCondition <em>Condition</em>}</li>
+ *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.impl.DocumentRootImpl#getScopeInformation <em>Scope Information</em>}</li>
  * </ul>
  * </p>
  *
@@ -1075,6 +1081,87 @@ public class DocumentRootImpl extends org.eclipse.bpmn2.impl.DocumentRootImpl im
 
     /**
      * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Cardinality getCardinality() {
+        return (Cardinality)getMixed().get(ModelPackage.Literals.DOCUMENT_ROOT__CARDINALITY, true);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public NotificationChain basicSetCardinality(Cardinality newCardinality, NotificationChain msgs) {
+        return ((FeatureMap.Internal)getMixed()).basicAdd(ModelPackage.Literals.DOCUMENT_ROOT__CARDINALITY, newCardinality, msgs);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setCardinality(Cardinality newCardinality) {
+        ((FeatureMap.Internal)getMixed()).set(ModelPackage.Literals.DOCUMENT_ROOT__CARDINALITY, newCardinality);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Condition getCondition() {
+        return (Condition)getMixed().get(ModelPackage.Literals.DOCUMENT_ROOT__CONDITION, true);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public NotificationChain basicSetCondition(Condition newCondition, NotificationChain msgs) {
+        return ((FeatureMap.Internal)getMixed()).basicAdd(ModelPackage.Literals.DOCUMENT_ROOT__CONDITION, newCondition, msgs);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setCondition(Condition newCondition) {
+        ((FeatureMap.Internal)getMixed()).set(ModelPackage.Literals.DOCUMENT_ROOT__CONDITION, newCondition);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public ScopeInformation getScopeInformation() {
+        return (ScopeInformation)getMixed().get(ModelPackage.Literals.DOCUMENT_ROOT__SCOPE_INFORMATION, true);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public NotificationChain basicSetScopeInformation(ScopeInformation newScopeInformation, NotificationChain msgs) {
+        return ((FeatureMap.Internal)getMixed()).basicAdd(ModelPackage.Literals.DOCUMENT_ROOT__SCOPE_INFORMATION, newScopeInformation, msgs);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setScopeInformation(ScopeInformation newScopeInformation) {
+        ((FeatureMap.Internal)getMixed()).set(ModelPackage.Literals.DOCUMENT_ROOT__SCOPE_INFORMATION, newScopeInformation);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -1097,6 +1184,12 @@ public class DocumentRootImpl extends org.eclipse.bpmn2.impl.DocumentRootImpl im
                 return basicSetFailedJobRetryTimeCycle(null, msgs);
             case ModelPackage.DOCUMENT_ROOT__PRIMARY_KEY:
                 return basicSetPrimaryKey(null, msgs);
+            case ModelPackage.DOCUMENT_ROOT__CARDINALITY:
+                return basicSetCardinality(null, msgs);
+            case ModelPackage.DOCUMENT_ROOT__CONDITION:
+                return basicSetCondition(null, msgs);
+            case ModelPackage.DOCUMENT_ROOT__SCOPE_INFORMATION:
+                return basicSetScopeInformation(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -1161,6 +1254,12 @@ public class DocumentRootImpl extends org.eclipse.bpmn2.impl.DocumentRootImpl im
                 return getFailedJobRetryTimeCycle();
             case ModelPackage.DOCUMENT_ROOT__PRIMARY_KEY:
                 return getPrimaryKey();
+            case ModelPackage.DOCUMENT_ROOT__CARDINALITY:
+                return getCardinality();
+            case ModelPackage.DOCUMENT_ROOT__CONDITION:
+                return getCondition();
+            case ModelPackage.DOCUMENT_ROOT__SCOPE_INFORMATION:
+                return getScopeInformation();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -1250,6 +1349,15 @@ public class DocumentRootImpl extends org.eclipse.bpmn2.impl.DocumentRootImpl im
                 return;
             case ModelPackage.DOCUMENT_ROOT__PRIMARY_KEY:
                 setPrimaryKey((PrimaryKey)newValue);
+                return;
+            case ModelPackage.DOCUMENT_ROOT__CARDINALITY:
+                setCardinality((Cardinality)newValue);
+                return;
+            case ModelPackage.DOCUMENT_ROOT__CONDITION:
+                setCondition((Condition)newValue);
+                return;
+            case ModelPackage.DOCUMENT_ROOT__SCOPE_INFORMATION:
+                setScopeInformation((ScopeInformation)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -1341,6 +1449,15 @@ public class DocumentRootImpl extends org.eclipse.bpmn2.impl.DocumentRootImpl im
             case ModelPackage.DOCUMENT_ROOT__PRIMARY_KEY:
                 setPrimaryKey((PrimaryKey)null);
                 return;
+            case ModelPackage.DOCUMENT_ROOT__CARDINALITY:
+                setCardinality((Cardinality)null);
+                return;
+            case ModelPackage.DOCUMENT_ROOT__CONDITION:
+                setCondition((Condition)null);
+                return;
+            case ModelPackage.DOCUMENT_ROOT__SCOPE_INFORMATION:
+                setScopeInformation((ScopeInformation)null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -1405,6 +1522,12 @@ public class DocumentRootImpl extends org.eclipse.bpmn2.impl.DocumentRootImpl im
                 return getFailedJobRetryTimeCycle() != null;
             case ModelPackage.DOCUMENT_ROOT__PRIMARY_KEY:
                 return getPrimaryKey() != null;
+            case ModelPackage.DOCUMENT_ROOT__CARDINALITY:
+                return getCardinality() != null;
+            case ModelPackage.DOCUMENT_ROOT__CONDITION:
+                return getCondition() != null;
+            case ModelPackage.DOCUMENT_ROOT__SCOPE_INFORMATION:
+                return getScopeInformation() != null;
         }
         return super.eIsSet(featureID);
     }

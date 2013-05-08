@@ -5,6 +5,7 @@ package org.camunda.bpm.modeler.runtime.engine.model.bpt.impl;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey;
 
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyTypes;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
@@ -19,53 +20,31 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.PrimaryKeyImpl#getId <em>Id</em>}</li>
- *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.PrimaryKeyImpl#getValue <em>Value</em>}</li>
+ *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.PrimaryKeyImpl#getType <em>Type</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class PrimaryKeyImpl extends EObjectImpl implements PrimaryKey {
+public class PrimaryKeyImpl extends RelationalKeyImpl implements PrimaryKey {
     /**
-     * The default value of the '{@link #getId() <em>Id</em>}' attribute.
+     * The default value of the '{@link #getType() <em>Type</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getId()
+     * @see #getType()
      * @generated
      * @ordered
      */
-    protected static final String ID_EDEFAULT = null;
-
+    protected static final PrimaryKeyTypes TYPE_EDEFAULT = PrimaryKeyTypes.DEFAULT;
     /**
-     * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
+     * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getId()
+     * @see #getType()
      * @generated
      * @ordered
      */
-    protected String id = ID_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getValue()
-     * @generated
-     * @ordered
-     */
-    protected static final String VALUE_EDEFAULT = "";
-
-    /**
-     * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getValue()
-     * @generated
-     * @ordered
-     */
-    protected String value = VALUE_EDEFAULT;
+    protected PrimaryKeyTypes type = TYPE_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -91,8 +70,8 @@ public class PrimaryKeyImpl extends EObjectImpl implements PrimaryKey {
      * <!-- end-user-doc -->
      * @generated
      */
-    public String getId() {
-        return id;
+    public PrimaryKeyTypes getType() {
+        return type;
     }
 
     /**
@@ -100,32 +79,11 @@ public class PrimaryKeyImpl extends EObjectImpl implements PrimaryKey {
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setId(String newId) {
-        String oldId = id;
-        id = newId;
+    public void setType(PrimaryKeyTypes newType) {
+        PrimaryKeyTypes oldType = type;
+        type = newType == null ? TYPE_EDEFAULT : newType;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, BptPackage.PRIMARY_KEY__ID, oldId, id));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public String getValue() {
-        return value;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setValue(String newValue) {
-        String oldValue = value;
-        value = newValue;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, BptPackage.PRIMARY_KEY__VALUE, oldValue, value));
+            eNotify(new ENotificationImpl(this, Notification.SET, BptPackage.PRIMARY_KEY__TYPE, oldType, type));
     }
 
     /**
@@ -136,10 +94,8 @@ public class PrimaryKeyImpl extends EObjectImpl implements PrimaryKey {
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case BptPackage.PRIMARY_KEY__ID:
-                return getId();
-            case BptPackage.PRIMARY_KEY__VALUE:
-                return getValue();
+            case BptPackage.PRIMARY_KEY__TYPE:
+                return getType();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -152,11 +108,8 @@ public class PrimaryKeyImpl extends EObjectImpl implements PrimaryKey {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case BptPackage.PRIMARY_KEY__ID:
-                setId((String)newValue);
-                return;
-            case BptPackage.PRIMARY_KEY__VALUE:
-                setValue((String)newValue);
+            case BptPackage.PRIMARY_KEY__TYPE:
+                setType((PrimaryKeyTypes)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -170,11 +123,8 @@ public class PrimaryKeyImpl extends EObjectImpl implements PrimaryKey {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case BptPackage.PRIMARY_KEY__ID:
-                setId(ID_EDEFAULT);
-                return;
-            case BptPackage.PRIMARY_KEY__VALUE:
-                setValue(VALUE_EDEFAULT);
+            case BptPackage.PRIMARY_KEY__TYPE:
+                setType(TYPE_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -188,10 +138,8 @@ public class PrimaryKeyImpl extends EObjectImpl implements PrimaryKey {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case BptPackage.PRIMARY_KEY__ID:
-                return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
-            case BptPackage.PRIMARY_KEY__VALUE:
-                return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
+            case BptPackage.PRIMARY_KEY__TYPE:
+                return type != TYPE_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -206,10 +154,8 @@ public class PrimaryKeyImpl extends EObjectImpl implements PrimaryKey {
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (id: ");
-        result.append(id);
-        result.append(", value: ");
-        result.append(value);
+        result.append(" (type: ");
+        result.append(type);
         result.append(')');
         return result.toString();
     }

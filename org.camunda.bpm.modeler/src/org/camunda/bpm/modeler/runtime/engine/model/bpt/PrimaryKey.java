@@ -16,8 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey#getId <em>Id</em>}</li>
- *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey#getValue <em>Value</em>}</li>
+ *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey#getType <em>Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -25,58 +24,36 @@ import org.eclipse.emf.ecore.EObject;
  * @model extendedMetaData="name='tPrimaryKey' kind='simple'"
  * @generated
  */
-public interface PrimaryKey extends EObject {
-    /**
-     * Returns the value of the '<em><b>Id</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * Defines the internal value for the form property value.
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Id</em>' attribute.
-     * @see #setId(String)
-     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage#getPrimaryKey_Id()
-     * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-     *        extendedMetaData="kind='attribute' name='id'"
-     * @generated
-     */
-    String getId();
+public interface PrimaryKey extends RelationalKey {
 
     /**
-     * Sets the value of the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey#getId <em>Id</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Id</em>' attribute.
-     * @see #getId()
-     * @generated
-     */
-    void setId(String value);
-
-    /**
-     * Returns the value of the '<em><b>Value</b></em>' attribute.
+     * Returns the value of the '<em><b>Type</b></em>' attribute.
      * The default value is <code>""</code>.
+     * The literals are from the enumeration {@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyTypes}.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Defines the internal value for the form property value.
+     * Defines what kind of operation is required on the associated data object.
      * <!-- end-model-doc -->
-     * @return the value of the '<em>Value</em>' attribute.
-     * @see #setValue(String)
-     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage#getPrimaryKey_Value()
-     * @model default="" dataType="org.eclipse.emf.ecore.xml.type.String"
-     *        extendedMetaData="kind='simple' name=':0'"
+     * @return the value of the '<em>Type</em>' attribute.
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyTypes
+     * @see #setType(PrimaryKeyTypes)
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage#getPrimaryKey_Type()
+     * @model default=""
+     *        extendedMetaData="kind='attribute' name='type'"
      * @generated
      */
-    String getValue();
+    PrimaryKeyTypes getType();
 
     /**
-     * Sets the value of the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey#getValue <em>Value</em>}' attribute.
+     * Sets the value of the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey#getType <em>Type</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Value</em>' attribute.
-     * @see #getValue()
+     * @param value the new value of the '<em>Type</em>' attribute.
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyTypes
+     * @see #getType()
      * @generated
      */
-    void setValue(String value);
+    void setType(PrimaryKeyTypes value);
 
 } // PrimaryKey

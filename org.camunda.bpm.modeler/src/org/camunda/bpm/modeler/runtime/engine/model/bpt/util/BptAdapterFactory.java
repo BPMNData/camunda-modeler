@@ -72,6 +72,26 @@ public class BptAdapterFactory extends AdapterFactoryImpl {
                 return createPrimaryKeyAdapter();
             }
             @Override
+            public Adapter caseRelationalKey(RelationalKey object) {
+                return createRelationalKeyAdapter();
+            }
+            @Override
+            public Adapter caseForeignKey(ForeignKey object) {
+                return createForeignKeyAdapter();
+            }
+            @Override
+            public Adapter caseCondition(Condition object) {
+                return createConditionAdapter();
+            }
+            @Override
+            public Adapter caseCardinality(Cardinality object) {
+                return createCardinalityAdapter();
+            }
+            @Override
+            public Adapter caseScopeInformation(ScopeInformation object) {
+                return createScopeInformationAdapter();
+            }
+            @Override
             public Adapter defaultCase(EObject object) {
                 return createEObjectAdapter();
             }
@@ -102,6 +122,76 @@ public class BptAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createPrimaryKeyAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.RelationalKey <em>Relational Key</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.RelationalKey
+     * @generated
+     */
+    public Adapter createRelationalKeyAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.ForeignKey <em>Foreign Key</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.ForeignKey
+     * @generated
+     */
+    public Adapter createForeignKeyAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.Condition <em>Condition</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.Condition
+     * @generated
+     */
+    public Adapter createConditionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.Cardinality <em>Cardinality</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.Cardinality
+     * @generated
+     */
+    public Adapter createCardinalityAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.ScopeInformation <em>Scope Information</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.ScopeInformation
+     * @generated
+     */
+    public Adapter createScopeInformationAdapter() {
         return null;
     }
 

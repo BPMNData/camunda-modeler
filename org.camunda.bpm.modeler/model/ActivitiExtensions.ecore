@@ -272,7 +272,34 @@
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="element"/>
         <details key="name" value="privateKey"/>
-        <details key="namespace" value="http://bpt.uni-potsdam.de"/>
+        <details key="namespace" value="https://bpt.hpi.uni-potsdam.de"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" upperBound="-2"
+        eType="#//bpt/Cardinality" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="cardinality"/>
+        <details key="namespace" value="https://bpt.hpi.uni-potsdam.de"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="condition" upperBound="-2"
+        eType="#//bpt/Condition" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="condition"/>
+        <details key="namespace" value="https://bpt.hpi.uni-potsdam.de"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="scopeInformation" upperBound="-2"
+        eType="#//bpt/ScopeInformation" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="scopeInformation"/>
+        <details key="namespace" value="https://bpt.hpi.uni-potsdam.de"/>
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
@@ -735,7 +762,7 @@
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="bpt" nsURI="http://bpt.hpi.uni-potsdam.de" nsPrefix="bpt">
-    <eClassifiers xsi:type="ecore:EClass" name="PrimaryKey">
+    <eClassifiers xsi:type="ecore:EClass" name="PrimaryKey" eSuperTypes="#//bpt/RelationalKey">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="name" value="tPrimaryKey"/>
         <details key="kind" value="simple"/>
@@ -743,9 +770,28 @@
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Defines a primary key as extension to data objects."/>
       </eAnnotations>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//bpt/PrimaryKeyTypes"
+          defaultValueLiteral="">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="Defines what kind of operation is required on the associated data object."/>
+        </eAnnotations>
+        <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+          <details key="kind" value="attribute"/>
+          <details key="name" value="type"/>
+        </eAnnotations>
+      </eStructuralFeatures>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="RelationalKey" abstract="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="name" value="tRelationalKey"/>
+        <details key="kind" value="simple"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Superclass for primary and foreign keys."/>
+      </eAnnotations>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-          <details key="documentation" value="Defines the internal value for the form property value."/>
+          <details key="documentation" value="Defines the id of this object."/>
         </eAnnotations>
         <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
           <details key="kind" value="attribute"/>
@@ -755,11 +801,112 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
           defaultValueLiteral="">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-          <details key="documentation" value="Defines the internal value for the form property value."/>
+          <details key="documentation" value="Defines the value of this object."/>
         </eAnnotations>
         <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
           <details key="kind" value="simple"/>
           <details key="name" value=":0"/>
+        </eAnnotations>
+      </eStructuralFeatures>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ForeignKey" eSuperTypes="#//bpt/RelationalKey">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="name" value="tForeignKey"/>
+        <details key="kind" value="simple"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Defines a foreign key as extension to data objects."/>
+      </eAnnotations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="PrimaryKeyTypes">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="name" value="tPrimaryKeyTypes"/>
+      </eAnnotations>
+      <eLiterals name="default" literal=""/>
+      <eLiterals name="new" value="1"/>
+      <eLiterals name="delete" value="2"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Condition">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="name" value="tCondition"/>
+        <details key="kind" value="simple"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Defines a selection condition on objects."/>
+      </eAnnotations>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="Defines the id of this object."/>
+        </eAnnotations>
+        <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+          <details key="kind" value="attribute"/>
+          <details key="name" value="id"/>
+        </eAnnotations>
+      </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
+          defaultValueLiteral="">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="Defines the value of this object."/>
+        </eAnnotations>
+        <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+          <details key="kind" value="simple"/>
+          <details key="name" value=":0"/>
+        </eAnnotations>
+      </eStructuralFeatures>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Cardinality">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="name" value="tCondition"/>
+        <details key="kind" value="simple"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Defines the cardinality of multi-instance data objects."/>
+      </eAnnotations>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="Defines the id of this object."/>
+        </eAnnotations>
+        <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+          <details key="kind" value="attribute"/>
+          <details key="name" value="id"/>
+        </eAnnotations>
+      </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
+          defaultValueLiteral="">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="Defines the value of this object."/>
+        </eAnnotations>
+        <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+          <details key="kind" value="simple"/>
+          <details key="name" value=":0"/>
+        </eAnnotations>
+      </eStructuralFeatures>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ScopeInformation">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="name" value="tScopeInformation"/>
+        <details key="kind" value="element"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Defines the case object for a process."/>
+      </eAnnotations>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="Defines the id of this object."/>
+        </eAnnotations>
+        <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+          <details key="kind" value="attribute"/>
+          <details key="name" value="id"/>
+        </eAnnotations>
+      </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="caseObject" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
+          defaultValueLiteral="">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="The case object for this scope."/>
+        </eAnnotations>
+        <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+          <details key="kind" value="attribute"/>
+          <details key="name" value="caseObject"/>
         </eAnnotations>
       </eStructuralFeatures>
     </eClassifiers>

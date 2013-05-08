@@ -509,6 +509,33 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 
 	/**
      * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getDocumentRoot_Cardinality() {
+        return (EReference)documentRootEClass.getEStructuralFeatures().get(26);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getDocumentRoot_Condition() {
+        return (EReference)documentRootEClass.getEStructuralFeatures().get(27);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getDocumentRoot_ScopeInformation() {
+        return (EReference)documentRootEClass.getEStructuralFeatures().get(28);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -1084,6 +1111,9 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
         createEAttribute(documentRootEClass, DOCUMENT_ROOT__RESULT_VARIABLE_NAME);
         createEReference(documentRootEClass, DOCUMENT_ROOT__FAILED_JOB_RETRY_TIME_CYCLE);
         createEReference(documentRootEClass, DOCUMENT_ROOT__PRIMARY_KEY);
+        createEReference(documentRootEClass, DOCUMENT_ROOT__CARDINALITY);
+        createEReference(documentRootEClass, DOCUMENT_ROOT__CONDITION);
+        createEReference(documentRootEClass, DOCUMENT_ROOT__SCOPE_INFORMATION);
 
         executionListenerTypeEClass = createEClass(EXECUTION_LISTENER_TYPE);
         createEAttribute(executionListenerTypeEClass, EXECUTION_LISTENER_TYPE__GROUP);
@@ -1227,6 +1257,9 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
         initEAttribute(getDocumentRoot_ResultVariableName(), ecorePackage.getEString(), "resultVariableName", null, 0, 1, null, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getDocumentRoot_FailedJobRetryTimeCycle(), theFoxPackage.getFailedJobRetryTimeCycleType(), null, "failedJobRetryTimeCycle", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
         initEReference(getDocumentRoot_PrimaryKey(), theBptPackage.getPrimaryKey(), null, "primaryKey", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEReference(getDocumentRoot_Cardinality(), theBptPackage.getCardinality(), null, "cardinality", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEReference(getDocumentRoot_Condition(), theBptPackage.getCondition(), null, "condition", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEReference(getDocumentRoot_ScopeInformation(), theBptPackage.getScopeInformation(), null, "scopeInformation", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
         initEClass(executionListenerTypeEClass, ExecutionListenerType.class, "ExecutionListenerType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getExecutionListenerType_Group(), ecorePackage.getEFeatureMapEntry(), "group", null, 0, -1, ExecutionListenerType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1543,7 +1576,31 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
            new String[] {
              "kind", "element",
              "name", "privateKey",
-             "namespace", "http://bpt.uni-potsdam.de"
+             "namespace", "https://bpt.hpi.uni-potsdam.de"
+           });		
+        addAnnotation
+          (getDocumentRoot_Cardinality(), 
+           source, 
+           new String[] {
+             "kind", "element",
+             "name", "cardinality",
+             "namespace", "https://bpt.hpi.uni-potsdam.de"
+           });		
+        addAnnotation
+          (getDocumentRoot_Condition(), 
+           source, 
+           new String[] {
+             "kind", "element",
+             "name", "condition",
+             "namespace", "https://bpt.hpi.uni-potsdam.de"
+           });		
+        addAnnotation
+          (getDocumentRoot_ScopeInformation(), 
+           source, 
+           new String[] {
+             "kind", "element",
+             "name", "scopeInformation",
+             "namespace", "https://bpt.hpi.uni-potsdam.de"
            });		
         addAnnotation
           (classTypeEDataType, 

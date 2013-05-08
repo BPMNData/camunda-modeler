@@ -69,6 +69,38 @@ public class BptSwitch<T> extends Switch<T> {
             case BptPackage.PRIMARY_KEY: {
                 PrimaryKey primaryKey = (PrimaryKey)theEObject;
                 T result = casePrimaryKey(primaryKey);
+                if (result == null) result = caseRelationalKey(primaryKey);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case BptPackage.RELATIONAL_KEY: {
+                RelationalKey relationalKey = (RelationalKey)theEObject;
+                T result = caseRelationalKey(relationalKey);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case BptPackage.FOREIGN_KEY: {
+                ForeignKey foreignKey = (ForeignKey)theEObject;
+                T result = caseForeignKey(foreignKey);
+                if (result == null) result = caseRelationalKey(foreignKey);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case BptPackage.CONDITION: {
+                Condition condition = (Condition)theEObject;
+                T result = caseCondition(condition);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case BptPackage.CARDINALITY: {
+                Cardinality cardinality = (Cardinality)theEObject;
+                T result = caseCardinality(cardinality);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case BptPackage.SCOPE_INFORMATION: {
+                ScopeInformation scopeInformation = (ScopeInformation)theEObject;
+                T result = caseScopeInformation(scopeInformation);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -88,6 +120,81 @@ public class BptSwitch<T> extends Switch<T> {
      * @generated
      */
     public T casePrimaryKey(PrimaryKey object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Relational Key</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Relational Key</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseRelationalKey(RelationalKey object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Foreign Key</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Foreign Key</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseForeignKey(ForeignKey object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Condition</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Condition</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseCondition(Condition object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Cardinality</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Cardinality</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseCardinality(Cardinality object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Scope Information</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Scope Information</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseScopeInformation(ScopeInformation object) {
         return null;
     }
 

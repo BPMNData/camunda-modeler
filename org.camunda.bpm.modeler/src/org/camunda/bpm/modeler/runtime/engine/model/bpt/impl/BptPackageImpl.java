@@ -6,8 +6,14 @@ import org.camunda.bpm.modeler.runtime.engine.model.ModelPackage;
 
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptFactory;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.Cardinality;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.Condition;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.ForeignKey;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey;
 
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyTypes;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.RelationalKey;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.ScopeInformation;
 import org.camunda.bpm.modeler.runtime.engine.model.fox.FoxPackage;
 
 import org.camunda.bpm.modeler.runtime.engine.model.fox.impl.FoxPackageImpl;
@@ -24,6 +30,7 @@ import org.eclipse.dd.di.DiPackage;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
@@ -43,6 +50,47 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
      * @generated
      */
     private EClass primaryKeyEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass relationalKeyEClass = null;
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass foreignKeyEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass conditionEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass cardinalityEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass scopeInformationEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EEnum primaryKeyTypesEEnum = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -134,7 +182,7 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getPrimaryKey_Id() {
+    public EAttribute getPrimaryKey_Type() {
         return (EAttribute)primaryKeyEClass.getEStructuralFeatures().get(0);
     }
 
@@ -143,8 +191,125 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getPrimaryKey_Value() {
-        return (EAttribute)primaryKeyEClass.getEStructuralFeatures().get(1);
+    public EClass getRelationalKey() {
+        return relationalKeyEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getRelationalKey_Id() {
+        return (EAttribute)relationalKeyEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getRelationalKey_Value() {
+        return (EAttribute)relationalKeyEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getForeignKey() {
+        return foreignKeyEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getCondition() {
+        return conditionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getCondition_Id() {
+        return (EAttribute)conditionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getCondition_Value() {
+        return (EAttribute)conditionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getCardinality() {
+        return cardinalityEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getCardinality_Id() {
+        return (EAttribute)cardinalityEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getCardinality_Value() {
+        return (EAttribute)cardinalityEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getScopeInformation() {
+        return scopeInformationEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getScopeInformation_Id() {
+        return (EAttribute)scopeInformationEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getScopeInformation_CaseObject() {
+        return (EAttribute)scopeInformationEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EEnum getPrimaryKeyTypes() {
+        return primaryKeyTypesEEnum;
     }
 
     /**
@@ -176,8 +341,28 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
 
         // Create classes and their features
         primaryKeyEClass = createEClass(PRIMARY_KEY);
-        createEAttribute(primaryKeyEClass, PRIMARY_KEY__ID);
-        createEAttribute(primaryKeyEClass, PRIMARY_KEY__VALUE);
+        createEAttribute(primaryKeyEClass, PRIMARY_KEY__TYPE);
+
+        relationalKeyEClass = createEClass(RELATIONAL_KEY);
+        createEAttribute(relationalKeyEClass, RELATIONAL_KEY__ID);
+        createEAttribute(relationalKeyEClass, RELATIONAL_KEY__VALUE);
+
+        foreignKeyEClass = createEClass(FOREIGN_KEY);
+
+        conditionEClass = createEClass(CONDITION);
+        createEAttribute(conditionEClass, CONDITION__ID);
+        createEAttribute(conditionEClass, CONDITION__VALUE);
+
+        cardinalityEClass = createEClass(CARDINALITY);
+        createEAttribute(cardinalityEClass, CARDINALITY__ID);
+        createEAttribute(cardinalityEClass, CARDINALITY__VALUE);
+
+        scopeInformationEClass = createEClass(SCOPE_INFORMATION);
+        createEAttribute(scopeInformationEClass, SCOPE_INFORMATION__ID);
+        createEAttribute(scopeInformationEClass, SCOPE_INFORMATION__CASE_OBJECT);
+
+        // Create enums
+        primaryKeyTypesEEnum = createEEnum(PRIMARY_KEY_TYPES);
     }
 
     /**
@@ -211,11 +396,36 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
         // Set bounds for type parameters
 
         // Add supertypes to classes
+        primaryKeyEClass.getESuperTypes().add(this.getRelationalKey());
+        foreignKeyEClass.getESuperTypes().add(this.getRelationalKey());
 
         // Initialize classes and features; add operations and parameters
         initEClass(primaryKeyEClass, PrimaryKey.class, "PrimaryKey", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getPrimaryKey_Id(), theXMLTypePackage.getString(), "id", null, 0, 1, PrimaryKey.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getPrimaryKey_Value(), theXMLTypePackage.getString(), "value", "", 0, 1, PrimaryKey.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getPrimaryKey_Type(), this.getPrimaryKeyTypes(), "type", "", 0, 1, PrimaryKey.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(relationalKeyEClass, RelationalKey.class, "RelationalKey", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getRelationalKey_Id(), theXMLTypePackage.getString(), "id", null, 0, 1, RelationalKey.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getRelationalKey_Value(), theXMLTypePackage.getString(), "value", "", 0, 1, RelationalKey.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(foreignKeyEClass, ForeignKey.class, "ForeignKey", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(conditionEClass, Condition.class, "Condition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getCondition_Id(), theXMLTypePackage.getString(), "id", null, 0, 1, Condition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getCondition_Value(), theXMLTypePackage.getString(), "value", "", 0, 1, Condition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(cardinalityEClass, Cardinality.class, "Cardinality", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getCardinality_Id(), theXMLTypePackage.getString(), "id", null, 0, 1, Cardinality.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getCardinality_Value(), theXMLTypePackage.getString(), "value", "", 0, 1, Cardinality.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(scopeInformationEClass, ScopeInformation.class, "ScopeInformation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getScopeInformation_Id(), theXMLTypePackage.getString(), "id", null, 0, 1, ScopeInformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getScopeInformation_CaseObject(), theXMLTypePackage.getString(), "caseObject", "", 0, 1, ScopeInformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        // Initialize enums and add enum literals
+        initEEnum(primaryKeyTypesEEnum, PrimaryKeyTypes.class, "PrimaryKeyTypes");
+        addEEnumLiteral(primaryKeyTypesEEnum, PrimaryKeyTypes.DEFAULT);
+        addEEnumLiteral(primaryKeyTypesEEnum, PrimaryKeyTypes.NEW);
+        addEEnumLiteral(primaryKeyTypesEEnum, PrimaryKeyTypes.DELETE);
 
         // Create annotations
         // http:///org/eclipse/emf/ecore/util/ExtendedMetaData
@@ -238,18 +448,108 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
              "kind", "simple"
            });				
         addAnnotation
-          (getPrimaryKey_Id(), 
+          (getPrimaryKey_Type(), 
+           source, 
+           new String[] {
+             "kind", "attribute",
+             "name", "type"
+           });		
+        addAnnotation
+          (relationalKeyEClass, 
+           source, 
+           new String[] {
+             "name", "tRelationalKey",
+             "kind", "simple"
+           });				
+        addAnnotation
+          (getRelationalKey_Id(), 
            source, 
            new String[] {
              "kind", "attribute",
              "name", "id"
            });			
         addAnnotation
-          (getPrimaryKey_Value(), 
+          (getRelationalKey_Value(), 
            source, 
            new String[] {
              "kind", "simple",
              "name", ":0"
+           });		
+        addAnnotation
+          (foreignKeyEClass, 
+           source, 
+           new String[] {
+             "name", "tForeignKey",
+             "kind", "simple"
+           });			
+        addAnnotation
+          (primaryKeyTypesEEnum, 
+           source, 
+           new String[] {
+             "name", "tPrimaryKeyTypes"
+           });		
+        addAnnotation
+          (conditionEClass, 
+           source, 
+           new String[] {
+             "name", "tCondition",
+             "kind", "simple"
+           });				
+        addAnnotation
+          (getCondition_Id(), 
+           source, 
+           new String[] {
+             "kind", "attribute",
+             "name", "id"
+           });			
+        addAnnotation
+          (getCondition_Value(), 
+           source, 
+           new String[] {
+             "kind", "simple",
+             "name", ":0"
+           });		
+        addAnnotation
+          (cardinalityEClass, 
+           source, 
+           new String[] {
+             "name", "tCondition",
+             "kind", "simple"
+           });				
+        addAnnotation
+          (getCardinality_Id(), 
+           source, 
+           new String[] {
+             "kind", "attribute",
+             "name", "id"
+           });			
+        addAnnotation
+          (getCardinality_Value(), 
+           source, 
+           new String[] {
+             "kind", "simple",
+             "name", ":0"
+           });		
+        addAnnotation
+          (scopeInformationEClass, 
+           source, 
+           new String[] {
+             "name", "tScopeInformation",
+             "kind", "element"
+           });				
+        addAnnotation
+          (getScopeInformation_Id(), 
+           source, 
+           new String[] {
+             "kind", "attribute",
+             "name", "id"
+           });			
+        addAnnotation
+          (getScopeInformation_CaseObject(), 
+           source, 
+           new String[] {
+             "kind", "attribute",
+             "name", "caseObject"
            });
     }
 

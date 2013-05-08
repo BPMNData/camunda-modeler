@@ -31,6 +31,42 @@ public interface BptFactory extends EFactory {
     PrimaryKey createPrimaryKey();
 
     /**
+     * Returns a new object of class '<em>Foreign Key</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Foreign Key</em>'.
+     * @generated
+     */
+    ForeignKey createForeignKey();
+
+    /**
+     * Returns a new object of class '<em>Condition</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Condition</em>'.
+     * @generated
+     */
+    Condition createCondition();
+
+    /**
+     * Returns a new object of class '<em>Cardinality</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Cardinality</em>'.
+     * @generated
+     */
+    Cardinality createCardinality();
+
+    /**
+     * Returns a new object of class '<em>Scope Information</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Scope Information</em>'.
+     * @generated
+     */
+    ScopeInformation createScopeInformation();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
