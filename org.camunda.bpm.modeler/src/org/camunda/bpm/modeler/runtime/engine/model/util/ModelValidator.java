@@ -132,8 +132,6 @@ public class ModelValidator extends EObjectValidator {
                 return validateBoundaryEvent((BoundaryEvent)value, diagnostics, context);
             case ModelPackage.VALUE_TYPE:
                 return validateValueType((ValueType)value, diagnostics, context);
-            case ModelPackage.PRIMARY_KEY:
-                return validatePrimaryKey((PrimaryKey)value, diagnostics, context);
             case ModelPackage.EVENT_TYPE:
                 return validateEventType((EventType)value, diagnostics, context);
             case ModelPackage.EVENT_TYPE1:
@@ -249,15 +247,6 @@ public class ModelValidator extends EObjectValidator {
      */
 	public boolean validateValueType(ValueType valueType, DiagnosticChain diagnostics, Map<Object, Object> context) {
         return validate_EveryDefaultConstraint(valueType, diagnostics, context);
-    }
-
-	/**
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     */
-	public boolean validatePrimaryKey(PrimaryKey primaryKey, DiagnosticChain diagnostics, Map<Object, Object> context) {
-        return validate_EveryDefaultConstraint(primaryKey, diagnostics, context);
     }
 
 	/**

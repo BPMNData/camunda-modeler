@@ -1,9 +1,9 @@
 package org.camunda.bpm.modeler.ui.property.tabs.builder;
 
 import org.camunda.bpm.modeler.core.utils.ExtensionUtil;
-import org.camunda.bpm.modeler.runtime.engine.model.ModelFactory;
 import org.camunda.bpm.modeler.runtime.engine.model.ModelPackage;
-import org.camunda.bpm.modeler.runtime.engine.model.PrimaryKey;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptFactory;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey;
 import org.camunda.bpm.modeler.ui.property.tabs.binding.ModelAttributeTextBinding;
 import org.camunda.bpm.modeler.ui.property.tabs.binding.ModelTextBinding;
 import org.camunda.bpm.modeler.ui.property.tabs.util.PropertyUtil;
@@ -122,8 +122,9 @@ public class ItemAwareElementPropertiesBuilder extends
     }
 
     protected void updatePrimaryKey(String id) {
-        PrimaryKey pk = ModelFactory.eINSTANCE.createPrimaryKey();
+        PrimaryKey pk = BptFactory.eINSTANCE.createPrimaryKey();
         pk.setId(id.trim());
+        pk.setValue(id.trim());
         ExtensionUtil.updateExtension(bo, PRIMARY_KEY_FEATURE, pk);
     }
 

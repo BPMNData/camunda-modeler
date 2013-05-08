@@ -2497,34 +2497,6 @@ public interface ModelPackage extends EPackage {
 	int VALUE_TYPE_FEATURE_COUNT = 2;
 
 	/**
-     * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.impl.PrimaryKeyImpl <em>Primary Key</em>}' class.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @see org.camunda.bpm.modeler.runtime.engine.model.impl.PrimaryKeyImpl
-     * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getPrimaryKey()
-     * @generated
-     */
-	int PRIMARY_KEY = 10;
-
-	/**
-     * The feature id for the '<em><b>Id</b></em>' attribute.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int PRIMARY_KEY__ID = 0;
-
-	/**
-     * The number of structural features of the '<em>Primary Key</em>' class.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int PRIMARY_KEY_FEATURE_COUNT = 1;
-
-	/**
      * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.EventType <em>Event Type</em>}' enum.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2532,7 +2504,7 @@ public interface ModelPackage extends EPackage {
      * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getEventType()
      * @generated
      */
-	int EVENT_TYPE = 11;
+	int EVENT_TYPE = 10;
 
 	/**
      * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.EventType1 <em>Event Type1</em>}' enum.
@@ -2542,7 +2514,7 @@ public interface ModelPackage extends EPackage {
      * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getEventType1()
      * @generated
      */
-	int EVENT_TYPE1 = 12;
+	int EVENT_TYPE1 = 11;
 
 	/**
      * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.HistoryType <em>History Type</em>}' enum.
@@ -2552,7 +2524,7 @@ public interface ModelPackage extends EPackage {
      * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getHistoryType()
      * @generated
      */
-	int HISTORY_TYPE = 13;
+	int HISTORY_TYPE = 12;
 
 	/**
      * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.TypeType <em>Type Type</em>}' enum.
@@ -2562,7 +2534,7 @@ public interface ModelPackage extends EPackage {
      * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getTypeType()
      * @generated
      */
-	int TYPE_TYPE = 14;
+	int TYPE_TYPE = 13;
 
 	/**
      * The meta object id for the '<em>Class Type</em>' data type.
@@ -2572,7 +2544,7 @@ public interface ModelPackage extends EPackage {
      * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getClassType()
      * @generated
      */
-	int CLASS_TYPE = 15;
+	int CLASS_TYPE = 14;
 
 	/**
      * The meta object id for the '<em>Event Type Object</em>' data type.
@@ -2582,7 +2554,7 @@ public interface ModelPackage extends EPackage {
      * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getEventTypeObject()
      * @generated
      */
-	int EVENT_TYPE_OBJECT = 16;
+	int EVENT_TYPE_OBJECT = 15;
 
 	/**
      * The meta object id for the '<em>Event Type Object1</em>' data type.
@@ -2592,7 +2564,7 @@ public interface ModelPackage extends EPackage {
      * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getEventTypeObject1()
      * @generated
      */
-	int EVENT_TYPE_OBJECT1 = 17;
+	int EVENT_TYPE_OBJECT1 = 16;
 
 	/**
      * The meta object id for the '<em>Form Handler Class Type</em>' data type.
@@ -2602,7 +2574,7 @@ public interface ModelPackage extends EPackage {
      * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getFormHandlerClassType()
      * @generated
      */
-	int FORM_HANDLER_CLASS_TYPE = 18;
+	int FORM_HANDLER_CLASS_TYPE = 17;
 
 	/**
      * The meta object id for the '<em>History Type Object</em>' data type.
@@ -2612,7 +2584,7 @@ public interface ModelPackage extends EPackage {
      * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getHistoryTypeObject()
      * @generated
      */
-	int HISTORY_TYPE_OBJECT = 19;
+	int HISTORY_TYPE_OBJECT = 18;
 
 	/**
      * The meta object id for the '<em>TExpression</em>' data type.
@@ -2622,7 +2594,7 @@ public interface ModelPackage extends EPackage {
      * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getTExpression()
      * @generated
      */
-	int TEXPRESSION = 20;
+	int TEXPRESSION = 19;
 
 	/**
      * The meta object id for the '<em>Type Type Object</em>' data type.
@@ -2632,7 +2604,7 @@ public interface ModelPackage extends EPackage {
      * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getTypeTypeObject()
      * @generated
      */
-	int TYPE_TYPE_OBJECT = 21;
+	int TYPE_TYPE_OBJECT = 20;
 
 	/**
      * Returns the meta object for class '{@link org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot <em>Document Root</em>}'.
@@ -3439,27 +3411,6 @@ public interface ModelPackage extends EPackage {
 	EAttribute getValueType_Name();
 
 	/**
-     * Returns the meta object for class '{@link org.camunda.bpm.modeler.runtime.engine.model.PrimaryKey <em>Primary Key</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Primary Key</em>'.
-     * @see org.camunda.bpm.modeler.runtime.engine.model.PrimaryKey
-     * @generated
-     */
-	EClass getPrimaryKey();
-
-	/**
-     * Returns the meta object for the attribute '{@link org.camunda.bpm.modeler.runtime.engine.model.PrimaryKey#getId <em>Id</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Id</em>'.
-     * @see org.camunda.bpm.modeler.runtime.engine.model.PrimaryKey#getId()
-     * @see #getPrimaryKey()
-     * @generated
-     */
-	EAttribute getPrimaryKey_Id();
-
-	/**
      * Returns the meta object for enum '{@link org.camunda.bpm.modeler.runtime.engine.model.EventType <em>Event Type</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4143,22 +4094,6 @@ public interface ModelPackage extends EPackage {
          * @generated
          */
 		EAttribute VALUE_TYPE__NAME = eINSTANCE.getValueType_Name();
-		/**
-         * The meta object literal for the '{@link org.camunda.bpm.modeler.runtime.engine.model.impl.PrimaryKeyImpl <em>Primary Key</em>}' class.
-         * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @see org.camunda.bpm.modeler.runtime.engine.model.impl.PrimaryKeyImpl
-         * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getPrimaryKey()
-         * @generated
-         */
-		EClass PRIMARY_KEY = eINSTANCE.getPrimaryKey();
-		/**
-         * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @generated
-         */
-		EAttribute PRIMARY_KEY__ID = eINSTANCE.getPrimaryKey_Id();
 		/**
          * The meta object literal for the '{@link org.camunda.bpm.modeler.runtime.engine.model.EventType <em>Event Type</em>}' enum.
          * <!-- begin-user-doc -->

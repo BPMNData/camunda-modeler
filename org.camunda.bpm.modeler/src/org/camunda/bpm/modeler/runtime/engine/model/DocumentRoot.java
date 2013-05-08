@@ -6,6 +6,7 @@
  */
 package org.camunda.bpm.modeler.runtime.engine.model;
 
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey;
 import org.camunda.bpm.modeler.runtime.engine.model.fox.FailedJobRetryTimeCycleType;
 
 /**
@@ -785,11 +786,11 @@ public interface DocumentRoot extends org.eclipse.bpmn2.DocumentRoot {
 	/**
      * Sets the value of the '{@link org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot#getPrimaryKey <em>Primary Key</em>}' containment reference.
      * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+     * <!-- end-user-doc -->
      * @param value the new value of the '<em>Primary Key</em>' containment reference.
      * @see #getPrimaryKey()
      * @generated
      */
-	void setPrimaryKey(PrimaryKey value);
+    void setPrimaryKey(PrimaryKey value);
 
 } // DocumentRoot

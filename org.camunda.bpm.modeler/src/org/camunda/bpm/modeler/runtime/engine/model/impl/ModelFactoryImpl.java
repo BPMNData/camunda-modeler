@@ -86,7 +86,6 @@ public class ModelFactoryImpl extends EFactoryImpl implements ModelFactory {
             case ModelPackage.CALL_ACTIVITY: return createCallActivity();
             case ModelPackage.BOUNDARY_EVENT: return createBoundaryEvent();
             case ModelPackage.VALUE_TYPE: return createValueType();
-            case ModelPackage.PRIMARY_KEY: return createPrimaryKey();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -260,16 +259,6 @@ public class ModelFactoryImpl extends EFactoryImpl implements ModelFactory {
 	public ValueType createValueType() {
         ValueTypeImpl valueType = new ValueTypeImpl();
         return valueType;
-    }
-
-	/**
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     */
-	public PrimaryKey createPrimaryKey() {
-        PrimaryKeyImpl primaryKey = new PrimaryKeyImpl();
-        return primaryKey;
     }
 
 	/**
