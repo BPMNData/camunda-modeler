@@ -12,12 +12,11 @@
  ******************************************************************************/
 package org.camunda.bpm.modeler.core.features.data;
 
-import org.camunda.bpm.modeler.core.di.DIUtils;
 import org.camunda.bpm.modeler.core.features.AbstractAddBpmnShapeFeature;
-import org.camunda.bpm.modeler.core.utils.AnchorUtil;
 import org.camunda.bpm.modeler.core.utils.FeatureSupport;
 import org.camunda.bpm.modeler.core.utils.GraphicsUtil;
 import org.camunda.bpm.modeler.core.utils.StyleUtil;
+import org.eclipse.bpmn2.DataState;
 import org.eclipse.bpmn2.ItemAwareElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -27,8 +26,9 @@ import org.eclipse.graphiti.features.context.IAddContext;
 import org.eclipse.graphiti.mm.algorithms.Polygon;
 import org.eclipse.graphiti.mm.algorithms.Polyline;
 import org.eclipse.graphiti.mm.algorithms.Rectangle;
+import org.eclipse.graphiti.mm.algorithms.Text;
+import org.eclipse.graphiti.mm.algorithms.styles.Orientation;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
-import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaService;
@@ -76,7 +76,19 @@ public abstract class AddDataFeature<T extends ItemAwareElement> extends Abstrac
 		Polyline edge = gaService.createPolyline(rect, new int[] { p, 0, p, e + 1, width, e + 1 });
 		edge.setForeground(manageColor(StyleUtil.CLASS_FOREGROUND));
 		edge.setLineWidth(1);
-
+		
+		DataState state = t.getDataState();
+		if (state != null) {
+			Shape textShape = peService.createShape(newShape, false);
+			Text dataStateText = gaService.createText(textShape, state.getName());
+			StyleUtil.applyStyle(dataStateText, t);
+			dataStateText.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
+			dataStateText.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
+			textShape.setVisible(true);
+			gaService.setLocationAndSize(dataStateText, 0, getDefaultWidth() * 5 / 6, getDefaultWidth(), 20);
+			peService.setPropertyValue(dataStateText, Properties.IS_DATA_STATE_TEXT, Boolean.toString(true));
+		}
+		
 		if (isSupportCollectionMarkers()) {
 			int whalf = width / 2;
 			createCollectionShape(newShape, new int[] { whalf - 2, height - 8, whalf - 2, height });
