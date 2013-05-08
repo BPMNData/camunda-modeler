@@ -271,8 +271,8 @@
         containment="true" resolveProxies="false">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="element"/>
-        <details key="name" value="privateKey"/>
-        <details key="namespace" value="https://bpt.hpi.uni-potsdam.de"/>
+        <details key="name" value="primaryKey"/>
+        <details key="namespace" value="http://bpt.hpi.uni-potsdam.de"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" upperBound="-2"
