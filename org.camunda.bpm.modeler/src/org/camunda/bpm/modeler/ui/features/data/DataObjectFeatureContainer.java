@@ -23,7 +23,9 @@ import org.camunda.bpm.modeler.core.features.UpdateBaseElementNameFeature;
 import org.camunda.bpm.modeler.core.features.data.AddDataFeature;
 import org.camunda.bpm.modeler.core.features.data.Properties;
 import org.camunda.bpm.modeler.core.model.Bpmn2ModelerFactory;
+import org.camunda.bpm.modeler.core.utils.GraphicsUtil;
 import org.camunda.bpm.modeler.core.utils.ModelUtil;
+import org.camunda.bpm.modeler.core.utils.StyleUtil;
 import org.camunda.bpm.modeler.ui.ImageProvider;
 import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.Bpmn2Package;
@@ -42,6 +44,7 @@ import org.eclipse.graphiti.features.context.ICreateContext;
 import org.eclipse.graphiti.features.context.IUpdateContext;
 import org.eclipse.graphiti.features.impl.AbstractUpdateFeature;
 import org.eclipse.graphiti.features.impl.Reason;
+import org.eclipse.graphiti.mm.algorithms.Polygon;
 import org.eclipse.graphiti.mm.algorithms.Polyline;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Shape;
@@ -75,6 +78,7 @@ public class DataObjectFeatureContainer extends AbstractDataFeatureContainer {
 		MultiUpdateFeature multiUpdate = new MultiUpdateFeature(fp);
 		multiUpdate.addUpdateFeature(new UpdateMarkersFeature(fp));
 		multiUpdate.addUpdateFeature(new UpdateBaseElementNameFeature(fp));
+		multiUpdate.addUpdateFeature(new UpdateDataStateFeature(fp));
 		return multiUpdate;
 	}
 
