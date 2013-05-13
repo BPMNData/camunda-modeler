@@ -1,6 +1,7 @@
 package org.camunda.bpm.modeler.ui.features.data;
 
 import org.camunda.bpm.modeler.core.features.data.Properties;
+import org.camunda.bpm.modeler.core.utils.FeatureSupport;
 import org.eclipse.bpmn2.DataState;
 import org.eclipse.bpmn2.ItemAwareElement;
 import org.eclipse.graphiti.features.IFeatureProvider;
@@ -8,7 +9,6 @@ import org.eclipse.graphiti.features.IReason;
 import org.eclipse.graphiti.features.context.IUpdateContext;
 import org.eclipse.graphiti.features.impl.AbstractUpdateFeature;
 import org.eclipse.graphiti.features.impl.Reason;
-import org.eclipse.graphiti.mm.algorithms.GraphicsAlgorithm;
 import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Shape;
@@ -29,12 +29,17 @@ public class UpdateDataStateFeature extends AbstractUpdateFeature {
 
 	@Override
 	public IReason updateNeeded(IUpdateContext context) {
-		IPeService peService = Graphiti.getPeService();
 		ContainerShape container = (ContainerShape) context.getPictogramElement();
 		ItemAwareElement itemAwareElement = (ItemAwareElement) getBusinessObjectForPictogramElement(container);
-		String previouslyDisplayedState = peService.getPropertyValue(container,	Properties.DATA_STATE);
 		
 		DataState dataState = itemAwareElement.getDataState();
+		String previouslyDisplayedState = null;
+		
+		Shape dataStateShape = FeatureSupport.getChildShapeFulfillingProperty(context, Properties.IS_DATA_STATE_TEXT, Boolean.toString(true));
+		if (dataStateShape != null) {
+			Text dataStateShapeText = (Text) dataStateShape.getGraphicsAlgorithm();
+			previouslyDisplayedState = dataStateShapeText.getValue();
+		}
 		
 		if (dataState == null) {
 			return previouslyDisplayedState != null ? Reason.createTrueReason() : Reason.createFalseReason();
@@ -73,10 +78,10 @@ public class UpdateDataStateFeature extends AbstractUpdateFeature {
 	private void setDataStateText(ContainerShape container, String value) {
 		IPeService peService = Graphiti.getPeService();
 		for (Shape shape : peService.getAllContainedShapes(container)) {
-			GraphicsAlgorithm ga = shape.getGraphicsAlgorithm();
-			String isDataStateText = peService.getPropertyValue(ga, Properties.IS_DATA_STATE_TEXT);
+			String isDataStateText = peService.getPropertyValue(shape, Properties.IS_DATA_STATE_TEXT);
 			if (isDataStateText != null && new Boolean(isDataStateText)) {
-				Text textGa = (Text) ga;
+				
+				Text textGa = (Text) shape.getGraphicsAlgorithm();
 				textGa.setValue(value);
 			}
 		}

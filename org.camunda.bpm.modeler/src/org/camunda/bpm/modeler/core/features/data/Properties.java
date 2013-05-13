@@ -18,6 +18,5 @@ public interface Properties {
 	public static final String HIDEABLE_PROPERTY = "hideable";
 	
 	public static final String IS_DATA_STATE_TEXT = "isDataStateText";
-	public static final String DATA_STATE = "dataState";
 	
 }

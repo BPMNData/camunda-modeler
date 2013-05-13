@@ -86,7 +86,7 @@ public abstract class AddDataFeature<T extends ItemAwareElement> extends Abstrac
 		dataStateText.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
 		textShape.setVisible(true);
 		gaService.setLocationAndSize(dataStateText, 0, getDefaultWidth() * 3 / 4, getDefaultWidth(), 20);
-		peService.setPropertyValue(dataStateText, Properties.IS_DATA_STATE_TEXT, Boolean.toString(true));
+		peService.setPropertyValue(textShape, Properties.IS_DATA_STATE_TEXT, Boolean.toString(true));
 		
 		if (state != null) {
 			dataStateText.setValue(state.getName());
