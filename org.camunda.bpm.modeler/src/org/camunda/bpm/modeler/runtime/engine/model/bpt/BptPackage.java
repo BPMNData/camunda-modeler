@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -289,6 +290,61 @@ public interface BptPackage extends EPackage {
     int SCOPE_INFORMATION_FEATURE_COUNT = 2;
 
     /**
+     * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.DocumentRootImpl <em>Document Root</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.DocumentRootImpl
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.BptPackageImpl#getDocumentRoot()
+     * @generated
+     */
+    int DOCUMENT_ROOT = 6;
+
+    /**
+     * The feature id for the '<em><b>Primary Key</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DOCUMENT_ROOT__PRIMARY_KEY = 0;
+
+    /**
+     * The feature id for the '<em><b>Cardinality</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DOCUMENT_ROOT__CARDINALITY = 1;
+
+    /**
+     * The feature id for the '<em><b>Condition</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DOCUMENT_ROOT__CONDITION = 2;
+
+    /**
+     * The feature id for the '<em><b>Scope Information</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DOCUMENT_ROOT__SCOPE_INFORMATION = 3;
+
+    /**
+     * The number of structural features of the '<em>Document Root</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DOCUMENT_ROOT_FEATURE_COUNT = 4;
+
+    /**
      * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType <em>Primary Key Type</em>}' enum.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -296,7 +352,7 @@ public interface BptPackage extends EPackage {
      * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.BptPackageImpl#getPrimaryKeyType()
      * @generated
      */
-    int PRIMARY_KEY_TYPE = 6;
+    int PRIMARY_KEY_TYPE = 7;
 
     /**
      * Returns the meta object for class '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey <em>Primary Key</em>}'.
@@ -456,6 +512,60 @@ public interface BptPackage extends EPackage {
      * @generated
      */
     EAttribute getScopeInformation_CaseObject();
+
+    /**
+     * Returns the meta object for class '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot <em>Document Root</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Document Root</em>'.
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot
+     * @generated
+     */
+    EClass getDocumentRoot();
+
+    /**
+     * Returns the meta object for the containment reference '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot#getPrimaryKey <em>Primary Key</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Primary Key</em>'.
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot#getPrimaryKey()
+     * @see #getDocumentRoot()
+     * @generated
+     */
+    EReference getDocumentRoot_PrimaryKey();
+
+    /**
+     * Returns the meta object for the containment reference '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot#getCardinality <em>Cardinality</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Cardinality</em>'.
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot#getCardinality()
+     * @see #getDocumentRoot()
+     * @generated
+     */
+    EReference getDocumentRoot_Cardinality();
+
+    /**
+     * Returns the meta object for the containment reference '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot#getCondition <em>Condition</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Condition</em>'.
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot#getCondition()
+     * @see #getDocumentRoot()
+     * @generated
+     */
+    EReference getDocumentRoot_Condition();
+
+    /**
+     * Returns the meta object for the containment reference '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot#getScopeInformation <em>Scope Information</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Scope Information</em>'.
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot#getScopeInformation()
+     * @see #getDocumentRoot()
+     * @generated
+     */
+    EReference getDocumentRoot_ScopeInformation();
 
     /**
      * Returns the meta object for enum '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType <em>Primary Key Type</em>}'.
@@ -620,6 +730,48 @@ public interface BptPackage extends EPackage {
          * @generated
          */
         EAttribute SCOPE_INFORMATION__CASE_OBJECT = eINSTANCE.getScopeInformation_CaseObject();
+
+        /**
+         * The meta object literal for the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.DocumentRootImpl <em>Document Root</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.DocumentRootImpl
+         * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.BptPackageImpl#getDocumentRoot()
+         * @generated
+         */
+        EClass DOCUMENT_ROOT = eINSTANCE.getDocumentRoot();
+
+        /**
+         * The meta object literal for the '<em><b>Primary Key</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference DOCUMENT_ROOT__PRIMARY_KEY = eINSTANCE.getDocumentRoot_PrimaryKey();
+
+        /**
+         * The meta object literal for the '<em><b>Cardinality</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference DOCUMENT_ROOT__CARDINALITY = eINSTANCE.getDocumentRoot_Cardinality();
+
+        /**
+         * The meta object literal for the '<em><b>Condition</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference DOCUMENT_ROOT__CONDITION = eINSTANCE.getDocumentRoot_Condition();
+
+        /**
+         * The meta object literal for the '<em><b>Scope Information</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference DOCUMENT_ROOT__SCOPE_INFORMATION = eINSTANCE.getDocumentRoot_ScopeInformation();
 
         /**
          * The meta object literal for the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType <em>Primary Key Type</em>}' enum.

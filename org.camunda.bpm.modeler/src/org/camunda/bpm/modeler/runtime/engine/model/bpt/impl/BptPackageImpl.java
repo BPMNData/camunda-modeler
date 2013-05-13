@@ -8,6 +8,7 @@ import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptFactory;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.Cardinality;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.Condition;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.ForeignKey;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey;
 
@@ -33,6 +34,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
@@ -84,6 +86,13 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
      * @generated
      */
     private EClass scopeInformationEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass documentRootEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -308,6 +317,51 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getDocumentRoot() {
+        return documentRootEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getDocumentRoot_PrimaryKey() {
+        return (EReference)documentRootEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getDocumentRoot_Cardinality() {
+        return (EReference)documentRootEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getDocumentRoot_Condition() {
+        return (EReference)documentRootEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getDocumentRoot_ScopeInformation() {
+        return (EReference)documentRootEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EEnum getPrimaryKeyType() {
         return primaryKeyTypeEEnum;
     }
@@ -360,6 +414,12 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
         scopeInformationEClass = createEClass(SCOPE_INFORMATION);
         createEAttribute(scopeInformationEClass, SCOPE_INFORMATION__ID);
         createEAttribute(scopeInformationEClass, SCOPE_INFORMATION__CASE_OBJECT);
+
+        documentRootEClass = createEClass(DOCUMENT_ROOT);
+        createEReference(documentRootEClass, DOCUMENT_ROOT__PRIMARY_KEY);
+        createEReference(documentRootEClass, DOCUMENT_ROOT__CARDINALITY);
+        createEReference(documentRootEClass, DOCUMENT_ROOT__CONDITION);
+        createEReference(documentRootEClass, DOCUMENT_ROOT__SCOPE_INFORMATION);
 
         // Create enums
         primaryKeyTypeEEnum = createEEnum(PRIMARY_KEY_TYPE);
@@ -420,6 +480,12 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
         initEClass(scopeInformationEClass, ScopeInformation.class, "ScopeInformation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getScopeInformation_Id(), theXMLTypePackage.getString(), "id", null, 0, 1, ScopeInformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getScopeInformation_CaseObject(), theXMLTypePackage.getString(), "caseObject", "", 0, 1, ScopeInformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(documentRootEClass, DocumentRoot.class, "DocumentRoot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEReference(getDocumentRoot_PrimaryKey(), this.getPrimaryKey(), null, "primaryKey", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEReference(getDocumentRoot_Cardinality(), this.getCardinality(), null, "cardinality", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEReference(getDocumentRoot_Condition(), this.getCondition(), null, "condition", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEReference(getDocumentRoot_ScopeInformation(), this.getScopeInformation(), null, "scopeInformation", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         initEEnum(primaryKeyTypeEEnum, PrimaryKeyType.class, "PrimaryKeyType");
@@ -550,6 +616,46 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
            new String[] {
              "kind", "attribute",
              "name", "caseObject"
+           });		
+        addAnnotation
+          (documentRootEClass, 
+           source, 
+           new String[] {
+             "name", "",
+             "kind", "mixed",
+             "namespace", "##targetNamespace"
+           });		
+        addAnnotation
+          (getDocumentRoot_PrimaryKey(), 
+           source, 
+           new String[] {
+             "kind", "element",
+             "name", "primaryKey",
+             "namespace", "http://bpt.hpi.uni-potsdam.de"
+           });		
+        addAnnotation
+          (getDocumentRoot_Cardinality(), 
+           source, 
+           new String[] {
+             "kind", "element",
+             "name", "cardinality",
+             "namespace", "https://bpt.hpi.uni-potsdam.de"
+           });		
+        addAnnotation
+          (getDocumentRoot_Condition(), 
+           source, 
+           new String[] {
+             "kind", "element",
+             "name", "condition",
+             "namespace", "https://bpt.hpi.uni-potsdam.de"
+           });		
+        addAnnotation
+          (getDocumentRoot_ScopeInformation(), 
+           source, 
+           new String[] {
+             "kind", "element",
+             "name", "scopeInformation",
+             "namespace", "https://bpt.hpi.uni-potsdam.de"
            });
     }
 

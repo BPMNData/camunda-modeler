@@ -36,7 +36,7 @@ public class ItemAwareElementPropertiesBuilder extends
 
     private static final EStructuralFeature DATA_STATE_FEATURE = Bpmn2Package.eINSTANCE
             .getItemAwareElement_DataState();
-    private static final EStructuralFeature PRIMARY_KEY_FEATURE = ModelPackage.eINSTANCE
+    private static final EStructuralFeature PRIMARY_KEY_FEATURE = BptPackage.eINSTANCE
             .getDocumentRoot_PrimaryKey();
     private static final EStructuralFeature PK_TYPE_FEATURE = BptPackage.eINSTANCE
             .getPrimaryKey_Type();

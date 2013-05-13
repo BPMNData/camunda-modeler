@@ -1543,49 +1543,13 @@ public interface ModelPackage extends EPackage {
 	int DOCUMENT_ROOT__FAILED_JOB_RETRY_TIME_CYCLE = Bpmn2Package.DOCUMENT_ROOT_FEATURE_COUNT + 24;
 
 	/**
-     * The feature id for the '<em><b>Primary Key</b></em>' containment reference.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-	int DOCUMENT_ROOT__PRIMARY_KEY = Bpmn2Package.DOCUMENT_ROOT_FEATURE_COUNT + 25;
-
-	/**
-     * The feature id for the '<em><b>Cardinality</b></em>' containment reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int DOCUMENT_ROOT__CARDINALITY = Bpmn2Package.DOCUMENT_ROOT_FEATURE_COUNT + 26;
-
-    /**
-     * The feature id for the '<em><b>Condition</b></em>' containment reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int DOCUMENT_ROOT__CONDITION = Bpmn2Package.DOCUMENT_ROOT_FEATURE_COUNT + 27;
-
-    /**
-     * The feature id for the '<em><b>Scope Information</b></em>' containment reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int DOCUMENT_ROOT__SCOPE_INFORMATION = Bpmn2Package.DOCUMENT_ROOT_FEATURE_COUNT + 28;
-
-    /**
      * The number of structural features of the '<em>Document Root</em>' class.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int DOCUMENT_ROOT_FEATURE_COUNT = Bpmn2Package.DOCUMENT_ROOT_FEATURE_COUNT + 29;
+	int DOCUMENT_ROOT_FEATURE_COUNT = Bpmn2Package.DOCUMENT_ROOT_FEATURE_COUNT + 25;
 
 	/**
      * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.impl.ExecutionListenerTypeImpl <em>Execution Listener Type</em>}' class.
@@ -2919,50 +2883,6 @@ public interface ModelPackage extends EPackage {
 	EReference getDocumentRoot_FailedJobRetryTimeCycle();
 
 	/**
-     * Returns the meta object for the containment reference '{@link org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot#getPrimaryKey <em>Primary Key</em>}'.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Primary Key</em>'.
-     * @see org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot#getPrimaryKey()
-     * @see #getDocumentRoot()
-     * @generated
-     */
-	EReference getDocumentRoot_PrimaryKey();
-
-	/**
-     * Returns the meta object for the containment reference '{@link org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot#getCardinality <em>Cardinality</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Cardinality</em>'.
-     * @see org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot#getCardinality()
-     * @see #getDocumentRoot()
-     * @generated
-     */
-    EReference getDocumentRoot_Cardinality();
-
-    /**
-     * Returns the meta object for the containment reference '{@link org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot#getCondition <em>Condition</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Condition</em>'.
-     * @see org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot#getCondition()
-     * @see #getDocumentRoot()
-     * @generated
-     */
-    EReference getDocumentRoot_Condition();
-
-    /**
-     * Returns the meta object for the containment reference '{@link org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot#getScopeInformation <em>Scope Information</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Scope Information</em>'.
-     * @see org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot#getScopeInformation()
-     * @see #getDocumentRoot()
-     * @generated
-     */
-    EReference getDocumentRoot_ScopeInformation();
-
-    /**
      * Returns the meta object for class '{@link org.camunda.bpm.modeler.runtime.engine.model.ExecutionListenerType <em>Execution Listener Type</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3801,34 +3721,6 @@ public interface ModelPackage extends EPackage {
          */
 		EReference DOCUMENT_ROOT__FAILED_JOB_RETRY_TIME_CYCLE = eINSTANCE.getDocumentRoot_FailedJobRetryTimeCycle();
 		/**
-         * The meta object literal for the '<em><b>Primary Key</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-         * @generated
-         */
-		EReference DOCUMENT_ROOT__PRIMARY_KEY = eINSTANCE.getDocumentRoot_PrimaryKey();
-		/**
-         * The meta object literal for the '<em><b>Cardinality</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EReference DOCUMENT_ROOT__CARDINALITY = eINSTANCE.getDocumentRoot_Cardinality();
-        /**
-         * The meta object literal for the '<em><b>Condition</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EReference DOCUMENT_ROOT__CONDITION = eINSTANCE.getDocumentRoot_Condition();
-        /**
-         * The meta object literal for the '<em><b>Scope Information</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EReference DOCUMENT_ROOT__SCOPE_INFORMATION = eINSTANCE.getDocumentRoot_ScopeInformation();
-        /**
          * The meta object literal for the '{@link org.camunda.bpm.modeler.runtime.engine.model.impl.ExecutionListenerTypeImpl <em>Execution Listener Type</em>}' class.
          * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->

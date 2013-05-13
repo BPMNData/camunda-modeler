@@ -62,6 +62,7 @@ public class BptFactoryImpl extends EFactoryImpl implements BptFactory {
             case BptPackage.CONDITION: return createCondition();
             case BptPackage.CARDINALITY: return createCardinality();
             case BptPackage.SCOPE_INFORMATION: return createScopeInformation();
+            case BptPackage.DOCUMENT_ROOT: return createDocumentRoot();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -145,6 +146,16 @@ public class BptFactoryImpl extends EFactoryImpl implements BptFactory {
     public ScopeInformation createScopeInformation() {
         ScopeInformationImpl scopeInformation = new ScopeInformationImpl();
         return scopeInformation;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public DocumentRoot createDocumentRoot() {
+        DocumentRootImpl documentRoot = new DocumentRootImpl();
+        return documentRoot;
     }
 
     /**
