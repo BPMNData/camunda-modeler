@@ -78,19 +78,13 @@ public abstract class AddDataFeature<T extends ItemAwareElement> extends Abstrac
 		edge.setLineWidth(1);
 		
 		// create (empty) data state shape
-		DataState state = t.getDataState();
-		Shape textShape = peService.createShape(newShape, false);
-		Text dataStateText = gaService.createText(textShape);
-		StyleUtil.applyStyle(dataStateText, t);
-		dataStateText.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
-		dataStateText.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
-		textShape.setVisible(true);
-		gaService.setLocationAndSize(dataStateText, 0, getDefaultWidth() * 3 / 4, getDefaultWidth(), 20);
-		peService.setPropertyValue(textShape, Properties.IS_DATA_STATE_TEXT, Boolean.toString(true));
+		Shape textShape = createTextShape(newShape, t, 0, getDefaultHeight() * 5 / 8, getDefaultWidth(), 20);
+		peService.setPropertyValue(textShape, Properties.IS_DATA_STATE_SHAPE, Boolean.toString(true));
 		
-		if (state != null) {
-			dataStateText.setValue(state.getName());
-		}
+		// create primary key shape
+		Shape primaryKeyShape = createTextShape(newShape, t, 0, getDefaultHeight() / 2, getDefaultWidth(), 20);
+		peService.setPropertyValue(primaryKeyShape, Properties.IS_PRIMARY_KEY_SHAPE, Boolean.toString(true));
+		
 		
 		if (isSupportCollectionMarkers()) {
 			int markerHeight = getDefaultHeight() / 6;
@@ -111,6 +105,22 @@ public abstract class AddDataFeature<T extends ItemAwareElement> extends Abstrac
 		
 		return newShape;
 	}
+	
+	private Shape createTextShape(ContainerShape container, T businessObject, int x, int y, int width, int height) {
+		IGaService gaService = Graphiti.getGaService();
+		IPeService peService = Graphiti.getPeService();
+		
+		Shape shape = peService.createShape(container, false);
+		Text text = gaService.createText(shape);
+		StyleUtil.applyStyle(text, businessObject);
+		text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
+		text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
+		shape.setVisible(true);
+		gaService.setLocationAndSize(text, x, y, width, height);
+		
+		return shape;
+	}
+	
 	
 	private Shape createCollectionShape(ContainerShape container, int[] xy) {
 		int lineWidth = getDefaultWidth()  / 36;

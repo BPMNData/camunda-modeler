@@ -76,9 +76,12 @@ public class DataObjectFeatureContainer extends AbstractDataFeatureContainer {
 	@Override
 	public IUpdateFeature getUpdateFeature(IFeatureProvider fp) {
 		MultiUpdateFeature multiUpdate = new MultiUpdateFeature(fp);
+
 		multiUpdate.addUpdateFeature(new UpdateMarkersFeature(fp));
 		multiUpdate.addUpdateFeature(new UpdateBaseElementNameFeature(fp));
 		multiUpdate.addUpdateFeature(new UpdateDataStateFeature(fp));
+		multiUpdate.addUpdateFeature(new UpdateDataObjectPrimaryKeyFeature(fp));
+		
 		return multiUpdate;
 	}
 

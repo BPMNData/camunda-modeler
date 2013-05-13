@@ -14,8 +14,10 @@ import org.camunda.bpm.modeler.runtime.engine.model.bpt.ForeignKey;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType;
 import org.camunda.bpm.modeler.ui.change.filter.ExtensionChangeFilter;
+import org.camunda.bpm.modeler.ui.change.filter.FeatureChangeFilter;
 import org.camunda.bpm.modeler.ui.property.tabs.binding.ModelAttributeComboBinding;
 import org.camunda.bpm.modeler.ui.property.tabs.binding.ModelTextBinding;
+import org.camunda.bpm.modeler.ui.property.tabs.binding.change.EAttributeChangeSupport;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.table.EObjectTableBuilder.ContentProvider;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.table.EObjectTableBuilder.DeletedRowHandler;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.table.EditableEObjectTableBuilder;
@@ -211,6 +213,15 @@ public class RelationalKeysPropertiesBuilder extends
                 }
             }
         }
+        
+
+        @Override
+		protected void ensureChangeSupportAdded() {
+			EAttributeChangeSupport changeSupport = new EAttributeChangeSupport(model, feature, control);
+			changeSupport.setFilter(new ExtensionChangeFilter(model, feature).or(new FeatureChangeFilter(model, feature)));
+			
+			EAttributeChangeSupport.ensureAdded(changeSupport, control);
+		}
     }
 
     /** Binds the combo box to the primary key. */
@@ -276,6 +287,7 @@ public class RelationalKeysPropertiesBuilder extends
                 }
             });
         }
+        
 
         /**
          * Command which takes care of updating the primary key.
