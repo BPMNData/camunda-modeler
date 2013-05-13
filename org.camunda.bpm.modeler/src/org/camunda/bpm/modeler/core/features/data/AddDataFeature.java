@@ -85,7 +85,7 @@ public abstract class AddDataFeature<T extends ItemAwareElement> extends Abstrac
 		dataStateText.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
 		dataStateText.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
 		textShape.setVisible(true);
-		gaService.setLocationAndSize(dataStateText, 0, getDefaultWidth() * 5 / 6, getDefaultWidth(), 20);
+		gaService.setLocationAndSize(dataStateText, 0, getDefaultWidth() * 3 / 4, getDefaultWidth(), 20);
 		peService.setPropertyValue(dataStateText, Properties.IS_DATA_STATE_TEXT, Boolean.toString(true));
 		
 		if (state != null) {
@@ -93,10 +93,13 @@ public abstract class AddDataFeature<T extends ItemAwareElement> extends Abstrac
 		}
 		
 		if (isSupportCollectionMarkers()) {
+			int markerHeight = getDefaultHeight() / 6;
+			int singleMarkerOffset = getDefaultWidth()  / 18;
+			
 			int whalf = width / 2;
-			createCollectionShape(newShape, new int[] { whalf - 2, height - 8, whalf - 2, height });
-			createCollectionShape(newShape, new int[] { whalf, height - 8, whalf, height });
-			createCollectionShape(newShape, new int[] { whalf + 2, height - 8, whalf + 2, height });
+			createCollectionShape(newShape, new int[] { whalf - singleMarkerOffset, height - markerHeight, whalf - singleMarkerOffset, height });
+			createCollectionShape(newShape, new int[] { whalf, height - markerHeight, whalf, height });
+			createCollectionShape(newShape, new int[] { whalf + singleMarkerOffset, height - markerHeight, whalf + singleMarkerOffset, height });
 
 			String value = "false";
 			EStructuralFeature feature = ((EObject)t).eClass().getEStructuralFeature("isCollection");
@@ -110,12 +113,14 @@ public abstract class AddDataFeature<T extends ItemAwareElement> extends Abstrac
 	}
 	
 	private Shape createCollectionShape(ContainerShape container, int[] xy) {
+		int lineWidth = getDefaultWidth()  / 36;
+		
 		IPeService peService = Graphiti.getPeService();
 		IGaService gaService = Graphiti.getGaService();
 		Shape collectionShape = peService.createShape(container, false);
 		Polyline line = gaService.createPolyline(collectionShape, xy);
 		line.setForeground(manageColor(StyleUtil.CLASS_FOREGROUND));
-		line.setLineWidth(1);
+		line.setLineWidth(lineWidth);
 		line.setLineVisible(false);
 		peService.setPropertyValue(collectionShape, Properties.HIDEABLE_PROPERTY, Boolean.toString(true));
 		return collectionShape;

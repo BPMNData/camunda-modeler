@@ -5,7 +5,6 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.camunda.bpm.modeler.core.utils.ExtensionUtil;
-import org.camunda.bpm.modeler.runtime.engine.model.ModelPackage;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptFactory;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey;
