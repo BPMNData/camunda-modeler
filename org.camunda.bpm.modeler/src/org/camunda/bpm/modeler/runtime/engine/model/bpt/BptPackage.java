@@ -336,13 +336,22 @@ public interface BptPackage extends EPackage {
     int DOCUMENT_ROOT__SCOPE_INFORMATION = 3;
 
     /**
+     * The feature id for the '<em><b>Foreign Key</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DOCUMENT_ROOT__FOREIGN_KEY = 4;
+
+    /**
      * The number of structural features of the '<em>Document Root</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int DOCUMENT_ROOT_FEATURE_COUNT = 4;
+    int DOCUMENT_ROOT_FEATURE_COUNT = 5;
 
     /**
      * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType <em>Primary Key Type</em>}' enum.
@@ -568,6 +577,17 @@ public interface BptPackage extends EPackage {
     EReference getDocumentRoot_ScopeInformation();
 
     /**
+     * Returns the meta object for the containment reference '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot#getForeignKey <em>Foreign Key</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Foreign Key</em>'.
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot#getForeignKey()
+     * @see #getDocumentRoot()
+     * @generated
+     */
+    EReference getDocumentRoot_ForeignKey();
+
+    /**
      * Returns the meta object for enum '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType <em>Primary Key Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -772,6 +792,14 @@ public interface BptPackage extends EPackage {
          * @generated
          */
         EReference DOCUMENT_ROOT__SCOPE_INFORMATION = eINSTANCE.getDocumentRoot_ScopeInformation();
+
+        /**
+         * The meta object literal for the '<em><b>Foreign Key</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference DOCUMENT_ROOT__FOREIGN_KEY = eINSTANCE.getDocumentRoot_ForeignKey();
 
         /**
          * The meta object literal for the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType <em>Primary Key Type</em>}' enum.

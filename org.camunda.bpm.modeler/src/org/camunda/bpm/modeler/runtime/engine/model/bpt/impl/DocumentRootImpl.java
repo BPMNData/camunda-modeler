@@ -6,6 +6,7 @@ import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.Cardinality;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.Condition;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.ForeignKey;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.ScopeInformation;
 
@@ -27,6 +28,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.DocumentRootImpl#getCardinality <em>Cardinality</em>}</li>
  *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.DocumentRootImpl#getCondition <em>Condition</em>}</li>
  *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.DocumentRootImpl#getScopeInformation <em>Scope Information</em>}</li>
+ *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.DocumentRootImpl#getForeignKey <em>Foreign Key</em>}</li>
  * </ul>
  * </p>
  *
@@ -201,6 +203,42 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      * <!-- end-user-doc -->
      * @generated
      */
+    public ForeignKey getForeignKey() {
+        // TODO: implement this method to return the 'Foreign Key' containment reference
+        // Ensure that you remove @generated or mark it @generated NOT
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public NotificationChain basicSetForeignKey(ForeignKey newForeignKey, NotificationChain msgs) {
+        // TODO: implement this method to set the contained 'Foreign Key' containment reference
+        // -> this method is automatically invoked to keep the containment relationship in synch
+        // -> do not modify other features
+        // -> return msgs, after adding any generated Notification to it (if it is null, a NotificationChain object must be created first)
+        // Ensure that you remove @generated or mark it @generated NOT
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setForeignKey(ForeignKey newForeignKey) {
+        // TODO: implement this method to set the 'Foreign Key' containment reference
+        // Ensure that you remove @generated or mark it @generated NOT
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
@@ -212,6 +250,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
                 return basicSetCondition(null, msgs);
             case BptPackage.DOCUMENT_ROOT__SCOPE_INFORMATION:
                 return basicSetScopeInformation(null, msgs);
+            case BptPackage.DOCUMENT_ROOT__FOREIGN_KEY:
+                return basicSetForeignKey(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -232,6 +272,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
                 return getCondition();
             case BptPackage.DOCUMENT_ROOT__SCOPE_INFORMATION:
                 return getScopeInformation();
+            case BptPackage.DOCUMENT_ROOT__FOREIGN_KEY:
+                return getForeignKey();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -255,6 +297,9 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
                 return;
             case BptPackage.DOCUMENT_ROOT__SCOPE_INFORMATION:
                 setScopeInformation((ScopeInformation)newValue);
+                return;
+            case BptPackage.DOCUMENT_ROOT__FOREIGN_KEY:
+                setForeignKey((ForeignKey)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -280,6 +325,9 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
             case BptPackage.DOCUMENT_ROOT__SCOPE_INFORMATION:
                 setScopeInformation((ScopeInformation)null);
                 return;
+            case BptPackage.DOCUMENT_ROOT__FOREIGN_KEY:
+                setForeignKey((ForeignKey)null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -300,6 +348,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
                 return getCondition() != null;
             case BptPackage.DOCUMENT_ROOT__SCOPE_INFORMATION:
                 return getScopeInformation() != null;
+            case BptPackage.DOCUMENT_ROOT__FOREIGN_KEY:
+                return getForeignKey() != null;
         }
         return super.eIsSet(featureID);
     }
