@@ -85,6 +85,9 @@ public class PropertiesTabDescriptorProvider implements ITabDescriptorProvider {
 				
 				if (participant.getProcessRef() != null) {
 					tabs.add(createListenerTabDescriptor());
+					
+					// BPMNData ScopeInformation property
+					tabs.add(createScopeInformationTabDescriptor());
 				}
 			}
 			
