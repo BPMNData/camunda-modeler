@@ -362,6 +362,15 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EReference getDocumentRoot_ForeignKey() {
+        return (EReference)documentRootEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EEnum getPrimaryKeyType() {
         return primaryKeyTypeEEnum;
     }
@@ -420,6 +429,7 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
         createEReference(documentRootEClass, DOCUMENT_ROOT__CARDINALITY);
         createEReference(documentRootEClass, DOCUMENT_ROOT__CONDITION);
         createEReference(documentRootEClass, DOCUMENT_ROOT__SCOPE_INFORMATION);
+        createEReference(documentRootEClass, DOCUMENT_ROOT__FOREIGN_KEY);
 
         // Create enums
         primaryKeyTypeEEnum = createEEnum(PRIMARY_KEY_TYPE);
@@ -486,6 +496,7 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
         initEReference(getDocumentRoot_Cardinality(), this.getCardinality(), null, "cardinality", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
         initEReference(getDocumentRoot_Condition(), this.getCondition(), null, "condition", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
         initEReference(getDocumentRoot_ScopeInformation(), this.getScopeInformation(), null, "scopeInformation", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEReference(getDocumentRoot_ForeignKey(), this.getForeignKey(), null, "foreignKey", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         initEEnum(primaryKeyTypeEEnum, PrimaryKeyType.class, "PrimaryKeyType");
@@ -656,6 +667,14 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
              "kind", "element",
              "name", "scopeInformation",
              "namespace", "https://bpt.hpi.uni-potsdam.de"
+           });		
+        addAnnotation
+          (getDocumentRoot_ForeignKey(), 
+           source, 
+           new String[] {
+             "kind", "element",
+             "name", "foreignKey",
+             "namespace", "http://bpt.hpi.uni-potsdam.de"
            });
     }
 
