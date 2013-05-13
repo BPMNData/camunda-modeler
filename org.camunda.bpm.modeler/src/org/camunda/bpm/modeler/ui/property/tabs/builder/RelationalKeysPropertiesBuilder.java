@@ -1,4 +1,4 @@
-package org.camunda.bpm.modeler.ui.property.tabs;
+package org.camunda.bpm.modeler.ui.property.tabs.builder;
 
 import static org.camunda.bpm.modeler.core.utils.ExtensionUtil.addExtension;
 import static org.camunda.bpm.modeler.core.utils.ExtensionUtil.removeExtensionByValue;
@@ -16,8 +16,6 @@ import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType;
 import org.camunda.bpm.modeler.ui.change.filter.ExtensionChangeFilter;
 import org.camunda.bpm.modeler.ui.property.tabs.binding.ModelAttributeComboBinding;
 import org.camunda.bpm.modeler.ui.property.tabs.binding.ModelTextBinding;
-import org.camunda.bpm.modeler.ui.property.tabs.builder.AbstractPropertiesBuilder;
-import org.camunda.bpm.modeler.ui.property.tabs.builder.DefaultEditingSupportProvider;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.table.EObjectTableBuilder.ContentProvider;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.table.EObjectTableBuilder.DeletedRowHandler;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.table.EditableEObjectTableBuilder;
@@ -26,7 +24,6 @@ import org.camunda.bpm.modeler.ui.property.tabs.tables.EditableTableDescriptor.E
 import org.camunda.bpm.modeler.ui.property.tabs.util.Events;
 import org.camunda.bpm.modeler.ui.property.tabs.util.PropertyUtil;
 import org.eclipse.bpmn2.DataObject;
-import org.eclipse.bpmn2.ItemAwareElement;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;

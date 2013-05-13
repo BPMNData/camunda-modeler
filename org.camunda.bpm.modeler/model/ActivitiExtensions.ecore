@@ -820,7 +820,7 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Cardinality">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
-        <details key="name" value="tCondition"/>
+        <details key="name" value="tCardinality"/>
         <details key="kind" value="simple"/>
       </eAnnotations>
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -895,7 +895,7 @@
         <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
           <details key="kind" value="element"/>
           <details key="name" value="cardinality"/>
-          <details key="namespace" value="https://bpt.hpi.uni-potsdam.de"/>
+          <details key="namespace" value="http://bpt.hpi.uni-potsdam.de"/>
         </eAnnotations>
       </eStructuralFeatures>
       <eStructuralFeatures xsi:type="ecore:EReference" name="condition" upperBound="-2"
@@ -904,7 +904,7 @@
         <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
           <details key="kind" value="element"/>
           <details key="name" value="condition"/>
-          <details key="namespace" value="https://bpt.hpi.uni-potsdam.de"/>
+          <details key="namespace" value="http://bpt.hpi.uni-potsdam.de"/>
         </eAnnotations>
       </eStructuralFeatures>
       <eStructuralFeatures xsi:type="ecore:EReference" name="scopeInformation" upperBound="-2"
@@ -913,7 +913,7 @@
         <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
           <details key="kind" value="element"/>
           <details key="name" value="scopeInformation"/>
-          <details key="namespace" value="https://bpt.hpi.uni-potsdam.de"/>
+          <details key="namespace" value="http://bpt.hpi.uni-potsdam.de"/>
         </eAnnotations>
       </eStructuralFeatures>
       <eStructuralFeatures xsi:type="ecore:EReference" name="foreignKey" upperBound="-2"

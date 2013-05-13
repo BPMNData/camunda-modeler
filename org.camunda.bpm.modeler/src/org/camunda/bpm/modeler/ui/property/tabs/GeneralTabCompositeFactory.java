@@ -3,6 +3,7 @@ package org.camunda.bpm.modeler.ui.property.tabs;
 import org.camunda.bpm.modeler.core.utils.ModelUtil;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.ActivityPropertiesBuilder;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.CallActivityPropertiesBuilder;
+import org.camunda.bpm.modeler.ui.property.tabs.builder.DataAssociationPropertiesBuilder;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.DataObjectPropertiesBuilder;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.DecisionGatewayPropertiesBuilder;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.IdPropertyBuilder;
@@ -28,6 +29,7 @@ import org.eclipse.bpmn2.BoundaryEvent;
 import org.eclipse.bpmn2.BusinessRuleTask;
 import org.eclipse.bpmn2.CallActivity;
 import org.eclipse.bpmn2.CatchEvent;
+import org.eclipse.bpmn2.DataAssociation;
 import org.eclipse.bpmn2.DataObject;
 import org.eclipse.bpmn2.Event;
 import org.eclipse.bpmn2.EventDefinition;
@@ -111,6 +113,10 @@ public class GeneralTabCompositeFactory extends AbstractTabCompositeFactory<Base
 		
 		if (businessObject instanceof DataObject) {
 			createDataObjectComposite((DataObject) businessObject);
+		}
+		
+		if (businessObject instanceof DataAssociation) {
+		    createDataAssociationComposite((DataAssociation) businessObject);
 		}
 		
 		return parent;
@@ -222,4 +228,8 @@ public class GeneralTabCompositeFactory extends AbstractTabCompositeFactory<Base
 			new IdPropertyBuilder(parent, section, baseElement).create();
 		}
 	}
+
+    private void createDataAssociationComposite(DataAssociation businessObject) {
+        new DataAssociationPropertiesBuilder(parent, section, businessObject).create();
+    }
 }

@@ -64,7 +64,7 @@ public interface DocumentRoot extends EObject {
      * @see #setCardinality(Cardinality)
      * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage#getDocumentRoot_Cardinality()
      * @model containment="true" upper="-2" transient="true" volatile="true" derived="true"
-     *        extendedMetaData="kind='element' name='cardinality' namespace='https://bpt.hpi.uni-potsdam.de'"
+     *        extendedMetaData="kind='element' name='cardinality' namespace='http://bpt.hpi.uni-potsdam.de'"
      * @generated
      */
     Cardinality getCardinality();
@@ -91,7 +91,7 @@ public interface DocumentRoot extends EObject {
      * @see #setCondition(Condition)
      * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage#getDocumentRoot_Condition()
      * @model containment="true" upper="-2" transient="true" volatile="true" derived="true"
-     *        extendedMetaData="kind='element' name='condition' namespace='https://bpt.hpi.uni-potsdam.de'"
+     *        extendedMetaData="kind='element' name='condition' namespace='http://bpt.hpi.uni-potsdam.de'"
      * @generated
      */
     Condition getCondition();
@@ -118,7 +118,7 @@ public interface DocumentRoot extends EObject {
      * @see #setScopeInformation(ScopeInformation)
      * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage#getDocumentRoot_ScopeInformation()
      * @model containment="true" upper="-2" transient="true" volatile="true" derived="true"
-     *        extendedMetaData="kind='element' name='scopeInformation' namespace='https://bpt.hpi.uni-potsdam.de'"
+     *        extendedMetaData="kind='element' name='scopeInformation' namespace='http://bpt.hpi.uni-potsdam.de'"
      * @generated
      */
     ScopeInformation getScopeInformation();

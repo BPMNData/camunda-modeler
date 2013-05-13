@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  *
  * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage#getCardinality()
- * @model extendedMetaData="name='tCondition' kind='simple'"
+ * @model extendedMetaData="name='tCardinality' kind='simple'"
  * @generated
  */
 public interface Cardinality extends EObject {

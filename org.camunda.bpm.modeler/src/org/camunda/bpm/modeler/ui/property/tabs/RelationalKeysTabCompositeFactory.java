@@ -1,5 +1,6 @@
 package org.camunda.bpm.modeler.ui.property.tabs;
 
+import org.camunda.bpm.modeler.ui.property.tabs.builder.RelationalKeysPropertiesBuilder;
 import org.eclipse.bpmn2.DataObject;
 import org.eclipse.graphiti.ui.platform.GFPropertySection;
 import org.eclipse.swt.widgets.Composite;

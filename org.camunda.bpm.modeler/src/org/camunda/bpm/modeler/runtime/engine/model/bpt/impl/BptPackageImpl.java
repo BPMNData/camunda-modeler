@@ -590,7 +590,7 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
           (cardinalityEClass, 
            source, 
            new String[] {
-             "name", "tCondition",
+             "name", "tCardinality",
              "kind", "simple"
            });				
         addAnnotation
@@ -650,7 +650,7 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
            new String[] {
              "kind", "element",
              "name", "cardinality",
-             "namespace", "https://bpt.hpi.uni-potsdam.de"
+             "namespace", "http://bpt.hpi.uni-potsdam.de"
            });		
         addAnnotation
           (getDocumentRoot_Condition(), 
@@ -658,7 +658,7 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
            new String[] {
              "kind", "element",
              "name", "condition",
-             "namespace", "https://bpt.hpi.uni-potsdam.de"
+             "namespace", "http://bpt.hpi.uni-potsdam.de"
            });		
         addAnnotation
           (getDocumentRoot_ScopeInformation(), 
@@ -666,7 +666,7 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
            new String[] {
              "kind", "element",
              "name", "scopeInformation",
-             "namespace", "https://bpt.hpi.uni-potsdam.de"
+             "namespace", "http://bpt.hpi.uni-potsdam.de"
            });		
         addAnnotation
           (getDocumentRoot_ForeignKey(), 
