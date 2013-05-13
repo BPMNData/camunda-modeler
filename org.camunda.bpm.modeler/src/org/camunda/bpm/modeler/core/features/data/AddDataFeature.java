@@ -77,16 +77,19 @@ public abstract class AddDataFeature<T extends ItemAwareElement> extends Abstrac
 		edge.setForeground(manageColor(StyleUtil.CLASS_FOREGROUND));
 		edge.setLineWidth(1);
 		
+		// create (empty) data state shape
 		DataState state = t.getDataState();
+		Shape textShape = peService.createShape(newShape, false);
+		Text dataStateText = gaService.createText(textShape);
+		StyleUtil.applyStyle(dataStateText, t);
+		dataStateText.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
+		dataStateText.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
+		textShape.setVisible(true);
+		gaService.setLocationAndSize(dataStateText, 0, getDefaultWidth() * 5 / 6, getDefaultWidth(), 20);
+		peService.setPropertyValue(dataStateText, Properties.IS_DATA_STATE_TEXT, Boolean.toString(true));
+		
 		if (state != null) {
-			Shape textShape = peService.createShape(newShape, false);
-			Text dataStateText = gaService.createText(textShape, state.getName());
-			StyleUtil.applyStyle(dataStateText, t);
-			dataStateText.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
-			dataStateText.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
-			textShape.setVisible(true);
-			gaService.setLocationAndSize(dataStateText, 0, getDefaultWidth() * 5 / 6, getDefaultWidth(), 20);
-			peService.setPropertyValue(dataStateText, Properties.IS_DATA_STATE_TEXT, Boolean.toString(true));
+			dataStateText.setValue(state.getName());
 		}
 		
 		if (isSupportCollectionMarkers()) {
