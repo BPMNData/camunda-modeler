@@ -15,6 +15,7 @@ import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType;
 import org.camunda.bpm.modeler.ui.change.filter.ExtensionChangeFilter;
 import org.camunda.bpm.modeler.ui.change.filter.FeatureChangeFilter;
+import org.camunda.bpm.modeler.ui.editor.BPMN2Editor;
 import org.camunda.bpm.modeler.ui.property.tabs.binding.ModelAttributeComboBinding;
 import org.camunda.bpm.modeler.ui.property.tabs.binding.ModelTextBinding;
 import org.camunda.bpm.modeler.ui.property.tabs.binding.change.EAttributeChangeSupport;
@@ -25,10 +26,14 @@ import org.camunda.bpm.modeler.ui.property.tabs.tables.EObjectAttributeTableColu
 import org.camunda.bpm.modeler.ui.property.tabs.tables.EditableTableDescriptor.ElementFactory;
 import org.camunda.bpm.modeler.ui.property.tabs.util.Events;
 import org.camunda.bpm.modeler.ui.property.tabs.util.PropertyUtil;
+import org.eclipse.bpmn2.Bpmn2Package;
 import org.eclipse.bpmn2.DataObject;
+import org.eclipse.bpmn2.impl.DataObjectImpl;
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
@@ -39,6 +44,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Builds the property panel that gives access to the primary key etc. of a data
@@ -84,7 +91,7 @@ public class RelationalKeysPropertiesBuilder extends
         if (getPrimaryKeys(bo).isEmpty()) {
             pkTypeCombo.setEnabled(false);
         }
-        
+
         // ...bindings
         PrimaryKeyNameTextBinding primaryKeyFieldBinding = new PrimaryKeyNameTextBinding(
                 bo, PRIMARY_KEY_FEATURE, primaryKeyText, pk, pkTypeCombo);
@@ -119,8 +126,8 @@ public class RelationalKeysPropertiesBuilder extends
     }
 
     /**
-     * Return all the primary keys of the data object.
-     * There should maximally be one.
+     * Return all the primary keys of the data object. There should maximally be
+     * one.
      */
     private List<PrimaryKey> getPrimaryKeys(DataObject bo) {
         List<PrimaryKey> pks = ExtensionUtil
@@ -135,14 +142,14 @@ public class RelationalKeysPropertiesBuilder extends
      * Binding which binds the PrimaryKey's id of an ItemAwareElement to the
      * given text field.
      */
-    private static class PrimaryKeyNameTextBinding extends
-            ModelTextBinding<String> {
+    private class PrimaryKeyNameTextBinding extends ModelTextBinding<String> {
 
         private PrimaryKey pk;
         private CCombo typeCombo;
 
         public PrimaryKeyNameTextBinding(EObject model,
-                EStructuralFeature feature, Text control, PrimaryKey pk, CCombo pkTypeCombo) {
+                EStructuralFeature feature, Text control, PrimaryKey pk,
+                CCombo pkTypeCombo) {
             super(model, feature, control);
             this.pk = pk;
             this.typeCombo = pkTypeCombo;
@@ -213,15 +220,16 @@ public class RelationalKeysPropertiesBuilder extends
                 }
             }
         }
-        
 
         @Override
-		protected void ensureChangeSupportAdded() {
-			EAttributeChangeSupport changeSupport = new EAttributeChangeSupport(model, feature, control);
-			changeSupport.setFilter(new ExtensionChangeFilter(model, feature).or(new FeatureChangeFilter(model, feature)));
-			
-			EAttributeChangeSupport.ensureAdded(changeSupport, control);
-		}
+        protected void ensureChangeSupportAdded() {
+            EAttributeChangeSupport changeSupport = new EAttributeChangeSupport(
+                    model, feature, control);
+            changeSupport.setFilter(new ExtensionChangeFilter(model, feature)
+                    .or(new FeatureChangeFilter(model, feature)));
+
+            EAttributeChangeSupport.ensureAdded(changeSupport, control);
+        }
     }
 
     /** Binds the combo box to the primary key. */
@@ -287,7 +295,6 @@ public class RelationalKeysPropertiesBuilder extends
                 }
             });
         }
-        
 
         /**
          * Command which takes care of updating the primary key.
