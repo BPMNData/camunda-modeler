@@ -5,8 +5,6 @@ import org.camunda.bpm.modeler.core.utils.ExtensionUtil;
 import org.camunda.bpm.modeler.core.utils.FeatureSupport;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage;
 import org.eclipse.bpmn2.DataObject;
-import org.eclipse.bpmn2.DataState;
-import org.eclipse.bpmn2.ItemAwareElement;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.IReason;
