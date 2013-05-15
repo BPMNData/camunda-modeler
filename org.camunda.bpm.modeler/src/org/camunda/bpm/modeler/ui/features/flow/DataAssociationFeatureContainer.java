@@ -1,8 +1,10 @@
 package org.camunda.bpm.modeler.ui.features.flow;
 
+import org.camunda.bpm.modeler.core.features.MultiUpdateFeature;
 import org.camunda.bpm.modeler.core.features.container.BaseElementConnectionFeatureContainer;
 import org.camunda.bpm.modeler.core.features.flow.AbstractAddFlowFeature;
 import org.camunda.bpm.modeler.core.features.flow.AbstractReconnectFlowFeature;
+import org.camunda.bpm.modeler.core.features.flow.ConnectionTextDecoratorBuilder;
 import org.camunda.bpm.modeler.core.utils.AnchorUtil;
 import org.camunda.bpm.modeler.core.utils.BusinessObjectUtil;
 import org.camunda.bpm.modeler.core.utils.ExtensionUtil;
@@ -38,7 +40,6 @@ import org.eclipse.graphiti.features.impl.Reason;
 import org.eclipse.graphiti.mm.algorithms.Polyline;
 import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.algorithms.styles.LineStyle;
-import org.eclipse.graphiti.mm.algorithms.styles.Orientation;
 import org.eclipse.graphiti.mm.pictograms.Anchor;
 import org.eclipse.graphiti.mm.pictograms.AnchorContainer;
 import org.eclipse.graphiti.mm.pictograms.Connection;
@@ -53,10 +54,13 @@ import org.eclipse.graphiti.ui.services.GraphitiUi;
 
 public class DataAssociationFeatureContainer extends BaseElementConnectionFeatureContainer {
 
-  private static final String IS_CONDITION_MARKER_PROPERTY = "isConditionMarker";
+  private static final String IS_CONDITION_DECORATOR_PROPERTY = "isConditionMarker";
+  private static final String IS_CARDINALITY_DECORATOR_PROPERTY = "isCardinalityDecorator";
   private static final EStructuralFeature DATA_ASSOCIATION_CONDITION_FEATURE = BptPackage.eINSTANCE.getDocumentRoot_Condition();
+  private static final EStructuralFeature DATA_ASSOCIATION_CARDINALITY_FEATURE = BptPackage.eINSTANCE.getDocumentRoot_Cardinality();
   
   private static final String CONDITION_TEXT_PREFIX = "Condition: ";
+  private static final String CARDINALITY_TEXT_PREFIX = "Cardinality: ";
 	
   @Override
   public boolean canApplyTo(Object o) {
@@ -98,37 +102,40 @@ public class DataAssociationFeatureContainer extends BaseElementConnectionFeatur
     protected void postAddHook(IAddContext context,
     		FreeFormConnection newConnection) {
     	super.postAddHook(context, newConnection);
-    	addConditionElement(newConnection);
+    	DataAssociation association = BusinessObjectUtil.getFirstElementOfType(newConnection, DataAssociation.class);
+    	addConditionElement(newConnection, association);
+    	addCardinalityElement(newConnection, association);
     }
 
-	private void addConditionElement(FreeFormConnection connection) {
-		DataAssociation association = BusinessObjectUtil.getFirstElementOfType(connection, DataAssociation.class);
+	
+
+	private void addConditionElement(FreeFormConnection connection, DataAssociation association) {
+		
 		String currentCondition = (String) ExtensionUtil.getExtension(association, DATA_ASSOCIATION_CONDITION_FEATURE, "value");
 
-		createConditionDecorator(connection, currentCondition);
+		if (currentCondition != null) {
+			currentCondition = CONDITION_TEXT_PREFIX + currentCondition;
+		}
+		ConnectionTextDecoratorBuilder.newBuilder(connection)
+			.businessObject(association).content(currentCondition)
+			.location(0, 0).textProperty(IS_CONDITION_DECORATOR_PROPERTY, Boolean.toString(true))
+			.build();
 	}
 	
-	private ConnectionDecorator createConditionDecorator(Connection connection, String condition) {
-		if (condition != null) {
-			condition = CONDITION_TEXT_PREFIX + condition;
+	private void addCardinalityElement(FreeFormConnection connection, DataAssociation association) {
+//		DataAssociation association = BusinessObjectUtil.getFirstElementOfType(connection, DataAssociation.class);
+		String currentCardinality = (String) ExtensionUtil.getExtension(association, DATA_ASSOCIATION_CARDINALITY_FEATURE, "value");
+
+		if (currentCardinality != null) {
+			currentCardinality = CARDINALITY_TEXT_PREFIX + currentCardinality;
 		}
 		
-		ConnectionDecorator decorator = Graphiti.getPeService().createConnectionDecorator(connection, false, 0.0, true);
-		DataAssociation association = BusinessObjectUtil.getFirstElementOfType(connection, DataAssociation.class);
-		
-		IGaService gaService = Graphiti.getGaService();
-		Text conditionText = gaService.createText(decorator, condition);
-		conditionText.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
-		conditionText.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
-		
-		StyleUtil.applyStyle(conditionText, association);
-		decorator.setVisible(true);
-		
-		IDimension textDimensions = GraphitiUi.getUiLayoutService().calculateTextSize(condition, conditionText.getFont());
-		gaService.setLocationAndSize(conditionText, 0, 0, textDimensions.getWidth(), textDimensions.getHeight());
-		Graphiti.getPeService().setPropertyValue(decorator, IS_CONDITION_MARKER_PROPERTY, Boolean.toString(true));
-		return decorator;
+		ConnectionTextDecoratorBuilder.newBuilder(connection)
+			.businessObject(association).content(currentCardinality)
+			.location(0, -30).textProperty(IS_CARDINALITY_DECORATOR_PROPERTY, Boolean.toString(true))
+			.build();
 	}
+	
   }
   
   public static class UpdateConditionFeature extends AbstractUpdateFeature {
@@ -150,12 +157,14 @@ public class DataAssociationFeatureContainer extends BaseElementConnectionFeatur
 		String currentCondition = (String) ExtensionUtil.getExtension(association, DATA_ASSOCIATION_CONDITION_FEATURE, "value");
 		String previouslyDisplayedCondition = null;
 		
-		ConnectionDecorator decorator = FeatureSupport.getConnectionDecoratorFulfillingProperty(context, IS_CONDITION_MARKER_PROPERTY, Boolean.toString(true));
+		ConnectionDecorator decorator = FeatureSupport.getConnectionDecoratorFulfillingProperty(context, IS_CONDITION_DECORATOR_PROPERTY, Boolean.toString(true));
 		if (decorator != null) {
 			Text conditionText = (Text) decorator.getGraphicsAlgorithm();
 			previouslyDisplayedCondition = conditionText.getValue();
-			String regex = CONDITION_TEXT_PREFIX + "(.*)";
-			previouslyDisplayedCondition = previouslyDisplayedCondition.replaceAll(regex, "$1");
+			if (previouslyDisplayedCondition != null) {
+				String regex = CONDITION_TEXT_PREFIX + "(.*)";
+				previouslyDisplayedCondition = previouslyDisplayedCondition.replaceAll(regex, "$1");
+			}
 		}
 		
 		if (currentCondition == null) {
@@ -188,7 +197,7 @@ public class DataAssociationFeatureContainer extends BaseElementConnectionFeatur
 	}
 	
 	private void setConditionText(IUpdateContext context, String value) {
-		ConnectionDecorator decorator = FeatureSupport.getConnectionDecoratorFulfillingProperty(context, IS_CONDITION_MARKER_PROPERTY, Boolean.toString(true));
+		ConnectionDecorator decorator = FeatureSupport.getConnectionDecoratorFulfillingProperty(context, IS_CONDITION_DECORATOR_PROPERTY, Boolean.toString(true));
 		
 		if (decorator != null) {
 			Text textGa = (Text) decorator.getGraphicsAlgorithm();
@@ -198,7 +207,77 @@ public class DataAssociationFeatureContainer extends BaseElementConnectionFeatur
 			textGa.setValue(value);
 		}
 	}
-	  
+  }
+  
+  public static class UpdateCardinalityFeature extends AbstractUpdateFeature {
+
+	public UpdateCardinalityFeature(IFeatureProvider fp) {
+		super(fp);
+	}
+
+	@Override
+	public boolean canUpdate(IUpdateContext context) {
+		return true;
+	}
+
+	@Override
+	public IReason updateNeeded(IUpdateContext context) {
+		Connection connection = (Connection) context.getPictogramElement();
+		DataAssociation association = BusinessObjectUtil.getFirstElementOfType(connection, DataAssociation.class);
+		
+		String currentCardinality = (String) ExtensionUtil.getExtension(association, DATA_ASSOCIATION_CARDINALITY_FEATURE, "value");
+		String previouslyDisplayedCardinality = null;
+		
+		ConnectionDecorator decorator = FeatureSupport.getConnectionDecoratorFulfillingProperty(context, IS_CARDINALITY_DECORATOR_PROPERTY, Boolean.toString(true));
+		if (decorator != null) {
+			Text cardinalityText = (Text) decorator.getGraphicsAlgorithm();
+			previouslyDisplayedCardinality = cardinalityText.getValue();
+			if (previouslyDisplayedCardinality != null) {
+				String regex = CARDINALITY_TEXT_PREFIX + "(.*)";
+				previouslyDisplayedCardinality = previouslyDisplayedCardinality.replaceAll(regex, "$1");
+			}
+		}
+		
+		if (currentCardinality == null) {
+			return previouslyDisplayedCardinality != null ? Reason.createTrueReason() : Reason.createFalseReason();
+		} else if (previouslyDisplayedCardinality == null) {
+			return Reason.createTrueReason();
+		}
+		
+		if (previouslyDisplayedCardinality.equals(currentCardinality)) {
+			return Reason.createFalseReason();
+		} else {
+			return Reason.createTrueReason();
+		}
+	}
+
+	@Override
+	public boolean update(IUpdateContext context) {
+		Connection connection = (Connection) context.getPictogramElement();
+		DataAssociation association = BusinessObjectUtil.getFirstElementOfType(connection, DataAssociation.class);
+
+		String currentCardinality = (String) ExtensionUtil.getExtension(association, DATA_ASSOCIATION_CARDINALITY_FEATURE, "value");
+		String newText = "";
+		if (currentCardinality != null) {
+			newText = CARDINALITY_TEXT_PREFIX + currentCardinality;
+		}
+		
+		setCardinalityText(context, newText);
+
+		return true;
+	}
+	
+	private void setCardinalityText(IUpdateContext context, String value) {
+		ConnectionDecorator decorator = FeatureSupport.getConnectionDecoratorFulfillingProperty(context, IS_CARDINALITY_DECORATOR_PROPERTY, Boolean.toString(true));
+		
+		if (decorator != null) {
+			Text textGa = (Text) decorator.getGraphicsAlgorithm();
+			IDimension textDimensions = GraphitiUi.getUiLayoutService().calculateTextSize(value, textGa.getFont());
+			textGa.setHeight(textDimensions.getHeight());
+			textGa.setWidth(textDimensions.getWidth());
+			textGa.setValue(value);
+		}
+	}
   }
  
   
@@ -323,8 +402,10 @@ public class DataAssociationFeatureContainer extends BaseElementConnectionFeatur
   
   @Override
 	public IUpdateFeature getUpdateFeature(IFeatureProvider fp) {
-	  // TODO multi update feature
-	  return new UpdateConditionFeature(fp);
+	  MultiUpdateFeature updateFeature = new MultiUpdateFeature(fp);
+	  updateFeature.addUpdateFeature(new UpdateConditionFeature(fp));
+	  updateFeature.addUpdateFeature(new UpdateCardinalityFeature(fp));
+	  return updateFeature;
 	}
 
 }
