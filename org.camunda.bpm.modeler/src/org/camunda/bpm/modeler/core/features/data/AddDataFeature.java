@@ -16,7 +16,6 @@ import org.camunda.bpm.modeler.core.features.AbstractAddBpmnShapeFeature;
 import org.camunda.bpm.modeler.core.utils.FeatureSupport;
 import org.camunda.bpm.modeler.core.utils.GraphicsUtil;
 import org.camunda.bpm.modeler.core.utils.StyleUtil;
-import org.eclipse.bpmn2.DataState;
 import org.eclipse.bpmn2.ItemAwareElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;

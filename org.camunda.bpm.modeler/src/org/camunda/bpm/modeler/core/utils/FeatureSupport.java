@@ -663,7 +663,7 @@ public class FeatureSupport {
 	}
 
 	/**
-	 * Returns the first child shape of the
+	 * Returns the first child shape of the container that fulfills the property.
 	 * @param context
 	 * @param propertyKey
 	 * @param propertyValue
@@ -679,6 +679,28 @@ public class FeatureSupport {
 				IPeService peService = Graphiti.getPeService();
 				if (propertyValue.equals(peService.getPropertyValue(shape, propertyKey))) {
 					return shape;
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Gets a decorator for a connection that fulfills the given property.
+	 * @param context
+	 * @param propertyKey
+	 * @param propertyValue
+	 * @return
+	 */
+	public static ConnectionDecorator getConnectionDecoratorFulfillingProperty(IPictogramElementContext context, String propertyKey,
+			String propertyValue) {
+		PictogramElement pe = context.getPictogramElement();
+		if (pe instanceof Connection) {
+			Connection connection = (Connection) pe;
+			for (ConnectionDecorator decorator : connection.getConnectionDecorators()) {
+				IPeService peService = Graphiti.getPeService();
+				if (propertyValue.equals(peService.getPropertyValue(decorator, propertyKey))) {
+					return decorator;
 				}
 			}
 		}
