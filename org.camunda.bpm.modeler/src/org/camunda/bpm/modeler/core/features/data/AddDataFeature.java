@@ -88,6 +88,9 @@ public abstract class AddDataFeature<T extends ItemAwareElement> extends Abstrac
 		Shape foreignKeyShape = createTextShape(newShape, t, 0, getDefaultHeight() / 2, getDefaultWidth(), 20);
 		peService.setPropertyValue(foreignKeyShape, Properties.IS_FOREIGN_KEY_SHAPE, Boolean.toString(true));
 		
+		// create primary key shape
+		Shape operationTypeShape = createTextShape(newShape, t, getDefaultWidth() / 2, 2, getDefaultWidth() / 2, 10);
+		peService.setPropertyValue(operationTypeShape, Properties.IS_OPERATION_TYPE_SHAPE, Boolean.toString(true));
 		
 		if (isSupportCollectionMarkers()) {
 			int markerHeight = getDefaultHeight() / 6;
