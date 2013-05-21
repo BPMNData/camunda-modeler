@@ -253,12 +253,15 @@ public class RelationalKeysPropertiesBuilder extends
         public void setModelValue(PrimaryKeyType value) {
             TransactionalEditingDomain domain = TransactionUtil
                     .getEditingDomain(model);
-            UpdatePrimaryKeyTypeCommand cmd = new UpdatePrimaryKeyTypeCommand(
-                    domain, value);
-            if (domain == null)
-                cmd.doExecute();
-            else
+            
+            boolean isPrimaryKeyAttachedToBo = domain != null;
+            if (!isPrimaryKeyAttachedToBo) {
+                setPrimaryKeyType(value);
+            } else {
+                UpdatePrimaryKeyTypeCommand cmd = new UpdatePrimaryKeyTypeCommand(
+                        domain, value);
                 domain.getCommandStack().execute(cmd);
+            }
         }
 
         private void setPrimaryKeyType(PrimaryKeyType value) {
@@ -305,6 +308,7 @@ public class RelationalKeysPropertiesBuilder extends
             @Override
             protected void doExecute() {
                 setPrimaryKeyType(newValue);
+                ExtensionUtil.enforceNotification(bo);
             }
         }
 
