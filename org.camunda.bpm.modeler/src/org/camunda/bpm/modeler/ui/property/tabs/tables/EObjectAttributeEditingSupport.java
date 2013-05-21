@@ -20,8 +20,8 @@ import org.eclipse.jface.viewers.ViewerCell;
  */
 public class EObjectAttributeEditingSupport<T extends EObject> extends EditingSupport {
 
-	private TableViewer viewer;
-	private EStructuralFeature feature;
+	protected TableViewer viewer;
+	protected EStructuralFeature feature;
 
 	public EObjectAttributeEditingSupport(TableViewer viewer, EStructuralFeature feature) {
 		super(viewer);

@@ -20,5 +20,6 @@ public interface Properties {
 	public static final String IS_DATA_STATE_SHAPE = "isDataStateText";
 	
 	public static final String IS_PRIMARY_KEY_SHAPE = "isPrimaryKey";
+	public static final String IS_FOREIGN_KEY_SHAPE = "isForeignKeys";
 	
 }

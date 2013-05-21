@@ -75,10 +75,10 @@ public class UpdateDataObjectPrimaryKeyFeature extends AbstractUpdateFeature {
 	}
 	
 	private void setPrimaryKeyText(IUpdateContext context, String value) {
-		Shape dataStateTextShape = FeatureSupport.getChildShapeFulfillingProperty(context, Properties.IS_PRIMARY_KEY_SHAPE, Boolean.toString(true));
+		Shape primaryKeyTextShape = FeatureSupport.getChildShapeFulfillingProperty(context, Properties.IS_PRIMARY_KEY_SHAPE, Boolean.toString(true));
 		
-		if (dataStateTextShape != null) {
-			Text textGa = (Text) dataStateTextShape.getGraphicsAlgorithm();
+		if (primaryKeyTextShape != null) {
+			Text textGa = (Text) primaryKeyTextShape.getGraphicsAlgorithm();
 			textGa.setValue(value);
 		}
 	}

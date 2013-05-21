@@ -81,8 +81,12 @@ public abstract class AddDataFeature<T extends ItemAwareElement> extends Abstrac
 		peService.setPropertyValue(textShape, Properties.IS_DATA_STATE_SHAPE, Boolean.toString(true));
 		
 		// create primary key shape
-		Shape primaryKeyShape = createTextShape(newShape, t, 0, getDefaultHeight() / 2, getDefaultWidth(), 20);
+		Shape primaryKeyShape = createTextShape(newShape, t, 0, getDefaultHeight() / 3, getDefaultWidth(), 20);
 		peService.setPropertyValue(primaryKeyShape, Properties.IS_PRIMARY_KEY_SHAPE, Boolean.toString(true));
+		
+		// create foreign key shape
+		Shape foreignKeyShape = createTextShape(newShape, t, 0, getDefaultHeight() / 2, getDefaultWidth(), 20);
+		peService.setPropertyValue(foreignKeyShape, Properties.IS_FOREIGN_KEY_SHAPE, Boolean.toString(true));
 		
 		
 		if (isSupportCollectionMarkers()) {

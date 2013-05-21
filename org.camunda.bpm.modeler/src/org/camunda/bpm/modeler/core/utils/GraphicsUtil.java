@@ -29,7 +29,6 @@ import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.Event;
 import org.eclipse.bpmn2.EventDefinition;
 import org.eclipse.bpmn2.Gateway;
-import org.eclipse.bpmn2.Group;
 import org.eclipse.bpmn2.TextAnnotation;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.emf.common.util.EList;
@@ -68,8 +67,8 @@ public class GraphicsUtil {
 	private static Map<Diagram, SizeTemplate> diagramSizeMap;
 
 	// TODO move all size properties to separate interface
-	public static int DATA_WIDTH = 84;
-	public static int DATA_HEIGHT = 100;
+	public static int DATA_WIDTH = 100;
+	public static int DATA_HEIGHT = 120;
 
 	public static int CHOREOGRAPHY_WIDTH = 150;
 	public static int CHOREOGRAPHY_HEIGHT = 150;

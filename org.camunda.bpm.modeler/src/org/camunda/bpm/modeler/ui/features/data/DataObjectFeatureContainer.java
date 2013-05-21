@@ -81,6 +81,7 @@ public class DataObjectFeatureContainer extends AbstractDataFeatureContainer {
 		multiUpdate.addUpdateFeature(new UpdateBaseElementNameFeature(fp));
 		multiUpdate.addUpdateFeature(new UpdateDataStateFeature(fp));
 		multiUpdate.addUpdateFeature(new UpdateDataObjectPrimaryKeyFeature(fp));
+		multiUpdate.addUpdateFeature(new UpdateDataObjectForeignKeyFeature(fp));
 		
 		return multiUpdate;
 	}

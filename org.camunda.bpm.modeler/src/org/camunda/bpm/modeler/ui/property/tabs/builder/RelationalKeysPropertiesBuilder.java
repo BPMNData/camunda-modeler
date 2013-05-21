@@ -15,7 +15,6 @@ import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType;
 import org.camunda.bpm.modeler.ui.change.filter.ExtensionChangeFilter;
 import org.camunda.bpm.modeler.ui.change.filter.FeatureChangeFilter;
-import org.camunda.bpm.modeler.ui.editor.BPMN2Editor;
 import org.camunda.bpm.modeler.ui.property.tabs.binding.ModelAttributeComboBinding;
 import org.camunda.bpm.modeler.ui.property.tabs.binding.ModelTextBinding;
 import org.camunda.bpm.modeler.ui.property.tabs.binding.change.EAttributeChangeSupport;
@@ -26,14 +25,10 @@ import org.camunda.bpm.modeler.ui.property.tabs.tables.EObjectAttributeTableColu
 import org.camunda.bpm.modeler.ui.property.tabs.tables.EditableTableDescriptor.ElementFactory;
 import org.camunda.bpm.modeler.ui.property.tabs.util.Events;
 import org.camunda.bpm.modeler.ui.property.tabs.util.PropertyUtil;
-import org.eclipse.bpmn2.Bpmn2Package;
 import org.eclipse.bpmn2.DataObject;
-import org.eclipse.bpmn2.impl.DataObjectImpl;
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
@@ -44,8 +39,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Builds the property panel that gives access to the primary key etc. of a data
@@ -350,7 +343,7 @@ public class RelationalKeysPropertiesBuilder extends
             }
         };
 
-        final EditingSupportProvider editingSupportProvider = new DefaultEditingSupportProvider();
+        final EditingSupportProvider editingSupportProvider = new ExtensionEditingSupportProvider(bo);
 
         EditableEObjectTableBuilder<ForeignKey> builder = new EditableEObjectTableBuilder<ForeignKey>(
                 section, composite, ForeignKey.class);

@@ -144,6 +144,7 @@ public class ExtensionUtil {
 
         FeatureMap map = extensionAttributeValue.getValue();
         map.add(feature, value);
+        enforceNotification(getExtensionAttributeValues(object));
     }
 
     /**
@@ -315,6 +316,10 @@ public class ExtensionUtil {
             List<ExtensionAttributeValue> extensionElements) {
         extensionElements.add(createExtensionAttributeValue());
         extensionElements.remove(extensionElements.size() - 1);
+    }
+    
+    public static void enforceNotification(EObject bo) {
+    	enforceNotification(getExtensionAttributeValues(bo));
     }
 
     protected static ExtensionAttributeValue createExtensionAttributeValue() {
