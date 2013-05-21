@@ -19,15 +19,19 @@ import org.camunda.bpm.modeler.core.utils.StyleUtil;
 import org.eclipse.bpmn2.ItemAwareElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.graphiti.datatypes.IRectangle;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IAddContext;
+import org.eclipse.graphiti.mm.algorithms.AbstractText;
 import org.eclipse.graphiti.mm.algorithms.Polygon;
 import org.eclipse.graphiti.mm.algorithms.Polyline;
 import org.eclipse.graphiti.mm.algorithms.Rectangle;
 import org.eclipse.graphiti.mm.algorithms.Text;
+import org.eclipse.graphiti.mm.algorithms.styles.Font;
 import org.eclipse.graphiti.mm.algorithms.styles.Orientation;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
+import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaService;
@@ -81,16 +85,17 @@ public abstract class AddDataFeature<T extends ItemAwareElement> extends Abstrac
 		peService.setPropertyValue(textShape, Properties.IS_DATA_STATE_SHAPE, Boolean.toString(true));
 		
 		// create primary key shape
-		Shape primaryKeyShape = createTextShape(newShape, t, 0, getDefaultHeight() / 3, getDefaultWidth(), 20);
+		Shape primaryKeyShape = createTextShape(newShape, t, 0, getDefaultHeight() / 3, getDefaultWidth(), 20, 0.8f);
 		peService.setPropertyValue(primaryKeyShape, Properties.IS_PRIMARY_KEY_SHAPE, Boolean.toString(true));
 		
 		// create foreign key shape
-		Shape foreignKeyShape = createTextShape(newShape, t, 0, getDefaultHeight() / 2, getDefaultWidth(), 20);
+		Shape foreignKeyShape = createTextShape(newShape, t, 0, getDefaultHeight() / 2, getDefaultWidth(), 20, 0.8f);
 		peService.setPropertyValue(foreignKeyShape, Properties.IS_FOREIGN_KEY_SHAPE, Boolean.toString(true));
 		
-		// create primary key shape
-		Shape operationTypeShape = createTextShape(newShape, t, getDefaultWidth() / 2, 2, getDefaultWidth() / 2, 10);
+		// create operation type shape
+		Shape operationTypeShape = createTextShape(newShape, t, getDefaultWidth() / 2, 2, getDefaultWidth() / 2, 10, 0.8f);
 		peService.setPropertyValue(operationTypeShape, Properties.IS_OPERATION_TYPE_SHAPE, Boolean.toString(true));
+		
 		
 		if (isSupportCollectionMarkers()) {
 			int markerHeight = getDefaultHeight() / 6;
@@ -113,18 +118,28 @@ public abstract class AddDataFeature<T extends ItemAwareElement> extends Abstrac
 	}
 	
 	private Shape createTextShape(ContainerShape container, T businessObject, int x, int y, int width, int height) {
-		IGaService gaService = Graphiti.getGaService();
-		IPeService peService = Graphiti.getPeService();
-		
-		Shape shape = peService.createShape(container, false);
-		Text text = gaService.createText(shape);
-		StyleUtil.applyStyle(text, businessObject);
-		text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
-		text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
-		shape.setVisible(true);
-		gaService.setLocationAndSize(text, x, y, width, height);
-		
-		return shape;
+	    return createTextShape(container, businessObject, x, y, width, height, 1f);
+	}
+	
+	private Shape createTextShape(ContainerShape container, T businessObject, int x, int y, int width, int height, float textScalingFactor) {
+	    IGaService gaService = Graphiti.getGaService();
+	    IPeService peService = Graphiti.getPeService();
+	    
+	    Shape shape = peService.createShape(container, false);
+	    Text text = gaService.createText(shape);
+	    StyleUtil.applyStyle(text, businessObject);
+	    Font font = text.getFont();
+	    if (font != null) {
+	        Diagram diagram = StyleUtil.findDiagram(text);
+	        int newFontSize = (int) Math.round(font.getSize() * textScalingFactor);
+            text.setFont(gaService.manageFont(diagram, font.getName(), newFontSize, font.isItalic(), font.isBold()));
+	    }
+	    text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
+	    text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
+	    shape.setVisible(true);
+	    gaService.setLocationAndSize(text, x, y, width, height);
+	    
+	    return shape;
 	}
 	
 	
