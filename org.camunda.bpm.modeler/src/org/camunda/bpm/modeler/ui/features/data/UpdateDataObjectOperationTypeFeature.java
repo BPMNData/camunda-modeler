@@ -61,7 +61,7 @@ public class UpdateDataObjectOperationTypeFeature extends AbstractUpdateFeature 
 
 	private String toDisplayValue(PrimaryKeyType pkType) {
         if (pkType == null) {
-            pkType = PrimaryKeyType.DEFAULT;
+            return "";
         }
         String literal = pkType.getLiteral();
         return literal.isEmpty() ? literal : String.format("[%s]",pkType.getLiteral());
