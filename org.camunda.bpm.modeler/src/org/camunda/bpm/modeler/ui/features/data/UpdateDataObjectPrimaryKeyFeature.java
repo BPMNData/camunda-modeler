@@ -18,6 +18,7 @@ import org.eclipse.graphiti.mm.pictograms.Shape;
 public class UpdateDataObjectPrimaryKeyFeature extends AbstractUpdateFeature {
 
 	private static final EStructuralFeature PRIMARY_KEY_FEATURE = BptPackage.eINSTANCE.getDocumentRoot_PrimaryKey();
+	private static final String PRIMARY_KEY_PREFIX = "pk: ";
 	
 	public UpdateDataObjectPrimaryKeyFeature(IFeatureProvider fp) {
 		super(fp);
@@ -35,21 +36,23 @@ public class UpdateDataObjectPrimaryKeyFeature extends AbstractUpdateFeature {
 		DataObject dataObject = (DataObject) getBusinessObjectForPictogramElement(container);
 		
 		String currentPrimaryKey = (String) ExtensionUtil.getExtension(dataObject, PRIMARY_KEY_FEATURE, "value");
-		String previouslyDisplayedState = null;
+		String previouslyDisplayedKey = null;
 		
 		Shape primaryKeyShape = FeatureSupport.getChildShapeFulfillingProperty(context, Properties.IS_PRIMARY_KEY_SHAPE, Boolean.toString(true));
 		if (primaryKeyShape != null) {
-			Text dataStateShapeText = (Text) primaryKeyShape.getGraphicsAlgorithm();
-			previouslyDisplayedState = dataStateShapeText.getValue();
+			Text primaryKeyShapeText = (Text) primaryKeyShape.getGraphicsAlgorithm();
+			previouslyDisplayedKey = primaryKeyShapeText.getValue();
+			String regex = PRIMARY_KEY_PREFIX + "(.*)";
+			previouslyDisplayedKey = previouslyDisplayedKey.replaceAll(regex, "$1");
 		}
 		
 		if (currentPrimaryKey == null) {
-			return previouslyDisplayedState != null ? Reason.createTrueReason() : Reason.createFalseReason();
-		} else if (previouslyDisplayedState == null) {
+			return previouslyDisplayedKey != null ? Reason.createTrueReason() : Reason.createFalseReason();
+		} else if (previouslyDisplayedKey == null) {
 			return Reason.createTrueReason();
 		}
 		
-		if (previouslyDisplayedState.equals(currentPrimaryKey)) {
+		if (previouslyDisplayedKey.equals(currentPrimaryKey)) {
 			return Reason.createFalseReason();
 		} else {
 			return Reason.createTrueReason();
@@ -65,7 +68,7 @@ public class UpdateDataObjectPrimaryKeyFeature extends AbstractUpdateFeature {
 		if (currentPrimaryKey == null) {
 			setPrimaryKeyText(context, "");
 		} else {
-			setPrimaryKeyText(context, currentPrimaryKey);
+			setPrimaryKeyText(context, PRIMARY_KEY_PREFIX + currentPrimaryKey);
 		}
 
 		return true;
