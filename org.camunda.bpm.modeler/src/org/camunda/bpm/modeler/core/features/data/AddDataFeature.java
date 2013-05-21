@@ -77,7 +77,7 @@ public abstract class AddDataFeature<T extends ItemAwareElement> extends Abstrac
 		edge.setLineWidth(1);
 		
 		// create (empty) data state shape
-		Shape textShape = createTextShape(newShape, t, 0, height * 5 / 8, width, 20);
+		Shape textShape = createTextShape(newShape, t, 0, height * 2 / 3, width, 20);
 		peService.setPropertyValue(textShape, Properties.IS_DATA_STATE_SHAPE, Boolean.toString(true));
 		
 		// create primary key shape
@@ -98,16 +98,17 @@ public abstract class AddDataFeature<T extends ItemAwareElement> extends Abstrac
 			
 			int whalf = width / 2;
 			int lineWidth = Math.max(width  / 36, 1);
-			createCollectionShape(newShape, new int[] { whalf - singleMarkerOffset, height - markerHeight, whalf - singleMarkerOffset, height }, lineWidth);
-			createCollectionShape(newShape, new int[] { whalf, height - markerHeight, whalf, height }, lineWidth);
-			createCollectionShape(newShape, new int[] { whalf + singleMarkerOffset, height - markerHeight, whalf + singleMarkerOffset, height }, lineWidth);
-
-			String value = "false";
+			
+			Boolean isCollection = new Boolean(false);
 			EStructuralFeature feature = ((EObject)t).eClass().getEStructuralFeature("isCollection");
 			if (feature!=null && t.eGet(feature)!=null)
-				value = ((Boolean)t.eGet(feature)).toString();
+				isCollection = (Boolean)t.eGet(feature);
+			
+			createCollectionShape(newShape, new int[] { whalf - singleMarkerOffset, height - markerHeight, whalf - singleMarkerOffset, height }, lineWidth, isCollection);
+			createCollectionShape(newShape, new int[] { whalf, height - markerHeight, whalf, height }, lineWidth, isCollection);
+			createCollectionShape(newShape, new int[] { whalf + singleMarkerOffset, height - markerHeight, whalf + singleMarkerOffset, height }, lineWidth, isCollection);
 
-			peService.setPropertyValue(newShape, Properties.COLLECTION_PROPERTY, value);
+			peService.setPropertyValue(newShape, Properties.COLLECTION_PROPERTY, isCollection.toString());
 		}
 		
 		return newShape;
@@ -129,14 +130,14 @@ public abstract class AddDataFeature<T extends ItemAwareElement> extends Abstrac
 	}
 	
 	
-	private Shape createCollectionShape(ContainerShape container, int[] xy, int lineWidth) {
+	private Shape createCollectionShape(ContainerShape container, int[] xy, int lineWidth, boolean visible) {
 		IPeService peService = Graphiti.getPeService();
 		IGaService gaService = Graphiti.getGaService();
 		Shape collectionShape = peService.createShape(container, false);
 		Polyline line = gaService.createPolyline(collectionShape, xy);
 		line.setForeground(manageColor(StyleUtil.CLASS_FOREGROUND));
 		line.setLineWidth(lineWidth);
-		line.setLineVisible(false);
+		line.setLineVisible(visible);
 		peService.setPropertyValue(collectionShape, Properties.HIDEABLE_PROPERTY, Boolean.toString(true));
 		return collectionShape;
 	}

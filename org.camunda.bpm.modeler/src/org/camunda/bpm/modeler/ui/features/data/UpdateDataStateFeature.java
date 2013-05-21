@@ -80,15 +80,6 @@ public class UpdateDataStateFeature extends AbstractUpdateFeature {
 			Text textGa = (Text) dataStateTextShape.getGraphicsAlgorithm();
 			textGa.setValue(value);
 		}
-		
-//		for (Shape shape : peService.getAllContainedShapes(container)) {
-//			String isDataStateText = peService.getPropertyValue(shape, Properties.IS_DATA_STATE_SHAPE);
-//			if (isDataStateText != null && new Boolean(isDataStateText)) {
-//				
-//				Text textGa = (Text) shape.getGraphicsAlgorithm();
-//				textGa.setValue(value);
-//			}
-//		}
 	}
 
 }
