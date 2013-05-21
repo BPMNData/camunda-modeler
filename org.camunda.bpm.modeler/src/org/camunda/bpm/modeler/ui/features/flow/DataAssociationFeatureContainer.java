@@ -123,7 +123,6 @@ public class DataAssociationFeatureContainer extends BaseElementConnectionFeatur
 	}
 	
 	private void addCardinalityElement(FreeFormConnection connection, DataAssociation association) {
-//		DataAssociation association = BusinessObjectUtil.getFirstElementOfType(connection, DataAssociation.class);
 		String currentCardinality = (String) ExtensionUtil.getExtension(association, DATA_ASSOCIATION_CARDINALITY_FEATURE, "value");
 
 		if (currentCardinality != null) {

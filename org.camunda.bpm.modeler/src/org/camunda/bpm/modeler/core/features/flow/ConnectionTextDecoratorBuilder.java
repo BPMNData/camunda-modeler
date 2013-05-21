@@ -49,7 +49,6 @@ public class ConnectionTextDecoratorBuilder {
 	
 	public ConnectionDecorator build() {
 		ConnectionDecorator decorator = Graphiti.getPeService().createConnectionDecorator(connection, false, 0.0, true);
-//		DataAssociation association = BusinessObjectUtil.getFirstElementOfType(connection, DataAssociation.class);
 		
 		IGaService gaService = Graphiti.getGaService();
 		Text conditionText = gaService.createText(decorator, content);
