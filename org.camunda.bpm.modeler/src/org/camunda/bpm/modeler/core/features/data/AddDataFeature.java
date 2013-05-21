@@ -81,37 +81,39 @@ public abstract class AddDataFeature<T extends ItemAwareElement> extends Abstrac
 		edge.setLineWidth(1);
 		
 		// create (empty) data state shape
-		Shape textShape = createTextShape(newShape, t, 0, getDefaultHeight() * 5 / 8, getDefaultWidth(), 20);
+		Shape textShape = createTextShape(newShape, t, 0, height * 2 / 3, width, 20);
 		peService.setPropertyValue(textShape, Properties.IS_DATA_STATE_SHAPE, Boolean.toString(true));
 		
 		// create primary key shape
-		Shape primaryKeyShape = createTextShape(newShape, t, 0, getDefaultHeight() / 3, getDefaultWidth(), 20, 0.8f);
+		Shape primaryKeyShape = createTextShape(newShape, t, 0, height / 3, width, 20, 0.8f);
 		peService.setPropertyValue(primaryKeyShape, Properties.IS_PRIMARY_KEY_SHAPE, Boolean.toString(true));
 		
 		// create foreign key shape
-		Shape foreignKeyShape = createTextShape(newShape, t, 0, getDefaultHeight() / 2, getDefaultWidth(), 20, 0.8f);
+		Shape foreignKeyShape = createTextShape(newShape, t, 0, height / 2, width, 20, 0.8f);
 		peService.setPropertyValue(foreignKeyShape, Properties.IS_FOREIGN_KEY_SHAPE, Boolean.toString(true));
 		
 		// create operation type shape
-		Shape operationTypeShape = createTextShape(newShape, t, getDefaultWidth() / 2, 2, getDefaultWidth() / 2, 10, 0.8f);
+		Shape operationTypeShape = createTextShape(newShape, t, width / 2, 2, width / 2, 10, 0.8f);
 		peService.setPropertyValue(operationTypeShape, Properties.IS_OPERATION_TYPE_SHAPE, Boolean.toString(true));
 		
 		
 		if (isSupportCollectionMarkers()) {
-			int markerHeight = getDefaultHeight() / 6;
-			int singleMarkerOffset = getDefaultWidth()  / 18;
+			int markerHeight = height / 6;
+			int singleMarkerOffset = width / 18;
 			
 			int whalf = width / 2;
-			createCollectionShape(newShape, new int[] { whalf - singleMarkerOffset, height - markerHeight, whalf - singleMarkerOffset, height });
-			createCollectionShape(newShape, new int[] { whalf, height - markerHeight, whalf, height });
-			createCollectionShape(newShape, new int[] { whalf + singleMarkerOffset, height - markerHeight, whalf + singleMarkerOffset, height });
-
-			String value = "false";
+			int lineWidth = Math.max(width  / 36, 1);
+			
+			Boolean isCollection = new Boolean(false);
 			EStructuralFeature feature = ((EObject)t).eClass().getEStructuralFeature("isCollection");
 			if (feature!=null && t.eGet(feature)!=null)
-				value = ((Boolean)t.eGet(feature)).toString();
+				isCollection = (Boolean)t.eGet(feature);
+			
+			createCollectionShape(newShape, new int[] { whalf - singleMarkerOffset, height - markerHeight, whalf - singleMarkerOffset, height }, lineWidth, isCollection);
+			createCollectionShape(newShape, new int[] { whalf, height - markerHeight, whalf, height }, lineWidth, isCollection);
+			createCollectionShape(newShape, new int[] { whalf + singleMarkerOffset, height - markerHeight, whalf + singleMarkerOffset, height }, lineWidth, isCollection);
 
-			peService.setPropertyValue(newShape, Properties.COLLECTION_PROPERTY, value);
+			peService.setPropertyValue(newShape, Properties.COLLECTION_PROPERTY, isCollection.toString());
 		}
 		
 		return newShape;
@@ -143,16 +145,14 @@ public abstract class AddDataFeature<T extends ItemAwareElement> extends Abstrac
 	}
 	
 	
-	private Shape createCollectionShape(ContainerShape container, int[] xy) {
-		int lineWidth = getDefaultWidth()  / 36;
-		
+	private Shape createCollectionShape(ContainerShape container, int[] xy, int lineWidth, boolean visible) {
 		IPeService peService = Graphiti.getPeService();
 		IGaService gaService = Graphiti.getGaService();
 		Shape collectionShape = peService.createShape(container, false);
 		Polyline line = gaService.createPolyline(collectionShape, xy);
 		line.setForeground(manageColor(StyleUtil.CLASS_FOREGROUND));
 		line.setLineWidth(lineWidth);
-		line.setLineVisible(false);
+		line.setLineVisible(visible);
 		peService.setPropertyValue(collectionShape, Properties.HIDEABLE_PROPERTY, Boolean.toString(true));
 		return collectionShape;
 	}
