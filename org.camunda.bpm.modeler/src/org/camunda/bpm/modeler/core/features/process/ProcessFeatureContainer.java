@@ -7,6 +7,7 @@ import org.eclipse.graphiti.features.IDeleteFeature;
 import org.eclipse.graphiti.features.IDirectEditingFeature;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.IMoveShapeFeature;
+import org.eclipse.graphiti.features.IRemoveFeature;
 import org.eclipse.graphiti.features.IResizeShapeFeature;
 import org.eclipse.graphiti.features.IUpdateFeature;
 
@@ -36,8 +37,7 @@ public class ProcessFeatureContainer extends BaseElementFeatureContainer {
 
 	@Override
 	public IMoveShapeFeature getMoveFeature(IFeatureProvider fp) {
-		// TODO Auto-generated method stub
-		return null;
+		return new NullFeature();
 	}
 
 	@Override
@@ -48,8 +48,12 @@ public class ProcessFeatureContainer extends BaseElementFeatureContainer {
 
 	@Override
 	public IDeleteFeature getDeleteFeature(IFeatureProvider fp) {
-		// TODO Auto-generated method stub
-		return null;
+		return new NullFeature();
+	}
+	
+	@Override
+	public IRemoveFeature getRemoveFeature(IFeatureProvider fp) {
+		return new NullFeature();
 	}
 
 }

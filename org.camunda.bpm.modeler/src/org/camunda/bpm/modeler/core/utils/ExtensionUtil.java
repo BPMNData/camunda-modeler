@@ -10,7 +10,6 @@ import org.camunda.bpm.modeler.core.model.Bpmn2ModelerFactory;
 import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.Bpmn2Factory;
 import org.eclipse.bpmn2.Collaboration;
-import org.eclipse.bpmn2.DataAssociation;
 import org.eclipse.bpmn2.Definitions;
 import org.eclipse.bpmn2.ExtensionAttributeValue;
 import org.eclipse.bpmn2.Participant;
@@ -156,7 +155,7 @@ public class ExtensionUtil {
             return null;
         } else {
             if (extensions.size() > 1) {
-                Logger.getGlobal().warning(
+                Logger.getAnonymousLogger().warning(
                         "Expected at max. 1 extension, found "
                                 + extensions.size());
             }
