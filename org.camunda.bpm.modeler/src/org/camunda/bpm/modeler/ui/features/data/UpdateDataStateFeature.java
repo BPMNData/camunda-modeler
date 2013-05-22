@@ -15,71 +15,81 @@ import org.eclipse.graphiti.mm.pictograms.Shape;
 
 public class UpdateDataStateFeature extends AbstractUpdateFeature {
 
-	public UpdateDataStateFeature(IFeatureProvider fp) {
-		super(fp);
-	}
+    public UpdateDataStateFeature(IFeatureProvider fp) {
+        super(fp);
+    }
 
-	@Override
-	public boolean canUpdate(IUpdateContext context) {
-		Object o = getBusinessObjectForPictogramElement(context.getPictogramElement());
-		return o != null && o instanceof ItemAwareElement;
-	}
+    @Override
+    public boolean canUpdate(IUpdateContext context) {
+        Object o = getBusinessObjectForPictogramElement(context
+                .getPictogramElement());
+        return o != null && o instanceof ItemAwareElement;
+    }
 
-	@Override
-	public IReason updateNeeded(IUpdateContext context) {
-		ContainerShape container = (ContainerShape) context.getPictogramElement();
-		ItemAwareElement itemAwareElement = (ItemAwareElement) getBusinessObjectForPictogramElement(container);
-		
-		DataState dataState = itemAwareElement.getDataState();
-		String previouslyDisplayedState = null;
-		
-		Shape dataStateShape = FeatureSupport.getChildShapeFulfillingProperty(context, Properties.IS_DATA_STATE_SHAPE, Boolean.toString(true));
-		if (dataStateShape != null) {
-			Text dataStateShapeText = (Text) dataStateShape.getGraphicsAlgorithm();
-			previouslyDisplayedState = dataStateShapeText.getValue();
-		}
-		
-		if (dataState == null) {
-			return previouslyDisplayedState != null ? Reason.createTrueReason() : Reason.createFalseReason();
-		} else if (previouslyDisplayedState == null) {
-			return Reason.createTrueReason();
-		}
-		
-		if (previouslyDisplayedState.equals(dataState.getName())) {
-			return Reason.createFalseReason();
-		} else {
-			return Reason.createTrueReason();
-		}
-	}
+    @Override
+    public IReason updateNeeded(IUpdateContext context) {
+        ContainerShape container = (ContainerShape) context
+                .getPictogramElement();
+        ItemAwareElement itemAwareElement = (ItemAwareElement) getBusinessObjectForPictogramElement(container);
 
-	@Override
-	public boolean update(IUpdateContext context) {
-		
-		ContainerShape container = (ContainerShape) context.getPictogramElement();
-		ItemAwareElement itemAwareElement = (ItemAwareElement) getBusinessObjectForPictogramElement(container);
+        DataState dataState = itemAwareElement.getDataState();
+        String newDisplayedState = toString(dataState);
 
-		DataState dataState = itemAwareElement.getDataState();
-		if (dataState == null) {
-			setDataStateText(context, "");
-		} else {
-			setDataStateText(context, dataState.getName());
-		}
+        String previouslyDisplayedState = null;
+        Shape dataStateShape = FeatureSupport
+                .getChildShapeFulfillingProperty(context,
+                        Properties.IS_DATA_STATE_SHAPE, Boolean.toString(true));
+        if (dataStateShape != null) {
+            Text dataStateShapeText = (Text) dataStateShape
+                    .getGraphicsAlgorithm();
+            previouslyDisplayedState = dataStateShapeText.getValue();
+        }
 
-		return true;
-	}
-	
-	/**
-	 * Set the value for the first child shape that has {@link Properties}.IS_DATA_STATE_TEXT set.
-	 * @param container
-	 * @param value
-	 */
-	private void setDataStateText(IUpdateContext context, String value) {
-		Shape dataStateTextShape = FeatureSupport.getChildShapeFulfillingProperty(context, Properties.IS_DATA_STATE_SHAPE, Boolean.toString(true));
-		
-		if (dataStateTextShape != null) {
-			Text textGa = (Text) dataStateTextShape.getGraphicsAlgorithm();
-			textGa.setValue(value);
-		}
-	}
+        if (dataState == null) {
+            return previouslyDisplayedState != null ? Reason.createTrueReason()
+                    : Reason.createFalseReason();
+        } else if (previouslyDisplayedState == null) {
+            return Reason.createTrueReason();
+        } else if (previouslyDisplayedState.equals(newDisplayedState)) {
+            return Reason.createFalseReason();
+        } else {
+            return Reason.createTrueReason();
+        }
+    }
+
+    @Override
+    public boolean update(IUpdateContext context) {
+
+        ContainerShape container = (ContainerShape) context
+                .getPictogramElement();
+        ItemAwareElement itemAwareElement = (ItemAwareElement) getBusinessObjectForPictogramElement(container);
+        setDataStateText(context, toString(itemAwareElement.getDataState()));
+
+        return true;
+    }
+
+    private String toString(DataState dataState) {
+        if (dataState == null || dataState.getName().isEmpty())
+            return "";
+        return "[" + dataState.getName() + "]";
+    }
+
+    /**
+     * Set the value for the first child shape that has {@link Properties}
+     * .IS_DATA_STATE_TEXT set.
+     * 
+     * @param container
+     * @param value
+     */
+    private void setDataStateText(IUpdateContext context, String value) {
+        Shape dataStateTextShape = FeatureSupport
+                .getChildShapeFulfillingProperty(context,
+                        Properties.IS_DATA_STATE_SHAPE, Boolean.toString(true));
+
+        if (dataStateTextShape != null) {
+            Text textGa = (Text) dataStateTextShape.getGraphicsAlgorithm();
+            textGa.setValue(value);
+        }
+    }
 
 }

@@ -11,6 +11,9 @@ import org.camunda.bpm.modeler.runtime.engine.model.bpt.ScopeInformation;
 import org.camunda.bpm.modeler.ui.property.tabs.binding.ModelTextBinding;
 import org.camunda.bpm.modeler.ui.property.tabs.util.PropertyUtil;
 import org.eclipse.bpmn2.BaseElement;
+import org.eclipse.bpmn2.Participant;
+import org.eclipse.bpmn2.Process;
+import org.eclipse.bpmn2.SubProcess;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.transaction.RecordingCommand;
@@ -20,26 +23,51 @@ import org.eclipse.graphiti.ui.platform.GFPropertySection;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-public class ScopeInformationPropertiesBuilder extends AbstractPropertiesBuilder<BaseElement> {
+public class ScopeInformationPropertiesBuilder extends
+        AbstractPropertiesBuilder<BaseElement> {
 
-	 private static final EStructuralFeature SCOPE_INFORMATION_FEATURE = BptPackage.eINSTANCE
-	            .getDocumentRoot_ScopeInformation();
-	
-	public ScopeInformationPropertiesBuilder(Composite parent,
-			GFPropertySection section, BaseElement bo) {
-		super(parent, section, bo);
-	}
+    private static final EStructuralFeature SCOPE_INFORMATION_FEATURE = BptPackage.eINSTANCE
+            .getDocumentRoot_ScopeInformation();
+    
+    protected BaseElement process;
 
-	@Override
-	public void create() {
-		Text caseObjectText = PropertyUtil.createUnboundText(section, parent,
+    public ScopeInformationPropertiesBuilder(Composite parent,
+            GFPropertySection section, BaseElement bo) {
+        super(parent, section, bo);
+        this.process = getProcess(bo);
+    }
+
+    @Override
+    public void create() {
+        Text caseObjectText = PropertyUtil.createUnboundText(section, parent,
                 "Case Object");
-		CaseObjectNameTextBinding primaryKeyFieldBinding = new CaseObjectNameTextBinding(
-                bo, SCOPE_INFORMATION_FEATURE, caseObjectText);
+        CaseObjectNameTextBinding primaryKeyFieldBinding = new CaseObjectNameTextBinding(
+                process, SCOPE_INFORMATION_FEATURE, caseObjectText);
         primaryKeyFieldBinding.establish();
-	}
-	
-	private class CaseObjectNameTextBinding extends ModelTextBinding<String> {
+    }
+
+    /**
+     * We use this PropertyBuilder in the context for different business
+     * objects. If this BO is pool, we need to find the appropriate process
+     * for the pool here.<br>
+     * <i>Note: As {@link SubProcess} and {@link Process} are not in a
+     * direct hierarchy, we need to return a {@link BaseElement} as the most
+     * specific common ancestor.</i>
+     */
+    private BaseElement getProcess(BaseElement bo) {
+        if (bo instanceof Process)
+            return bo;
+        if (bo instanceof SubProcess)
+            return bo;
+        if (bo instanceof Participant) {
+            Participant participant = (Participant) bo;
+            return participant.getProcessRef();
+        }
+        throw new IllegalArgumentException(
+                "Unexpected business object type: " + bo.getClass());
+    }
+
+    private class CaseObjectNameTextBinding extends ModelTextBinding<String> {
 
         public CaseObjectNameTextBinding(EObject model,
                 EStructuralFeature feature, Text control) {
@@ -66,44 +94,50 @@ public class ScopeInformationPropertiesBuilder extends AbstractPropertiesBuilder
 
         @Override
         public String getModelValue() {
-        	List<ScopeInformation> scopeInformationCollection = ExtensionUtil.getExtensions(bo, ScopeInformation.class);
-        	if (scopeInformationCollection.size() == 0) {
-        		return null;
-        	} else {
-        		return scopeInformationCollection.get(0).getCaseObject();
-        	}
-//            return (String) ExtensionUtil.getExtension(bo, SCOPE_INFORMATION_FEATURE);
-//                    "caseObject");
+            List<ScopeInformation> scopeInformationCollection = ExtensionUtil
+                    .getExtensions(process, ScopeInformation.class);
+            if (scopeInformationCollection.size() == 0) {
+                return null;
+            } else {
+                return scopeInformationCollection.get(0).getCaseObject();
+            }
+            // return (String) ExtensionUtil.getExtension(bo,
+            // SCOPE_INFORMATION_FEATURE);
+            // "caseObject");
         }
 
         @Override
         public void setModelValue(String value) {
             TransactionalEditingDomain domain = TransactionUtil
-                    .getEditingDomain(bo);
+                    .getEditingDomain(process);
             domain.getCommandStack().execute(
                     new UpdateScopeInformationCommand(domain, value));
         }
     }
 
     protected void updateCaseObject(String caseObjectName) {
-        List<ScopeInformation> scopeInformationCollection = ExtensionUtil.getExtensions(bo,
-                ScopeInformation.class);
+        List<ScopeInformation> scopeInformationCollection = ExtensionUtil
+                .getExtensions(process, ScopeInformation.class);
         if (scopeInformationCollection.size() > 1)
             Logger.getAnonymousLogger().warning(
-                    "There is more than one scope information element defined for " + bo);
+                    "There is more than one scope information element defined for "
+                            + process);
 
-        ScopeInformation scopeInformation = scopeInformationCollection.isEmpty() ? 
-        		BptFactory.eINSTANCE.createScopeInformation() : scopeInformationCollection.get(0);
-        if (scopeInformation.getId() == null || scopeInformation.getId().isEmpty()) {
-        	scopeInformation.setId("si-" + UUID.randomUUID());
+        ScopeInformation scopeInformation = scopeInformationCollection
+                .isEmpty() ? BptFactory.eINSTANCE.createScopeInformation()
+                : scopeInformationCollection.get(0);
+        if (scopeInformation.getId() == null
+                || scopeInformation.getId().isEmpty()) {
+            scopeInformation.setId("si-" + UUID.randomUUID());
         }
-		
-		scopeInformation.setCaseObject(caseObjectName);
-        ExtensionUtil.updateExtension(bo, SCOPE_INFORMATION_FEATURE, scopeInformation);
+
+        scopeInformation.setCaseObject(caseObjectName);
+        ExtensionUtil.updateExtension(process, SCOPE_INFORMATION_FEATURE,
+                scopeInformation);
     }
 
     protected void removeScopeInformation() {
-        ExtensionUtil.removeExtensionByFeature(bo, SCOPE_INFORMATION_FEATURE);
+        ExtensionUtil.removeExtensionByFeature(process, SCOPE_INFORMATION_FEATURE);
     }
 
     /**
@@ -122,9 +156,9 @@ public class ScopeInformationPropertiesBuilder extends AbstractPropertiesBuilder
         @Override
         protected void doExecute() {
             if (newValue == null || newValue.trim().isEmpty()) {
-            	removeScopeInformation();
+                removeScopeInformation();
             } else {
-            	updateCaseObject(newValue);
+                updateCaseObject(newValue);
             }
         }
     }

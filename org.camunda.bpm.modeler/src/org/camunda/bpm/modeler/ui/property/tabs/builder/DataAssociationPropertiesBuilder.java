@@ -1,6 +1,7 @@
 package org.camunda.bpm.modeler.ui.property.tabs.builder;
 
 import org.camunda.bpm.modeler.core.utils.ExtensionUtil;
+import org.camunda.bpm.modeler.core.utils.ModelUtil;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptFactory;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.Cardinality;
@@ -144,7 +145,11 @@ public class DataAssociationPropertiesBuilder extends
         }
 
         protected void updateExtension(String updateValue) {
-            T extension = extensionAdapter.create();
+            T extension = ExtensionUtil.getExtension(bo, feature);
+            if (extension == null) {
+                   extension = extensionAdapter.create();
+                   ModelUtil.setID(extension);
+            }
             extensionAdapter.setValue(extension, updateValue);
             ExtensionUtil.updateExtension(bo, feature, extension);
         }
