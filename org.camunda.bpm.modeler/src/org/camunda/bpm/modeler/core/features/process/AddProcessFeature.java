@@ -65,7 +65,7 @@ public class AddProcessFeature extends AbstractAddBpmnElementFeature<Process, Co
 	    text.setWidth(textDimensions.getWidth());
 	    text.setValue(caseObject);
 	    shape.setVisible(true);
-	    gaService.setLocationAndSize(text, CASE_OBJECT_OFFSET, 0, 100, 50);
+	    gaService.setLocation(text, CASE_OBJECT_OFFSET, 0);
 	    
 	    peService.setPropertyValue(shape, Properties.IS_CASE_OBJECT_SHAPE, Boolean.toString(true));
 		
