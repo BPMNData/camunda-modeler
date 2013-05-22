@@ -31,14 +31,15 @@ import org.camunda.bpm.modeler.core.importer.handlers.GatewayShapeHandler;
 import org.camunda.bpm.modeler.core.importer.handlers.LaneShapeHandler;
 import org.camunda.bpm.modeler.core.importer.handlers.MessageFlowShapeHandler;
 import org.camunda.bpm.modeler.core.importer.handlers.ParticipantShapeHandler;
+import org.camunda.bpm.modeler.core.importer.handlers.ProcessHandler;
 import org.camunda.bpm.modeler.core.importer.handlers.SequenceFlowHandler;
 import org.camunda.bpm.modeler.core.importer.handlers.SubProcessShapeHandler;
 import org.camunda.bpm.modeler.core.importer.handlers.TaskShapeHandler;
 import org.camunda.bpm.modeler.core.importer.util.ErrorLogger;
 import org.camunda.bpm.modeler.core.importer.util.ModelHelper;
 import org.camunda.bpm.modeler.core.layout.util.ConversionUtil;
-import org.camunda.bpm.modeler.core.layout.util.LayoutUtil;
 import org.camunda.bpm.modeler.core.preferences.Bpmn2Preferences;
+import org.camunda.bpm.modeler.core.utils.FeatureSupport;
 import org.camunda.bpm.modeler.core.utils.ModelUtil;
 import org.camunda.bpm.modeler.core.utils.ScrollUtil;
 import org.eclipse.bpmn2.Activity;
@@ -85,7 +86,10 @@ import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
 import org.eclipse.emf.ecore.xmi.XMIException;
 import org.eclipse.graphiti.datatypes.IRectangle;
 import org.eclipse.graphiti.dt.IDiagramTypeProvider;
+import org.eclipse.graphiti.features.IAddFeature;
 import org.eclipse.graphiti.features.IFeatureProvider;
+import org.eclipse.graphiti.features.context.impl.AddContext;
+import org.eclipse.graphiti.features.context.impl.AreaContext;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
@@ -520,6 +524,8 @@ public class ModelImport {
 	}
 
 	protected void handleProcess(Process process, ContainerShape container) {
+//		handleDiagramElement(process, container, new ProcessHandler(this));
+		FeatureSupport.triggerAddFeature(container, process, featureProvider);
 		
 		// handle direct children of the process element (not displaying lanes)
 		List<FlowElement> flowElements = process.getFlowElements();

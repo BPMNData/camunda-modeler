@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.camunda.bpm.modeler.core.features.DefaultDeleteBPMNShapeFeature;
 import org.camunda.bpm.modeler.core.utils.BusinessObjectUtil;
+import org.camunda.bpm.modeler.core.utils.FeatureSupport;
 import org.camunda.bpm.modeler.core.utils.ModelUtil;
 import org.camunda.bpm.modeler.ui.features.choreography.ChoreographyUtil;
 import org.eclipse.bpmn2.Bpmn2Factory;
@@ -104,6 +105,9 @@ public class DeleteParticipantFeature extends DefaultDeleteBPMNShapeFeature {
 					newDiagram.setPlane(newPlane);
 					
 					link(getDiagram(), new Object[] { newProcess, newDiagram }); // we need to relink, the old diagram is gone
+					
+					// trigger the process add feature manually
+					FeatureSupport.triggerAddFeature(getDiagram(), newProcess, getFeatureProvider());
 				} else {
 					throw new IllegalStateException(
 							"Unable to handle multiple collaborations diagrams.s");

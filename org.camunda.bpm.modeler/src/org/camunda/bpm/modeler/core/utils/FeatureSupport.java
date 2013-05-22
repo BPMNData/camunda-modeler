@@ -45,6 +45,7 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.graphiti.datatypes.ILocation;
 import org.eclipse.graphiti.datatypes.IRectangle;
+import org.eclipse.graphiti.features.IAddFeature;
 import org.eclipse.graphiti.features.IFeature;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.IMoveShapeFeature;
@@ -52,6 +53,8 @@ import org.eclipse.graphiti.features.context.IContext;
 import org.eclipse.graphiti.features.context.IMoveShapeContext;
 import org.eclipse.graphiti.features.context.IPictogramElementContext;
 import org.eclipse.graphiti.features.context.ITargetContext;
+import org.eclipse.graphiti.features.context.impl.AddContext;
+import org.eclipse.graphiti.features.context.impl.AreaContext;
 import org.eclipse.graphiti.features.context.impl.MoveShapeContext;
 import org.eclipse.graphiti.mm.algorithms.AbstractText;
 import org.eclipse.graphiti.mm.algorithms.GraphicsAlgorithm;
@@ -1048,6 +1051,17 @@ public class FeatureSupport {
 				.getMoveShapeFeature(moveContext);
 
 		executeFeature(moveShapeFeature, moveContext);
+	}
+	
+	public static void triggerAddFeature(ContainerShape container, BaseElement element, IFeatureProvider featureProvider) {
+		AddContext context = new AddContext(new AreaContext(), element);
+		context.setTargetContainer(container);
+		IAddFeature addFeature = featureProvider.getAddFeature(context);
+//		if (addFeature.canAdd(context)) {
+//			addFeature.add(context);
+//		}
+		
+		executeFeature(addFeature, context);
 	}
 
 	public static boolean isBpmn20Shape(EObject element) {

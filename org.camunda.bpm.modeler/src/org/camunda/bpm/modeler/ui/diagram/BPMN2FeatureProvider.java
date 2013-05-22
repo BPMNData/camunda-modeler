@@ -28,6 +28,7 @@ import org.camunda.bpm.modeler.core.features.bendpoint.RemoveBendpointFeature;
 import org.camunda.bpm.modeler.core.features.container.ConnectionFeatureContainer;
 import org.camunda.bpm.modeler.core.features.container.FeatureContainer;
 import org.camunda.bpm.modeler.core.features.flow.AbstractCreateFlowFeature;
+import org.camunda.bpm.modeler.core.features.process.ProcessFeatureContainer;
 import org.camunda.bpm.modeler.core.layout.util.LayoutUtil;
 import org.camunda.bpm.modeler.core.utils.BusinessObjectUtil;
 import org.camunda.bpm.modeler.ui.features.activity.subprocess.AdHocSubProcessFeatureContainer;
@@ -36,6 +37,7 @@ import org.camunda.bpm.modeler.ui.features.activity.subprocess.SubProcessFeature
 import org.camunda.bpm.modeler.ui.features.activity.subprocess.TransactionFeatureContainer;
 import org.camunda.bpm.modeler.ui.features.activity.task.BusinessRuleTaskFeatureContainer;
 import org.camunda.bpm.modeler.ui.features.activity.task.CustomTaskFeatureContainer;
+import org.camunda.bpm.modeler.ui.features.activity.task.CustomTaskFeatureContainer.CreateCustomTaskFeature;
 import org.camunda.bpm.modeler.ui.features.activity.task.ManualTaskFeatureContainer;
 import org.camunda.bpm.modeler.ui.features.activity.task.ReceiveTaskFeatureContainer;
 import org.camunda.bpm.modeler.ui.features.activity.task.ScriptTaskFeatureContainer;
@@ -43,7 +45,6 @@ import org.camunda.bpm.modeler.ui.features.activity.task.SendTaskFeatureContaine
 import org.camunda.bpm.modeler.ui.features.activity.task.ServiceTaskFeatureContainer;
 import org.camunda.bpm.modeler.ui.features.activity.task.TaskFeatureContainer;
 import org.camunda.bpm.modeler.ui.features.activity.task.UserTaskFeatureContainer;
-import org.camunda.bpm.modeler.ui.features.activity.task.CustomTaskFeatureContainer.CreateCustomTaskFeature;
 import org.camunda.bpm.modeler.ui.features.artifact.GroupFeatureContainer;
 import org.camunda.bpm.modeler.ui.features.artifact.TextAnnotationFeatureContainer;
 import org.camunda.bpm.modeler.ui.features.choreography.CallChoreographyFeatureContainer;
@@ -199,6 +200,7 @@ public class BPMN2FeatureProvider extends DefaultFeatureProvider {
 		containers.add(new TextAnnotationFeatureContainer());
 		containers.add(new ChoreographyMessageLinkFeatureContainer());
 		containers.add(new LabelFeatureContainer());
+		containers.add(new ProcessFeatureContainer());
 
 		updateFeatureLists();
 	}
