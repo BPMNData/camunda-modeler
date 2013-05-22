@@ -12,7 +12,7 @@ import org.eclipse.graphiti.features.IReason;
 import org.eclipse.graphiti.features.context.IUpdateContext;
 import org.eclipse.graphiti.features.impl.AbstractUpdateFeature;
 import org.eclipse.graphiti.features.impl.Reason;
-import org.eclipse.graphiti.mm.algorithms.Text;
+import org.eclipse.graphiti.mm.algorithms.AbstractText;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 
@@ -55,7 +55,7 @@ public class UpdateDataObjectForeignKeyFeature extends AbstractUpdateFeature {
 		
 		Shape foreignKeyShape = FeatureSupport.getChildShapeFulfillingProperty(context, Properties.IS_FOREIGN_KEY_SHAPE, Boolean.toString(true));
 		if (foreignKeyShape != null) {
-			Text foreignKeysShapeText = (Text) foreignKeyShape.getGraphicsAlgorithm();
+		    AbstractText foreignKeysShapeText = (AbstractText) foreignKeyShape.getGraphicsAlgorithm();
 			String regex = FOREIGN_KEY_PREFIX + "(.*)";
 			previouslyDisplayedKeys = foreignKeysShapeText.getValue().replaceAll(regex, "$1");
 		}
@@ -92,7 +92,7 @@ public class UpdateDataObjectForeignKeyFeature extends AbstractUpdateFeature {
 		Shape foreignKeysTextShape = FeatureSupport.getChildShapeFulfillingProperty(context, Properties.IS_FOREIGN_KEY_SHAPE, Boolean.toString(true));
 		
 		if (foreignKeysTextShape != null) {
-			Text textGa = (Text) foreignKeysTextShape.getGraphicsAlgorithm();
+		    AbstractText textGa = (AbstractText) foreignKeysTextShape.getGraphicsAlgorithm();
 			textGa.setValue(value);
 		}
 	}

@@ -12,6 +12,7 @@ import org.eclipse.graphiti.features.IReason;
 import org.eclipse.graphiti.features.context.IUpdateContext;
 import org.eclipse.graphiti.features.impl.AbstractUpdateFeature;
 import org.eclipse.graphiti.features.impl.Reason;
+import org.eclipse.graphiti.mm.algorithms.AbstractText;
 import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Shape;
@@ -42,7 +43,7 @@ public class UpdateDataObjectOperationTypeFeature extends AbstractUpdateFeature 
 		
 		Shape primaryKeyShape = FeatureSupport.getChildShapeFulfillingProperty(context, Properties.IS_OPERATION_TYPE_SHAPE, Boolean.toString(true));
 		if (primaryKeyShape != null) {
-			Text dataStateShapeText = (Text) primaryKeyShape.getGraphicsAlgorithm();
+		    AbstractText dataStateShapeText = (AbstractText) primaryKeyShape.getGraphicsAlgorithm();
 			previouslyDisplayedValue = dataStateShapeText.getValue();
 		}
 		
