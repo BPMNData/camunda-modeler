@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.logging.Logger;
 
 import org.camunda.bpm.modeler.core.model.Bpmn2ModelerFactory;
 import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.Bpmn2Factory;
 import org.eclipse.bpmn2.Collaboration;
+import org.eclipse.bpmn2.DataAssociation;
 import org.eclipse.bpmn2.Definitions;
 import org.eclipse.bpmn2.ExtensionAttributeValue;
 import org.eclipse.bpmn2.Participant;
@@ -117,6 +119,52 @@ public class ExtensionUtil {
     }
 
     /**
+     * Returns the extensions of a given type from the specified object
+     * 
+     * @param object
+     * @param cls
+     * 
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> List<T> getExtensions(BaseElement baseElement,
+            EStructuralFeature feature) {
+        List<T> results = new ArrayList<T>();
+
+        List<ExtensionAttributeValue> extensionValues = baseElement
+                .getExtensionValues();
+        for (ExtensionAttributeValue value : extensionValues) {
+            FeatureMap featureMap = value.getValue();
+            for (Entry e : featureMap) {
+                if (feature.equals(e.getEStructuralFeature())) {
+                    results.add((T) e.getValue());
+                }
+            }
+        }
+
+        return results;
+    }
+
+    /**
+     * Returns the extension specified by the given feature. If no such
+     * extension exists, <code>null</code> is returned.
+     */
+    public static <T> T getExtension(BaseElement baseElement,
+            EStructuralFeature feature) {
+        List<T> extensions = getExtensions(baseElement, feature);
+        if (extensions.isEmpty()) {
+            return null;
+        } else {
+            if (extensions.size() > 1) {
+                Logger.getGlobal().warning(
+                        "Expected at max. 1 extension, found "
+                                + extensions.size());
+            }
+            return extensions.get(0);
+        }
+    }
+
+    /**
      * Adds the extension value at the given feature to the object. Permits
      * multiple extensions of the same type.
      * 
@@ -169,7 +217,7 @@ public class ExtensionUtil {
                 }
             }
         }
-        
+
         enforceNotification(getExtensionAttributeValues(object));
     }
 
@@ -197,7 +245,7 @@ public class ExtensionUtil {
                 }
             }
         }
-        
+
         enforceNotification(extensionAttributesList);
     }
 
@@ -310,19 +358,21 @@ public class ExtensionUtil {
      * the business object, eventually causing Graphiti to not receive the
      * changed objects. With this method, we enforce such a notification.
      * 
-     * @param extensionElements the extension elements of the business object
+     * @param extensionElements
+     *            the extension elements of the business object
      */
     private static void enforceNotification(
             List<ExtensionAttributeValue> extensionElements) {
         extensionElements.add(createExtensionAttributeValue());
         extensionElements.remove(extensionElements.size() - 1);
     }
-    
+
     public static void enforceNotification(EObject bo) {
-    	enforceNotification(getExtensionAttributeValues(bo));
+        enforceNotification(getExtensionAttributeValues(bo));
     }
 
     protected static ExtensionAttributeValue createExtensionAttributeValue() {
         return Bpmn2Factory.eINSTANCE.createExtensionAttributeValue();
     }
+
 }
