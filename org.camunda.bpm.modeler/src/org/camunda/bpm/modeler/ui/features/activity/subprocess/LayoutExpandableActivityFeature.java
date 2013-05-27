@@ -14,6 +14,7 @@ package org.camunda.bpm.modeler.ui.features.activity.subprocess;
 
 import org.camunda.bpm.modeler.core.ModelHandler;
 import org.camunda.bpm.modeler.core.features.activity.LayoutActivityFeature;
+import org.camunda.bpm.modeler.core.features.process.Properties;
 import org.camunda.bpm.modeler.core.utils.BusinessObjectUtil;
 import org.camunda.bpm.modeler.core.utils.FeatureSupport;
 import org.camunda.bpm.modeler.core.utils.GraphicsUtil;
@@ -26,37 +27,65 @@ import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
+import org.eclipse.graphiti.services.IPeService;
 
 public class LayoutExpandableActivityFeature extends LayoutActivityFeature {
 
-	public LayoutExpandableActivityFeature(IFeatureProvider fp) {
-		super(fp);
-	}
+    public LayoutExpandableActivityFeature(IFeatureProvider fp) {
+        super(fp);
+    }
 
-	@Override
-	protected void layoutLabel(ContainerShape container, Shape labelShape, IRectangle bounds) {
+    @Override
+    protected void layoutLabel(ContainerShape container, Shape labelShape,
+            IRectangle bounds) {
 
-		Text text = (Text) labelShape.getGraphicsAlgorithm();
+        IPeService peService = Graphiti.getPeService();
+        Text text = (Text) labelShape.getGraphicsAlgorithm();
+        
+        String isTitleProperty = peService
+                .getPropertyValue(
+                        labelShape,
+                        AbstractExpandableActivityFeatureContainer.IS_TITLE_SHAPE_PROPERTY_KEY);
+        if (Boolean.parseBoolean(isTitleProperty)) {
 
-		int padding = 5;
-		
-		int width = bounds.getWidth() - padding;
-		int height = Math.min(GraphicsUtil.getLabelHeight(text), bounds.getHeight() - padding);
-		
-		Graphiti.getGaService().setLocationAndSize(text, padding, padding, width, height);
-	}
-	
-	@Override
-	public boolean layout(ILayoutContext context) {
-		
-		ContainerShape containerShape = (ContainerShape) context.getPictogramElement();
-		Activity activity = BusinessObjectUtil.getFirstElementOfType(containerShape, Activity.class);
-		
-		BPMNShape shape = (BPMNShape) ModelHandler.findDIElement(getDiagram(), activity);
-		
-		boolean expanded = shape.isIsExpanded();
-		FeatureSupport.setContainerChildrenVisible(containerShape, expanded);
-		
-		return super.layout(context);
-	}
+            int padding = 5;
+
+            int width = bounds.getWidth() - padding;
+            int height = Math.min(GraphicsUtil.getLabelHeight(text),
+                    bounds.getHeight() - padding);
+
+            Graphiti.getGaService().setLocationAndSize(text, padding, padding,
+                    width, height);
+        }
+        
+        String isCaseObjectProperty = peService.getPropertyValue(labelShape, Properties.IS_CASE_OBJECT_SHAPE);
+        if (Boolean.parseBoolean(isCaseObjectProperty)) {
+            
+            int padding = 5;
+            
+            int width = bounds.getWidth() - padding;
+            int height = Math.min(GraphicsUtil.getLabelHeight(text),
+                    bounds.getHeight() - padding);
+            
+            Graphiti.getGaService().setLocationAndSize(text, padding, padding + height,
+                    width, height);
+        }
+    }
+
+    @Override
+    public boolean layout(ILayoutContext context) {
+
+        ContainerShape containerShape = (ContainerShape) context
+                .getPictogramElement();
+        Activity activity = BusinessObjectUtil.getFirstElementOfType(
+                containerShape, Activity.class);
+
+        BPMNShape shape = (BPMNShape) ModelHandler.findDIElement(getDiagram(),
+                activity);
+
+        boolean expanded = shape.isIsExpanded();
+        FeatureSupport.setContainerChildrenVisible(containerShape, expanded);
+
+        return super.layout(context);
+    }
 }
