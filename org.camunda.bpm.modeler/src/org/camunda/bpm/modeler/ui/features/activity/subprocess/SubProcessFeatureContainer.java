@@ -14,6 +14,7 @@ package org.camunda.bpm.modeler.ui.features.activity.subprocess;
 
 import org.camunda.bpm.modeler.core.features.MultiUpdateFeature;
 import org.camunda.bpm.modeler.core.features.activity.AbstractCreateExpandableFlowNodeFeature;
+import org.camunda.bpm.modeler.core.features.process.UpdateCaseObjectFeature;
 import org.camunda.bpm.modeler.ui.ImageProvider;
 import org.eclipse.bpmn2.AdHocSubProcess;
 import org.eclipse.bpmn2.Bpmn2Package;
@@ -50,6 +51,7 @@ public class SubProcessFeatureContainer extends AbstractExpandableActivityFeatur
 		MultiUpdateFeature multiUpdate = super.getUpdateFeature(fp);
 		UpdateExpandableActivityFeature updateFeature = new UpdateExpandableActivityFeature(fp);
 		multiUpdate.addUpdateFeature(updateFeature);
+		multiUpdate.addUpdateFeature(new UpdateCaseObjectFeature(fp));
 		return multiUpdate;
 	}
 

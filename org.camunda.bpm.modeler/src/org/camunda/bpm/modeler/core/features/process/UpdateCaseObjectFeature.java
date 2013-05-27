@@ -3,7 +3,9 @@ package org.camunda.bpm.modeler.core.features.process;
 import org.camunda.bpm.modeler.core.utils.ExtensionUtil;
 import org.camunda.bpm.modeler.core.utils.FeatureSupport;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage;
+import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.Process;
+import org.eclipse.bpmn2.SubProcess;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.IReason;
@@ -11,9 +13,8 @@ import org.eclipse.graphiti.features.context.IUpdateContext;
 import org.eclipse.graphiti.features.impl.AbstractUpdateFeature;
 import org.eclipse.graphiti.features.impl.Reason;
 import org.eclipse.graphiti.mm.algorithms.Text;
-import org.eclipse.graphiti.mm.pictograms.ContainerShape;
+import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
-import org.eclipse.graphiti.services.Graphiti;
 
 public class UpdateCaseObjectFeature extends AbstractUpdateFeature {
 
@@ -27,27 +28,28 @@ public class UpdateCaseObjectFeature extends AbstractUpdateFeature {
 	@Override
 	public boolean canUpdate(IUpdateContext context) {
 		Object o = getBusinessObjectForPictogramElement(context.getPictogramElement());
-		return o != null && o instanceof Process;
+		return o != null && (o instanceof Process || o instanceof SubProcess);
 	}
 
 	@Override
 	public IReason updateNeeded(IUpdateContext context) {
-		ContainerShape container = (ContainerShape) context.getPictogramElement();
-		Process process = (Process) getBusinessObjectForPictogramElement(container);
+		Shape container = (Shape) context.getPictogramElement();
+		BaseElement process = (BaseElement) getBusinessObjectForPictogramElement(container);
 
 		String caseObject = (String) ExtensionUtil.getExtension(process, SCOPE_INFORMATION_FEATURE, CASE_OBJECT_ATTRIBUTE);
 		String previouslyDisplayedCaseObject = null;
 		
 		Shape caseObjectShape = FeatureSupport.getChildShapeFulfillingProperty(context, Properties.IS_CASE_OBJECT_SHAPE, Boolean.toString(true));
 		
-		if (caseObjectShape != null) {
-			Text caseObjectShapeText = (Text) caseObjectShape.getGraphicsAlgorithm();
-			previouslyDisplayedCaseObject = caseObjectShapeText.getValue();
+		if (caseObjectShape == null) {
+		    return Reason.createFalseReason();
 		}
+		Text caseObjectShapeText = (Text) caseObjectShape.getGraphicsAlgorithm();
+		previouslyDisplayedCaseObject = caseObjectShapeText.getValue();
 		
 		if (caseObject == null) {
-			return previouslyDisplayedCaseObject != null ? Reason.createTrueReason() : Reason.createFalseReason();
-		} else if (previouslyDisplayedCaseObject == null) {
+			return previouslyDisplayedCaseObject != null && !previouslyDisplayedCaseObject.isEmpty() ? Reason.createTrueReason() : Reason.createFalseReason();
+		} else if (previouslyDisplayedCaseObject == null || previouslyDisplayedCaseObject.isEmpty()) {
 			return Reason.createTrueReason();
 		}
 		
@@ -60,8 +62,8 @@ public class UpdateCaseObjectFeature extends AbstractUpdateFeature {
 
 	@Override
 	public boolean update(IUpdateContext context) {
-		ContainerShape container = (ContainerShape) context.getPictogramElement();
-		Process process = (Process) getBusinessObjectForPictogramElement(container);
+		PictogramElement pe = context.getPictogramElement();
+		BaseElement process = (BaseElement) getBusinessObjectForPictogramElement(pe);
 
 		String currentCaseObject = (String) ExtensionUtil.getExtension(process, SCOPE_INFORMATION_FEATURE, CASE_OBJECT_ATTRIBUTE);
 		if (currentCaseObject == null) {
