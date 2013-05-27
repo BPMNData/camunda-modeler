@@ -59,7 +59,6 @@ public abstract class AddDataFeature<T extends ItemAwareElement> extends
         IGaService gaService = Graphiti.getGaService();
         IPeService peService = Graphiti.getPeService();
 
-        @SuppressWarnings("unchecked")
         T t = getBusinessObject(context);
 
         int width = bounds.getWidth();

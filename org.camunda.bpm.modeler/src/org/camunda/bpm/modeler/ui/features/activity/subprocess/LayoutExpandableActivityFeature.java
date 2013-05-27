@@ -67,7 +67,7 @@ public class LayoutExpandableActivityFeature extends LayoutActivityFeature {
             int height = Math.min(GraphicsUtil.getLabelHeight(text),
                     bounds.getHeight() - padding);
             
-            Graphiti.getGaService().setLocationAndSize(text, padding, padding + height,
+            Graphiti.getGaService().setLocationAndSize(text, padding, padding + 15,
                     width, height);
         }
     }

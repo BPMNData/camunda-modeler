@@ -28,8 +28,10 @@ import org.eclipse.graphiti.datatypes.IRectangle;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IAddContext;
 import org.eclipse.graphiti.mm.algorithms.Text;
+import org.eclipse.graphiti.mm.algorithms.styles.Font;
 import org.eclipse.graphiti.mm.algorithms.styles.Orientation;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
+import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaService;
@@ -40,36 +42,6 @@ public class AddExpandableActivityFeature<T extends Activity> extends
 
     public AddExpandableActivityFeature(IFeatureProvider fp) {
         super(fp);
-    }
-
-    @Override
-    protected ContainerShape createPictogramElement(IAddContext context,
-            IRectangle bounds) {
-
-        ContainerShape containerShape = super.createPictogramElement(context,
-                bounds);
-
-        IPeService peService = Graphiti.getPeService();
-        IGaService gaService = Graphiti.getGaService();
-
-        T baseElement = getBusinessObject(context);
-
-        if (baseElement instanceof SubProcess) {
-            // create (empty) case object shape
-            Shape caseObjectShape = peService
-                    .createShape(containerShape, false);
-            Text text = gaService.createText(caseObjectShape);
-            StyleUtil.applyStyle(text, baseElement);
-            text.setVerticalAlignment(Orientation.ALIGNMENT_TOP);
-            text.setHorizontalAlignment(Orientation.ALIGNMENT_LEFT);
-            caseObjectShape.setVisible(true);
-            gaService.setLocationAndSize(text, 5, 5, 100, 15);
-            peService.setPropertyValue(caseObjectShape, Properties.IS_CASE_OBJECT_SHAPE,
-                    Boolean.toString(true));
-            link(caseObjectShape, baseElement);
-        }
-
-        return containerShape;
     }
 
     @Override
@@ -99,8 +71,15 @@ public class AddExpandableActivityFeature<T extends Activity> extends
             StyleUtil.applyStyle(text, activity);
             text.setVerticalAlignment(Orientation.ALIGNMENT_TOP);
             text.setHorizontalAlignment(Orientation.ALIGNMENT_LEFT);
+            Font font = text.getFont();
+            if (font != null) {
+                Diagram diagram = StyleUtil.findDiagram(text);
+                int newFontSize = font.getSize() * 4 / 5;
+                text.setFont(gaService.manageFont(diagram, font.getName(),
+                        newFontSize, font.isItalic(), font.isBold()));
+            }
             caseObjectShape.setVisible(true);
-            gaService.setLocationAndSize(text, 5, 5, 100, 15);
+            gaService.setLocationAndSize(text, 5, 20, 100, 15);
             peService.setPropertyValue(caseObjectShape, Properties.IS_CASE_OBJECT_SHAPE,
                     Boolean.toString(true));
             link(caseObjectShape, activity);
