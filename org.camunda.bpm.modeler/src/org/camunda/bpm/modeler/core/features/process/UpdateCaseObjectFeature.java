@@ -42,13 +42,11 @@ public class UpdateCaseObjectFeature extends AbstractUpdateFeature {
 		String previouslyDisplayedCaseObject = null;
 		
 		Shape caseObjectShape = FeatureSupport.getChildShapeFulfillingProperty(context, Properties.IS_CASE_OBJECT_SHAPE, Boolean.toString(true));
-		
 		if (caseObjectShape == null) {
 		    return Reason.createFalseReason();
 		}
 		Text caseObjectShapeText = (Text) caseObjectShape.getGraphicsAlgorithm();
 		previouslyDisplayedCaseObject = caseObjectShapeText.getValue();
-
 		if (previouslyDisplayedCaseObject != null) {
 		    String regex = Properties.CASE_OBJECT_PREFIX + "(.*)";
 		    previouslyDisplayedCaseObject = previouslyDisplayedCaseObject.replaceAll(regex, "$1");

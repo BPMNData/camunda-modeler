@@ -63,7 +63,6 @@ public class AddExpandableActivityFeature<T extends Activity> extends
             text.setVerticalAlignment(Orientation.ALIGNMENT_TOP);
             text.setHorizontalAlignment(Orientation.ALIGNMENT_LEFT);
             caseObjectShape.setVisible(true);
-            text.setValue("a");
             gaService.setLocationAndSize(text, 5, 5, 100, 15);
             peService.setPropertyValue(caseObjectShape, Properties.IS_CASE_OBJECT_SHAPE,
                     Boolean.toString(true));
