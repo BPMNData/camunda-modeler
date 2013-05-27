@@ -12,6 +12,7 @@
  ******************************************************************************/
 package org.camunda.bpm.modeler.core.features.participant;
 
+import org.camunda.bpm.modeler.core.features.process.Properties;
 import org.camunda.bpm.modeler.core.utils.FeatureSupport;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.mm.algorithms.GraphicsAlgorithm;
@@ -43,5 +44,15 @@ public class LayoutParticipantFeature extends LayoutLaneSetFeature {
 			
 			Graphiti.getGaService().setLocation(ga, x, y);
 		}
+		
+		shape = FeatureSupport.getShape(containerShape, Properties.IS_CASE_OBJECT_SHAPE, Boolean.TRUE.toString());
+		if (shape != null) {
+		    GraphicsAlgorithm ga = shape.getGraphicsAlgorithm();
+		    int x = 38;
+		    int y = 5;
+		    
+		    Graphiti.getGaService().setLocation(ga, x, y);
+		}
+		
 	}
 }

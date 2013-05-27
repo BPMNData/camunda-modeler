@@ -25,7 +25,7 @@ public class AddProcessFeature extends AbstractAddBpmnElementFeature<Process, Co
 	private static final EStructuralFeature SCOPE_INFORMATION_FEATURE = BptPackage.eINSTANCE.getDocumentRoot_ScopeInformation();
 	private static final String CASE_OBJECT_ATTRIBUTE = "caseObject";
 	
-	private static final int CASE_OBJECT_OFFSET = 50;
+	private static final int CASE_OBJECT_OFFSET = 5;
 	
 	public AddProcessFeature(IFeatureProvider fp) {
 		super(fp);
@@ -65,7 +65,7 @@ public class AddProcessFeature extends AbstractAddBpmnElementFeature<Process, Co
 	    text.setWidth(textDimensions.getWidth());
 	    text.setValue(caseObject);
 	    shape.setVisible(true);
-	    gaService.setLocation(text, CASE_OBJECT_OFFSET, 0);
+	    gaService.setLocation(text, CASE_OBJECT_OFFSET, 5);
 	    
 	    peService.setPropertyValue(shape, Properties.IS_CASE_OBJECT_SHAPE, Boolean.toString(true));
 		
