@@ -45,13 +45,14 @@ public class UpdateCaseObjectFeature extends AbstractUpdateFeature {
 		
 		if (caseObjectShape == null) {
 		    return Reason.createFalseReason();
-			if (previouslyDisplayedCaseObject != null) {
-				String regex = Properties.CASE_OBJECT_PREFIX + "(.*)";
-				previouslyDisplayedCaseObject = previouslyDisplayedCaseObject.replaceAll(regex, "$1");
-			}
 		}
 		Text caseObjectShapeText = (Text) caseObjectShape.getGraphicsAlgorithm();
 		previouslyDisplayedCaseObject = caseObjectShapeText.getValue();
+
+		if (previouslyDisplayedCaseObject != null) {
+		    String regex = Properties.CASE_OBJECT_PREFIX + "(.*)";
+		    previouslyDisplayedCaseObject = previouslyDisplayedCaseObject.replaceAll(regex, "$1");
+		}
 		
 		if (caseObject == null) {
 			return previouslyDisplayedCaseObject != null && !previouslyDisplayedCaseObject.isEmpty() ? Reason.createTrueReason() : Reason.createFalseReason();
