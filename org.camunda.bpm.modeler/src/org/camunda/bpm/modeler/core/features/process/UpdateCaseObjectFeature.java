@@ -7,6 +7,7 @@ import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.Process;
 import org.eclipse.bpmn2.SubProcess;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.graphiti.datatypes.IDimension;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.IReason;
 import org.eclipse.graphiti.features.context.IUpdateContext;
@@ -15,6 +16,7 @@ import org.eclipse.graphiti.features.impl.Reason;
 import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
+import org.eclipse.graphiti.ui.services.GraphitiUi;
 
 public class UpdateCaseObjectFeature extends AbstractUpdateFeature {
 
@@ -43,6 +45,10 @@ public class UpdateCaseObjectFeature extends AbstractUpdateFeature {
 		
 		if (caseObjectShape == null) {
 		    return Reason.createFalseReason();
+			if (previouslyDisplayedCaseObject != null) {
+				String regex = Properties.CASE_OBJECT_PREFIX + "(.*)";
+				previouslyDisplayedCaseObject = previouslyDisplayedCaseObject.replaceAll(regex, "$1");
+			}
 		}
 		Text caseObjectShapeText = (Text) caseObjectShape.getGraphicsAlgorithm();
 		previouslyDisplayedCaseObject = caseObjectShapeText.getValue();
@@ -69,7 +75,7 @@ public class UpdateCaseObjectFeature extends AbstractUpdateFeature {
 		if (currentCaseObject == null) {
 			setCaseObjectText(context, "");
 		} else {
-			setCaseObjectText(context, currentCaseObject);
+			setCaseObjectText(context, Properties.CASE_OBJECT_PREFIX + currentCaseObject);
 		}
 
 		return true;
@@ -79,6 +85,9 @@ public class UpdateCaseObjectFeature extends AbstractUpdateFeature {
 		Shape caseObjectTextShape = FeatureSupport.getChildShapeFulfillingProperty(context, Properties.IS_CASE_OBJECT_SHAPE, Boolean.toString(true));
 		if (caseObjectTextShape != null) {
 			Text textGa = (Text) caseObjectTextShape.getGraphicsAlgorithm();
+			IDimension textDimensions = GraphitiUi.getUiLayoutService().calculateTextSize(value, textGa.getFont());
+			textGa.setHeight(textDimensions.getHeight());
+			textGa.setWidth(textDimensions.getWidth());
 			textGa.setValue(value);
 		}
 	}
