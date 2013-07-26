@@ -58,11 +58,6 @@ public class DataInputAssociationShapeHandler extends DataAssociationShapeHandle
 		// instead, we log an error if someone wants to use it
 		ItemAwareElement targetRef = bpmnElement.getTargetRef();
 
-		if (targetRef != null) {
-		  // We want to use it to be closer to the specification -> log silently.
-			modelImport.logSilently(new UnsupportedFeatureException("Target reference was not supported", bpmnElement));
-		}
-		
 		PictogramElement sourcePictogram = resolvePictogramElement((EObject) sourceRef);
 
 		// we use the bpmn elements container (task, event...) as the target
