@@ -30,8 +30,8 @@ import org.camunda.bpm.modeler.core.importer.handlers.FlowNodeShapeHandler;
 import org.camunda.bpm.modeler.core.importer.handlers.GatewayShapeHandler;
 import org.camunda.bpm.modeler.core.importer.handlers.LaneShapeHandler;
 import org.camunda.bpm.modeler.core.importer.handlers.MessageFlowShapeHandler;
+import org.camunda.bpm.modeler.core.importer.handlers.MessageShapeHandler;
 import org.camunda.bpm.modeler.core.importer.handlers.ParticipantShapeHandler;
-import org.camunda.bpm.modeler.core.importer.handlers.ProcessHandler;
 import org.camunda.bpm.modeler.core.importer.handlers.SequenceFlowHandler;
 import org.camunda.bpm.modeler.core.importer.handlers.SubProcessShapeHandler;
 import org.camunda.bpm.modeler.core.importer.handlers.TaskShapeHandler;
@@ -65,6 +65,7 @@ import org.eclipse.bpmn2.Gateway;
 import org.eclipse.bpmn2.InputOutputSpecification;
 import org.eclipse.bpmn2.Lane;
 import org.eclipse.bpmn2.LaneSet;
+import org.eclipse.bpmn2.Message;
 import org.eclipse.bpmn2.MessageFlow;
 import org.eclipse.bpmn2.Participant;
 import org.eclipse.bpmn2.Process;
@@ -86,10 +87,7 @@ import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
 import org.eclipse.emf.ecore.xmi.XMIException;
 import org.eclipse.graphiti.datatypes.IRectangle;
 import org.eclipse.graphiti.dt.IDiagramTypeProvider;
-import org.eclipse.graphiti.features.IAddFeature;
 import org.eclipse.graphiti.features.IFeatureProvider;
-import org.eclipse.graphiti.features.context.impl.AddContext;
-import org.eclipse.graphiti.features.context.impl.AreaContext;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
@@ -129,6 +127,8 @@ public class ModelImport {
 	
 	// the process elements found in current definitions
 	protected ArrayList<Process> processes = new ArrayList<Process>();
+	
+	protected List<Message> messages = new ArrayList<Message>();
 	
 	// initial bounds of the diagram
 	IRectangle importBounds = ConversionUtil.rect(0, 0, 0, 0); 
@@ -204,8 +204,11 @@ public class ModelImport {
 				} else {
 					collaboration = (Collaboration) rootElement;
 				}
+			} else if (rootElement instanceof Message) {
+			  messages.add((Message) rootElement);
 			} else {
 				// are there unhandeled root elements?
+			  
 			}
 		}
 	 
@@ -253,6 +256,10 @@ public class ModelImport {
 			for (Process process : processes) {
 				handleProcess(process, rootDiagram);
 			}
+		}
+		
+		for (Message message : messages) {
+		  handleMessage(message);
 		}
 		
 		// handle deferred rendering of, e.g. associations and data associations
@@ -697,7 +704,11 @@ public class ModelImport {
 		handleDiagramElement(flowElement, container, new MessageFlowShapeHandler(this));
 	}
 	
-	protected void handleSequenceFlow(SequenceFlow flowElement, ContainerShape container) {
+	protected void handleMessage(Message message) {
+	  handleDiagramElement(message, rootDiagram, new MessageShapeHandler(this));
+  }
+
+  protected void handleSequenceFlow(SequenceFlow flowElement, ContainerShape container) {
 		handleDiagramElement(flowElement, container, new SequenceFlowHandler(this));
 	}
 

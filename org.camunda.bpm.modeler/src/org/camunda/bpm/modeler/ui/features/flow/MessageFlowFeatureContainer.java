@@ -12,17 +12,13 @@
  ******************************************************************************/
 package org.camunda.bpm.modeler.ui.features.flow;
 
-import static org.camunda.bpm.modeler.core.utils.ContextUtil.set;
-
 import org.camunda.bpm.modeler.core.ModelHandler;
-import org.camunda.bpm.modeler.core.di.DIUtils;
 import org.camunda.bpm.modeler.core.features.DirectEditNamedConnectionFeature;
 import org.camunda.bpm.modeler.core.features.UpdateBaseElementNameFeature;
 import org.camunda.bpm.modeler.core.features.container.BaseElementConnectionFeatureContainer;
 import org.camunda.bpm.modeler.core.features.flow.AbstractAddFlowFeature;
 import org.camunda.bpm.modeler.core.features.flow.AbstractCreateFlowFeature;
 import org.camunda.bpm.modeler.core.features.flow.AbstractReconnectFlowFeature;
-import org.camunda.bpm.modeler.core.layout.util.ConnectionUtil;
 import org.camunda.bpm.modeler.core.utils.BusinessObjectUtil;
 import org.camunda.bpm.modeler.core.utils.ConnectionLabelUtil;
 import org.camunda.bpm.modeler.core.utils.GraphicsUtil;
@@ -50,7 +46,6 @@ import org.eclipse.graphiti.features.IUpdateFeature;
 import org.eclipse.graphiti.features.context.IAddContext;
 import org.eclipse.graphiti.features.context.ICreateConnectionContext;
 import org.eclipse.graphiti.features.context.IReconnectionContext;
-import org.eclipse.graphiti.features.context.impl.AddContext;
 import org.eclipse.graphiti.features.context.impl.CreateContext;
 import org.eclipse.graphiti.features.context.impl.ReconnectionContext;
 import org.eclipse.graphiti.mm.algorithms.Ellipse;
@@ -134,17 +129,14 @@ public class MessageFlowFeatureContainer extends BaseElementConnectionFeatureCon
       StyleUtil.applyStyle(circle, be);
       circle.setBackground(manageColor(IColorConstant.WHITE));
 
-      ContainerShape newShape = peService.createContainerShape(connection.getParent(), true);
-      Rectangle invisibleRect = gaService.createInvisibleRectangle(newShape);
-      gaService.setLocationAndSize(invisibleRect, 0, 0, 100, 100);
-      GraphicsUtil.createEnvelope(invisibleRect, 0, 0, 100, 100);
-
       return connectionLine;
     }
 
     @Override
     protected void postAddHook(IAddContext context, FreeFormConnection connection) {
-      createMessage(context, connection);
+      if (!isImport(context)) {
+        createMessage(context, connection);
+      }
     }
 
     @Override

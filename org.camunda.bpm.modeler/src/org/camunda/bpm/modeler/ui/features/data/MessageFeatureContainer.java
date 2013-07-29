@@ -18,6 +18,7 @@ import org.camunda.bpm.modeler.core.features.MultiUpdateFeature;
 import org.camunda.bpm.modeler.core.features.UpdateBaseElementNameFeature;
 import org.camunda.bpm.modeler.core.features.container.BaseElementFeatureContainer;
 import org.camunda.bpm.modeler.core.features.data.AbstractCreateRootElementFeature;
+import org.camunda.bpm.modeler.core.utils.BusinessObjectUtil;
 import org.camunda.bpm.modeler.core.utils.GraphicsUtil;
 import org.camunda.bpm.modeler.core.utils.StyleUtil;
 import org.camunda.bpm.modeler.core.utils.GraphicsUtil.Envelope;
@@ -26,7 +27,9 @@ import org.camunda.bpm.modeler.ui.features.LayoutBaseElementTextFeature;
 import org.camunda.bpm.modeler.ui.features.choreography.UpdateChoreographyMessageFlowFeature;
 import org.eclipse.bpmn2.Bpmn2Package;
 import org.eclipse.bpmn2.Message;
+import org.eclipse.bpmn2.MessageFlow;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.graphiti.datatypes.IRectangle;
 import org.eclipse.graphiti.features.IAddFeature;
 import org.eclipse.graphiti.features.ICreateFeature;
@@ -38,9 +41,11 @@ import org.eclipse.graphiti.features.IMoveShapeFeature;
 import org.eclipse.graphiti.features.IResizeShapeFeature;
 import org.eclipse.graphiti.features.IUpdateFeature;
 import org.eclipse.graphiti.features.context.IAddContext;
+import org.eclipse.graphiti.features.context.IMoveShapeContext;
 import org.eclipse.graphiti.features.context.IResizeShapeContext;
 import org.eclipse.graphiti.features.impl.DefaultResizeShapeFeature;
 import org.eclipse.graphiti.mm.algorithms.Rectangle;
+import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaService;
@@ -61,19 +66,6 @@ public class MessageFeatureContainer extends BaseElementFeatureContainer {
 		return new CreateMessageFeature(fp);
 	}
 
-	
-//	public IMoveShapeFeature getMoveFeature(IFeatureProvider fp) {
-//	  return new 
-//	}
-	
-	private static class MoveFeature extends DefaultMoveBPMNShapeFeature {
-
-    public MoveFeature(IFeatureProvider fp) {
-      super(fp);
-    }
-	  
-	}
-	
 	@Override
 	public IAddFeature getAddFeature(IFeatureProvider fp) {
 		return new AbstractAddBpmnShapeFeature<Message>(fp) {
@@ -150,12 +142,41 @@ public class MessageFeatureContainer extends BaseElementFeatureContainer {
 			}
 		};
 	}
-
-	@Override
-	public IMoveShapeFeature getMoveFeature(IFeatureProvider fp) {
-		return new DefaultMoveBPMNShapeFeature(fp);
-	}
-
+  
+  public IMoveShapeFeature getMoveFeature(IFeatureProvider fp) {
+    return new DefaultMoveBPMNShapeFeature(fp) {
+      
+      @Override
+      public boolean canMoveShape(IMoveShapeContext context) {
+        System.out.println("canMoveShape()");
+        System.out.println(context.getSourceContainer());
+        System.out.println(context.getTargetConnection());
+        System.out.println(context.getTargetContainer());
+        System.out.println();
+        return super.canMoveShape(context);
+      }
+      
+      @Override
+      protected void postMoveShape(IMoveShapeContext context) {
+        super.postMoveShape(context);
+        
+        Message message = getBusinessObject(context.getPictogramElement(), Message.class);
+        if (message == null)
+          return;
+        
+        Connection targetConnection = context.getTargetConnection();
+        if (targetConnection == null)
+          return;
+        
+        EObject bo = BusinessObjectUtil.getBusinessObjectForPictogramElement(targetConnection);
+        if (bo != null && bo instanceof MessageFlow) {
+          MessageFlow messageFlow = (MessageFlow) bo;
+          messageFlow.setMessageRef(message);
+        }
+      }
+    };
+  }
+  
 	@Override
 	public IResizeShapeFeature getResizeFeature(IFeatureProvider fp) {
 		return new DefaultResizeShapeFeature(fp) {
