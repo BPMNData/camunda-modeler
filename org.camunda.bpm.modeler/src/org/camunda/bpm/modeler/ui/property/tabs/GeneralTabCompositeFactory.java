@@ -9,6 +9,7 @@ import org.camunda.bpm.modeler.ui.property.tabs.builder.DecisionGatewayPropertie
 import org.camunda.bpm.modeler.ui.property.tabs.builder.IdPropertyBuilder;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.ItemAwareElementPropertiesBuilder;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.LanePropertiesBuilder;
+import org.camunda.bpm.modeler.ui.property.tabs.builder.MessageFlowPropertiesBuilder;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.NamePropertyBuilder;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.ParticipantPropertiesBuilder;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.ProcessIdPropertyBuilder;
@@ -40,6 +41,7 @@ import org.eclipse.bpmn2.IntermediateCatchEvent;
 import org.eclipse.bpmn2.ItemAwareElement;
 import org.eclipse.bpmn2.Lane;
 import org.eclipse.bpmn2.ManualTask;
+import org.eclipse.bpmn2.MessageFlow;
 import org.eclipse.bpmn2.Participant;
 import org.eclipse.bpmn2.Process;
 import org.eclipse.bpmn2.ScriptTask;
@@ -117,6 +119,10 @@ public class GeneralTabCompositeFactory extends AbstractTabCompositeFactory<Base
 		
 		if (businessObject instanceof DataAssociation) {
 		    createDataAssociationComposite((DataAssociation) businessObject);
+		}
+		
+		if (businessObject instanceof MessageFlow) {
+		  createMessageFlowComposite((MessageFlow) businessObject);
 		}
 		
 		return parent;
@@ -231,5 +237,9 @@ public class GeneralTabCompositeFactory extends AbstractTabCompositeFactory<Base
 
     private void createDataAssociationComposite(DataAssociation businessObject) {
         new DataAssociationPropertiesBuilder(parent, section, businessObject).create();
+    }
+
+    private void createMessageFlowComposite(MessageFlow businessObject) {
+      new MessageFlowPropertiesBuilder(parent, section, businessObject).create();
     }
 }
