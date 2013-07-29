@@ -43,11 +43,6 @@ public class DataOutputAssociationShapeHandler extends DataAssociationShapeHandl
 		// * Figure 10.50 - ItemAware class diagram
 		// * Figure 10.57 - InputOutputSpecification class diagram
 		
-		// instead, we log an error if someone wants to use it
-		if (sourceRefs != null && !sourceRefs.isEmpty()) {
-			modelImport.log(new UnsupportedFeatureException("Source references not supported", bpmnElement));
-		}
-		
 		ItemAwareElement targetRef = bpmnElement.getTargetRef();
 
 		if (targetRef == null || targetRef.eIsProxy()) {

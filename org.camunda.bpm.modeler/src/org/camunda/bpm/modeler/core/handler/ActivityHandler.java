@@ -5,15 +5,17 @@ import java.util.List;
 import org.camunda.bpm.modeler.core.ModelHandler;
 import org.eclipse.bpmn2.Activity;
 import org.eclipse.bpmn2.DataInput;
+import org.eclipse.bpmn2.DataOutput;
 import org.eclipse.bpmn2.InputOutputSpecification;
 
+/**
+ * Implements some utility methods for {@link Activity} objects.
+ */
 public class ActivityHandler {
 
   /**
-   * Returns the first data input for the given activty. If none exists, a new
+   * Returns the first data input for the given activity. If none exists, a new
    * one will be created and added.
-   * 
-   * @param modelHandler
    */
   public static DataInput getOrCreateDataInput(Activity activity, ModelHandler modelHandler) {
     InputOutputSpecification ioSpecification = getOrCreateIoSpecification(activity, modelHandler);
@@ -24,6 +26,22 @@ public class ActivityHandler {
     return dataInputs.get(0);
   }
 
+  /**
+   * Returns the first data output for the given activity. If none exists, a new
+   * one will be created and added.
+   */
+  public static DataOutput getOrCreateDataOutput(Activity activity, ModelHandler modelHandler) {
+    InputOutputSpecification ioSpecification = getOrCreateIoSpecification(activity, modelHandler);
+    List<DataOutput> dataOutputs = ioSpecification.getDataOutputs();
+    if (dataOutputs.isEmpty()) {
+      dataOutputs.add(modelHandler.create(DataOutput.class));
+    }
+    return dataOutputs.get(0);
+  }
+
+  /**
+   * Gets or creates the {@link InputOutputSpecification} of the given activity.
+   */
   private static InputOutputSpecification getOrCreateIoSpecification(Activity activity, ModelHandler modelHandler) {
     InputOutputSpecification ioSpecification = activity.getIoSpecification();
     if (ioSpecification == null) {

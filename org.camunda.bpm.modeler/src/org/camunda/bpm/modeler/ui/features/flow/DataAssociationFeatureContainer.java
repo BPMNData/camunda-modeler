@@ -342,25 +342,26 @@ public class DataAssociationFeatureContainer extends BaseElementConnectionFeatur
       if (dataAssociation instanceof DataInputAssociation) {
         reconnectDataInputAssociation(context, (DataInputAssociation) dataAssociation, targetElement);
       } else if (dataAssociation instanceof DataOutputAssociation) {
-        reconnectDataOutputAssociation(context, dataAssociation, targetElement);
+        reconnectDataOutputAssociation(context, (DataOutputAssociation) dataAssociation, targetElement);
       }
     }
 
-    private void reconnectDataOutputAssociation(IReconnectionContext context, DataAssociation dataAssociation, BaseElement targetElement) {
+    private void reconnectDataOutputAssociation(IReconnectionContext context, DataOutputAssociation dataAssociation, BaseElement targetElement) {
       if (context.getReconnectType().equals(ReconnectionContext.RECONNECT_SOURCE)) {
         if (targetElement instanceof Activity) {
           Activity activity = (Activity) targetElement;
-          activity.getDataOutputAssociations().add((DataOutputAssociation) dataAssociation);
+          ModelHandler modelHandler = ModelHandler.getInstance(getDiagram());
+          DataAssociationHandler.connectSource(dataAssociation, activity, modelHandler);
         } else if (targetElement instanceof CatchEvent) {
           CatchEvent throwEvent = (CatchEvent) targetElement;
-          throwEvent.getDataOutputAssociation().add((DataOutputAssociation) dataAssociation);
+          throwEvent.getDataOutputAssociation().add(dataAssociation);
         }
         return;
       }
       if (context.getReconnectType().equals(ReconnectionContext.RECONNECT_TARGET)) {
         if (targetElement instanceof ItemAwareElement) {
           ItemAwareElement itemAwareElement = (ItemAwareElement) targetElement;
-          dataAssociation.setTargetRef(itemAwareElement);
+          DataAssociationHandler.connectTarget(dataAssociation, itemAwareElement);
         }
       }
     }
@@ -369,20 +370,20 @@ public class DataAssociationFeatureContainer extends BaseElementConnectionFeatur
       if (context.getReconnectType().equals(ReconnectionContext.RECONNECT_SOURCE)) {
         if (targetElement instanceof ItemAwareElement) {
           ItemAwareElement itemAwareElement = (ItemAwareElement) targetElement;
-          DataAssociationHandler.reconnectSource(association, itemAwareElement);
+          DataAssociationHandler.connectSource(association, itemAwareElement);
         }
       }
-      
+
       else if (context.getReconnectType().equals(ReconnectionContext.RECONNECT_TARGET)) {
-        
+
         if (targetElement instanceof Activity) {
           ModelHandler modelHandler = ModelHandler.getInstance(getDiagram());
           Activity activity = (Activity) targetElement;
-          DataAssociationHandler.reconnectTarget(association, activity, modelHandler);
-      
+          DataAssociationHandler.connectTarget(association, activity, modelHandler);
+
         } else if (targetElement instanceof ThrowEvent) {
           ThrowEvent throwEvent = (ThrowEvent) targetElement;
-          throwEvent.getDataInputAssociation().add((DataInputAssociation) association);
+          throwEvent.getDataInputAssociation().add(association);
         }
       }
     }

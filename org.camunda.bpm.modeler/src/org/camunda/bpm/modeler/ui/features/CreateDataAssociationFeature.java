@@ -1,9 +1,8 @@
 package org.camunda.bpm.modeler.ui.features;
 
-import java.io.IOException;
-
 import org.camunda.bpm.modeler.core.ModelHandler;
 import org.camunda.bpm.modeler.core.features.flow.AbstractCreateFlowFeature;
+import org.camunda.bpm.modeler.core.handler.DataAssociationHandler;
 import org.camunda.bpm.modeler.core.utils.AnchorUtil;
 import org.camunda.bpm.modeler.core.utils.BusinessObjectUtil;
 import org.camunda.bpm.modeler.ui.ImageProvider;
@@ -93,7 +92,7 @@ public class CreateDataAssociationFeature extends AbstractCreateFlowFeature<Data
 		BaseElement source = getSourceBo(context);
 		BaseElement target = getTargetBo(context);
 		
-		DataAssociation bo = mh.createDataAssociation(source, target);
+		DataAssociation bo = DataAssociationHandler.createDataAssociation(source, target, mh);
 		
 		putBusinessObject(context, bo);
 		

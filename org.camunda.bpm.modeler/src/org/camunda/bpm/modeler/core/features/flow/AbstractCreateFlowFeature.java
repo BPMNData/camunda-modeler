@@ -58,11 +58,16 @@ public abstract class AbstractCreateFlowFeature<
 		
 		Assert.isNotNull(connection);
 		
+		postCreateHook(context, bo);
+		
 		changesDone = true;
 		return connection;
 	}
 
-	@Override
+	protected void postCreateHook(ICreateConnectionContext context, CONNECTION bo) {
+  }
+
+  @Override
 	public boolean canStartConnection(ICreateConnectionContext context) {
 		return getSourceBo(context) != null;
 	}

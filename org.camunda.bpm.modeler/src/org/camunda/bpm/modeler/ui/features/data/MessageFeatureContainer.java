@@ -61,6 +61,19 @@ public class MessageFeatureContainer extends BaseElementFeatureContainer {
 		return new CreateMessageFeature(fp);
 	}
 
+	
+//	public IMoveShapeFeature getMoveFeature(IFeatureProvider fp) {
+//	  return new 
+//	}
+	
+	private static class MoveFeature extends DefaultMoveBPMNShapeFeature {
+
+    public MoveFeature(IFeatureProvider fp) {
+      super(fp);
+    }
+	  
+	}
+	
 	@Override
 	public IAddFeature getAddFeature(IFeatureProvider fp) {
 		return new AbstractAddBpmnShapeFeature<Message>(fp) {
