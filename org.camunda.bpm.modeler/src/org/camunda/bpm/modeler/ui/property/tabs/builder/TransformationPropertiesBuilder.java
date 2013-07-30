@@ -102,7 +102,7 @@ public class TransformationPropertiesBuilder extends AbstractPropertiesBuilder<D
         @Override
         protected void doExecute() {
           if (newValue) {
-            if (modelValue) {
+            if (!modelValue) {
               bo.eSet(feature, cachedFormalExpression);
             }
           } else {
@@ -151,11 +151,17 @@ public class TransformationPropertiesBuilder extends AbstractPropertiesBuilder<D
       public void setLanguage(String language) {
         model.eSet(feature, language);
       }
-      
+
+      @Override
+      protected void establishModelViewBinding() {
+        // We cannot support a model view binding as there is no stable editing
+        // domain for this transformation object.
+      }
+
       class UpdateLanguageCommand extends RecordingCommand {
 
         private String newLanguage;
-        
+
         public UpdateLanguageCommand(TransactionalEditingDomain domain, String newLanguage) {
           super(domain);
           this.newLanguage = newLanguage;
@@ -174,26 +180,26 @@ public class TransformationPropertiesBuilder extends AbstractPropertiesBuilder<D
 
   private void establishExpressionTextBinding() {
     ModelTextBinding<String> binding = new ModelTextBinding<String>(cachedFormalExpression, Bpmn2Package.eINSTANCE.getFormalExpression_Body(), expressionText) {
-      
+
       @Override
       protected String toString(String value) {
         if (value == null)
           value = "";
         return value.trim();
       }
-      
+
       @Override
       protected String fromString(String str) {
         if (str == null || str.trim().isEmpty())
           return null;
         return str.trim();
       }
-      
+
       @Override
       public String getModelValue() {
         return (String) model.eGet(feature);
       }
-      
+
       @Override
       public void setModelValue(String value) {
         TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(model);
@@ -203,28 +209,34 @@ public class TransformationPropertiesBuilder extends AbstractPropertiesBuilder<D
           domain.getCommandStack().execute(new UpdateExpressionCommand(domain, value));
         }
       }
-      
+
       public void setLanguage(String language) {
         model.eSet(feature, language);
       }
-      
+
       class UpdateExpressionCommand extends RecordingCommand {
-        
+
         private String newExpression;
-        
+
         public UpdateExpressionCommand(TransactionalEditingDomain domain, String newExpression) {
           super(domain);
           this.newExpression = newExpression;
         }
-        
+
         @Override
         protected void doExecute() {
           setLanguage(newExpression);
         }
       }
       
+      @Override
+      protected void establishModelViewBinding() {
+        // We cannot support a model view binding as there is no stable editing
+        // domain for this transformation object.
+      }
+
     };
-    
+
     binding.establish();
   }
 
