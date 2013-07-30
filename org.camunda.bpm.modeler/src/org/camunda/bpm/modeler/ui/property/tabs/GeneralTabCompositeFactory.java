@@ -22,6 +22,7 @@ import org.camunda.bpm.modeler.ui.property.tabs.builder.ServiceTypeControlsPrope
 import org.camunda.bpm.modeler.ui.property.tabs.builder.StartEventPropertiesBuilder;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.SubProcessPropertiesBuilder;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.TextAnnotationPropertiesBuilder;
+import org.camunda.bpm.modeler.ui.property.tabs.builder.TransformationPropertiesBuilder;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.UserTaskPropertiesBuilder;
 import org.eclipse.bpmn2.Activity;
 import org.eclipse.bpmn2.AdHocSubProcess;

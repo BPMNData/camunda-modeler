@@ -29,7 +29,9 @@ import org.camunda.bpm.modeler.ui.property.tabs.ListenerTabSection;
 import org.camunda.bpm.modeler.ui.property.tabs.MultiInstanceTabSection;
 import org.camunda.bpm.modeler.ui.property.tabs.RelationalKeysTabSection;
 import org.camunda.bpm.modeler.ui.property.tabs.ScopeInformationTabSection;
+import org.camunda.bpm.modeler.ui.property.tabs.TransformationTabSection;
 import org.eclipse.bpmn2.Activity;
+import org.eclipse.bpmn2.DataAssociation;
 import org.eclipse.bpmn2.DataObject;
 import org.eclipse.bpmn2.Event;
 import org.eclipse.bpmn2.Gateway;
@@ -72,6 +74,10 @@ public class PropertiesTabDescriptorProvider implements ITabDescriptorProvider {
                 tabs.add(createMultiInstanceTabDescriptor());
             }
 
+            if (businessObject instanceof DataAssociation) {
+              tabs.add(createTransformationTabDescriptor());
+            }
+            
             // add execution listener tabs
             if (businessObject instanceof Activity
                     || businessObject instanceof Gateway
@@ -81,7 +87,7 @@ public class PropertiesTabDescriptorProvider implements ITabDescriptorProvider {
 
                 tabs.add(createListenerTabDescriptor());
             }
-
+            
             // for participant, too
             if (businessObject instanceof Participant) {
                 Participant participant = (Participant) businessObject;
@@ -104,6 +110,7 @@ public class PropertiesTabDescriptorProvider implements ITabDescriptorProvider {
             if (businessObject instanceof DataObject) {
                 tabs.add(createRelationKeysTabDescriptor());
             }
+            
         }
 
         return tabs.toArray(new ITabDescriptor[] {});
@@ -148,6 +155,11 @@ public class PropertiesTabDescriptorProvider implements ITabDescriptorProvider {
     private ITabDescriptor createScopeInformationTabDescriptor() {
         return createTabDescriptor("scopeInformationTab", "BPMN Data Scope",
                 new ScopeInformationTabSection());
+    }
+    
+    private ITabDescriptor createTransformationTabDescriptor() {
+      return createTabDescriptor("transformationTab", "Transformation",
+          new TransformationTabSection());
     }
 
     private ITabDescriptor createRelationKeysTabDescriptor() {

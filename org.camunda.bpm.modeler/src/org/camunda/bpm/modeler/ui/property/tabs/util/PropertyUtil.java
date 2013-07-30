@@ -75,15 +75,20 @@ public class PropertyUtil {
 
 	public static Text createMultiText(GFPropertySection section, Composite parent, String label,
 			final EStructuralFeature feature, final EObject bo) {
-		Composite composite = createStandardComposite(section, parent);
 
-		Text text = createSimpleMultiText(section, composite, "");
-
+		Text text = createUnboundMultiText(section, parent, label);
 		new StringTextBinding(bo, feature, text).establish();
-
-		createLabel(section, composite, label, text);
-
 		return text;
+	}
+	
+	public static Text createUnboundMultiText(GFPropertySection section, Composite parent, String label) {
+	  Composite composite = createStandardComposite(section, parent);
+	  
+	  Text text = createSimpleMultiText(section, composite, "");
+	  
+	  createLabel(section, composite, label, text);
+	  
+	  return text;
 	}
 
 	protected static CCombo createSimpleDropDown(GFPropertySection section, Composite parent) {
@@ -95,11 +100,14 @@ public class PropertyUtil {
 	}
 
 	protected static Button createSimpleCheckbox(GFPropertySection section, Composite parent) {
-		TabbedPropertySheetWidgetFactory factory = section.getWidgetFactory();
-		final Button checkbox = factory.createButton(parent, "", SWT.CHECK);
-		setStandardLayout(checkbox);
-
-		return checkbox;
+	  return createSimpleCheckbox(section, parent, "");
+	}
+	protected static Button createSimpleCheckbox(GFPropertySection section, Composite parent, String caption) {
+	  TabbedPropertySheetWidgetFactory factory = section.getWidgetFactory();
+	  final Button checkbox = factory.createButton(parent, caption, SWT.CHECK);
+	  setStandardLayout(checkbox);
+	  
+	  return checkbox;
 	}
 
 	// public static
@@ -119,6 +127,15 @@ public class PropertyUtil {
 		createLabel(section, composite, label, checkbox);
 
 		return checkbox;
+	}
+
+	public static Button createUnboundCheckbox(GFPropertySection section, Composite parent, String label, String caption) {
+	  Composite composite = createStandardComposite(section, parent);
+	  
+	  Button checkbox = createSimpleCheckbox(section, composite, caption);
+	  createLabel(section, composite, label, checkbox);
+	  
+	  return checkbox;
 	}
 
 	public static CLabel createLabel(GFPropertySection section, Composite parent, String label, Control control) {
