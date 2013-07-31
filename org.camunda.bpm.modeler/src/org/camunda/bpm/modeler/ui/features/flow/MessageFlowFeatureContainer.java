@@ -19,15 +19,17 @@ import org.camunda.bpm.modeler.core.features.container.BaseElementConnectionFeat
 import org.camunda.bpm.modeler.core.features.flow.AbstractAddFlowFeature;
 import org.camunda.bpm.modeler.core.features.flow.AbstractCreateFlowFeature;
 import org.camunda.bpm.modeler.core.features.flow.AbstractReconnectFlowFeature;
+import org.camunda.bpm.modeler.core.handler.ConversationHandler;
 import org.camunda.bpm.modeler.core.utils.BusinessObjectUtil;
 import org.camunda.bpm.modeler.core.utils.ConnectionLabelUtil;
-import org.camunda.bpm.modeler.core.utils.GraphicsUtil;
 import org.camunda.bpm.modeler.core.utils.StyleUtil;
 import org.camunda.bpm.modeler.ui.ImageProvider;
 import org.camunda.bpm.modeler.ui.diagram.BPMN2FeatureProvider;
 import org.camunda.bpm.modeler.ui.features.choreography.ChoreographyUtil;
 import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.Bpmn2Package;
+import org.eclipse.bpmn2.Collaboration;
+import org.eclipse.bpmn2.ConversationNode;
 import org.eclipse.bpmn2.FlowNode;
 import org.eclipse.bpmn2.InteractionNode;
 import org.eclipse.bpmn2.Message;
@@ -50,14 +52,12 @@ import org.eclipse.graphiti.features.context.impl.CreateContext;
 import org.eclipse.graphiti.features.context.impl.ReconnectionContext;
 import org.eclipse.graphiti.mm.algorithms.Ellipse;
 import org.eclipse.graphiti.mm.algorithms.Polyline;
-import org.eclipse.graphiti.mm.algorithms.Rectangle;
 import org.eclipse.graphiti.mm.algorithms.styles.LineStyle;
 import org.eclipse.graphiti.mm.algorithms.styles.Point;
 import org.eclipse.graphiti.mm.pictograms.Anchor;
 import org.eclipse.graphiti.mm.pictograms.AnchorContainer;
 import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.ConnectionDecorator;
-import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.FreeFormConnection;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
@@ -272,6 +272,23 @@ public class MessageFlowFeatureContainer extends BaseElementConnectionFeatureCon
     @Override
     public EClass getBusinessObjectClass() {
       return Bpmn2Package.eINSTANCE.getMessageFlow();
+    }
+    
+    @Override
+    protected void postCreateHook(ICreateConnectionContext context, MessageFlow bo) {
+      super.postCreateHook(context, bo);
+
+      // Ensure some BPMN conformance.
+      // Add the message flow to a conversation.
+      EObject diagramBo = BusinessObjectUtil.getBusinessObjectForPictogramElement(getDiagram());
+      if (diagramBo == null || !(diagramBo instanceof Collaboration)) {
+        System.err.println("Warning: expected diagram to be a collaboration");
+        return;
+      }
+      Collaboration collaboration = (Collaboration) diagramBo;
+      ModelHandler modelHandler = ModelHandler.getInstance(getDiagram());
+      ConversationNode conversation = ConversationHandler.getOrCreateConversation(collaboration, modelHandler);
+      conversation.getMessageFlowRefs().add(bo);
     }
   }
 
