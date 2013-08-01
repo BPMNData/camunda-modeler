@@ -6,9 +6,9 @@ import org.camunda.bpm.modeler.core.ModelHandler;
 import org.camunda.bpm.modeler.core.utils.ModelUtil;
 import org.camunda.bpm.modeler.ui.change.filter.FeatureChangeFilter;
 import org.camunda.bpm.modeler.ui.change.filter.NestedFeatureChangeFilter;
-import org.camunda.bpm.modeler.ui.property.tabs.builder.table.EditableEObjectTableBuilder;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.table.EObjectTableBuilder.ContentProvider;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.table.EObjectTableBuilder.DeletedRowHandler;
+import org.camunda.bpm.modeler.ui.property.tabs.builder.table.EditableEObjectTableBuilder;
 import org.camunda.bpm.modeler.ui.property.tabs.tables.EditableTableDescriptor.ElementFactory;
 import org.camunda.bpm.modeler.ui.property.tabs.util.PropertyUtil;
 import org.eclipse.bpmn2.Bpmn2Factory;
@@ -18,6 +18,7 @@ import org.eclipse.bpmn2.Definitions;
 import org.eclipse.bpmn2.Error;
 import org.eclipse.bpmn2.ErrorEventDefinition;
 import org.eclipse.bpmn2.EventDefinition;
+import org.eclipse.bpmn2.Import;
 import org.eclipse.bpmn2.Message;
 import org.eclipse.bpmn2.MessageEventDefinition;
 import org.eclipse.bpmn2.RootElement;
@@ -59,6 +60,8 @@ public class DefinitionsPropertiesBuilder extends AbstractPropertiesBuilder<Defi
 	private static final EStructuralFeature[] MESSAGE_FEATURES = { 
 		Bpmn2Package.eINSTANCE.getMessage_Name() };
 	
+
+	
 	@Override
 	public void create() {
 		createErrorMappingsTable();
@@ -80,6 +83,7 @@ public class DefinitionsPropertiesBuilder extends AbstractPropertiesBuilder<Defi
 		EClass errorCls = Bpmn2Package.eINSTANCE.getError();
 		createMappingsTable(section, parent, Error.class, "Errors", errorCls, ROOT_ELEMENTS_FEATURE, ERROR_FEATURES, ERROR_TABLE_HEADERS);
 	}
+	
 	
 	protected <T extends EObject> void createMappingsTable(
 			GFPropertySection section, Composite parent, 

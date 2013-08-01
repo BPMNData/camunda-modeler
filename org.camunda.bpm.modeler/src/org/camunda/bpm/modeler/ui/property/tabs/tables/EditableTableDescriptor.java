@@ -2,6 +2,10 @@ package org.camunda.bpm.modeler.ui.property.tabs.tables;
 
 import org.camunda.bpm.modeler.ui.property.tabs.util.Events;
 import org.camunda.bpm.modeler.ui.property.tabs.util.Events.RowAdded;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.ColumnViewerEditor;
 import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
@@ -229,6 +233,43 @@ public class EditableTableDescriptor<T> extends TableDescriptor<T> {
 		 * @return
 		 */
 		public abstract T create();
+	}
+	
+	/**
+	 * Element factory that does its {@link #create()} in a transaction.
+	 * 
+	 * @author Sebastian Kruse
+	 */
+	public static abstract class TransactionalElementFactory<T> extends ElementFactory<T> {
+	  
+	  private EObject domainObject;
+
+    public TransactionalElementFactory(EObject domainObject) {
+      this.domainObject = domainObject;
+    }
+	  
+    @Override
+    public T create() {
+      final T object = doCreate();
+      
+      TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(domainObject);
+      editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+
+        @Override
+        protected void doExecute() {
+          postCreate(object);
+        }
+      });
+      
+      return object;
+    }
+    
+    /** Creates the object (without a transaction). */
+    protected abstract T doCreate();
+    
+    /** Performs transactionally safe operations after the creation. */
+    protected abstract void postCreate(T object);
+	  
 	}
 	
 	/**

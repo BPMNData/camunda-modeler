@@ -1,6 +1,7 @@
 package org.camunda.bpm.modeler.ui.property.tabs;
 
 import org.camunda.bpm.modeler.ui.property.tabs.builder.DefinitionsPropertiesBuilder;
+import org.camunda.bpm.modeler.ui.property.tabs.builder.ImportAndItemDefinitionPropertiesBuilder;
 import org.eclipse.bpmn2.Definitions;
 import org.eclipse.graphiti.ui.platform.GFPropertySection;
 import org.eclipse.swt.widgets.Composite;
@@ -19,7 +20,7 @@ public class DefinitionsTabCompositeFactory extends AbstractTabCompositeFactory<
 	@Override
 	public Composite createCompositeForBusinessObject(Definitions definitions) {
 		new DefinitionsPropertiesBuilder(parent, section, definitions).create();
-
+		new ImportAndItemDefinitionPropertiesBuilder(parent, section, definitions).create();
 		return parent;
 	}
 }

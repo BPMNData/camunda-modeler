@@ -6,17 +6,20 @@ import java.util.List;
 import org.camunda.bpm.modeler.ui.property.tabs.binding.change.EObjectChangeSupport;
 import org.camunda.bpm.modeler.ui.property.tabs.binding.change.EObjectChangeSupport.ModelChangedEvent;
 import org.camunda.bpm.modeler.ui.property.tabs.tables.EObjectAttributeTableColumnDescriptor;
-import org.camunda.bpm.modeler.ui.property.tabs.tables.EditableTableDescriptor;
-import org.camunda.bpm.modeler.ui.property.tabs.tables.TableColumnDescriptor;
 import org.camunda.bpm.modeler.ui.property.tabs.tables.EObjectAttributeTableColumnDescriptor.EditingSupportProvider;
+import org.camunda.bpm.modeler.ui.property.tabs.tables.EditableTableDescriptor;
 import org.camunda.bpm.modeler.ui.property.tabs.tables.EditableTableDescriptor.ElementFactory;
+import org.camunda.bpm.modeler.ui.property.tabs.tables.TableColumnDescriptor;
 import org.camunda.bpm.modeler.ui.property.tabs.util.Events;
+import org.camunda.bpm.modeler.ui.property.tabs.util.Events.RowDeleted;
 import org.camunda.bpm.modeler.ui.property.tabs.util.HelpText;
 import org.camunda.bpm.modeler.ui.property.tabs.util.PropertyUtil;
-import org.camunda.bpm.modeler.ui.property.tabs.util.Events.RowDeleted;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.transaction.NotificationFilter;
+import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.graphiti.ui.platform.GFPropertySection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -263,6 +266,41 @@ public class EObjectTableBuilder<T extends EObject> {
 	public static interface DeletedRowHandler<T> {
 		
 		public void rowDeleted(T element);
+	}
+	
+	/**
+	 * A {@link DeletedRowHandler} that performs the deletion within an EMF transaction.
+	 * 
+	 * @author Sebastian
+	 *
+	 * @param <T>
+	 */
+	public static abstract class TransactionalDeletedRowHandler<T> implements DeletedRowHandler<T> {
+
+	  private EObject domainObject;
+
+	  /**
+	   * @param domainObject representative object for the transaction domain
+	   */
+    public TransactionalDeletedRowHandler(EObject domainObject) {
+      this.domainObject = domainObject;
+    }
+	  
+    @Override
+    public void rowDeleted(final T element) {
+      TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(domainObject);
+      domain.getCommandStack().execute(new RecordingCommand(domain) {
+        
+        @Override
+        protected void doExecute() {
+          transactionalRowDeleted(element);
+        }
+      });
+    }
+    
+    /** Handles the deletion of a row within a transaction. */
+    protected abstract void transactionalRowDeleted(T element);
+	  
 	}
 	
 	/**

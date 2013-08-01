@@ -26,6 +26,7 @@ import org.camunda.bpm.modeler.core.utils.StyleUtil;
 import org.camunda.bpm.modeler.ui.ImageProvider;
 import org.camunda.bpm.modeler.ui.diagram.BPMN2FeatureProvider;
 import org.camunda.bpm.modeler.ui.features.choreography.ChoreographyUtil;
+import org.eclipse.bpmn2.Activity;
 import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.Bpmn2Package;
 import org.eclipse.bpmn2.Collaboration;
@@ -36,6 +37,7 @@ import org.eclipse.bpmn2.Message;
 import org.eclipse.bpmn2.MessageFlow;
 import org.eclipse.bpmn2.Participant;
 import org.eclipse.bpmn2.Process;
+import org.eclipse.bpmn2.SendTask;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.graphiti.features.IAddFeature;
@@ -65,6 +67,7 @@ import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaService;
 import org.eclipse.graphiti.services.IPeService;
 import org.eclipse.graphiti.util.IColorConstant;
+import org.eclipse.xsd.util.XSDResourceImpl;
 
 public class MessageFlowFeatureContainer extends BaseElementConnectionFeatureContainer {
 
