@@ -4,6 +4,7 @@ package org.camunda.bpm.modeler.runtime.engine.model.bpt.util;
 
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.*;
 
+import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 
@@ -110,6 +111,10 @@ public class BptAdapterFactory extends AdapterFactoryImpl {
       @Override
       public Adapter caseStructureDefinition(StructureDefinition object) {
         return createStructureDefinitionAdapter();
+      }
+      @Override
+      public Adapter caseBaseElement(BaseElement object) {
+        return createBaseElementAdapter();
       }
       @Override
       public Adapter defaultCase(EObject object) {
@@ -282,6 +287,20 @@ public class BptAdapterFactory extends AdapterFactoryImpl {
    * @generated
    */
   public Adapter createStructureDefinitionAdapter() {
+    return null;
+  }
+
+    /**
+   * Creates a new adapter for an object of class '{@link org.eclipse.bpmn2.BaseElement <em>Base Element</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.eclipse.bpmn2.BaseElement
+   * @generated
+   */
+  public Adapter createBaseElementAdapter() {
     return null;
   }
 

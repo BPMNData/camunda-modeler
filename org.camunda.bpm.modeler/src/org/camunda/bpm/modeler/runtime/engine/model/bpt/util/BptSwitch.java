@@ -4,6 +4,7 @@ package org.camunda.bpm.modeler.runtime.engine.model.bpt.util;
 
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.*;
 
+import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -131,6 +132,7 @@ public class BptSwitch<T> extends Switch<T> {
       case BptPackage.STRUCTURE_DEFINITION: {
         StructureDefinition structureDefinition = (StructureDefinition)theEObject;
         T result = caseStructureDefinition(structureDefinition);
+        if (result == null) result = caseBaseElement(structureDefinition);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -300,6 +302,21 @@ public class BptSwitch<T> extends Switch<T> {
    * @generated
    */
   public T caseStructureDefinition(StructureDefinition object) {
+    return null;
+  }
+
+    /**
+   * Returns the result of interpreting the object as an instance of '<em>Base Element</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Base Element</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseBaseElement(BaseElement object) {
     return null;
   }
 

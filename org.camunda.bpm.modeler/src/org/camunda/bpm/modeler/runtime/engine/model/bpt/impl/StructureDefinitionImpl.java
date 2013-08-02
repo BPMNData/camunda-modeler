@@ -9,6 +9,7 @@ package org.camunda.bpm.modeler.runtime.engine.model.bpt.impl;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.StructureDefinition;
 
+import org.eclipse.bpmn2.impl.BaseElementImpl;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
@@ -29,7 +30,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *
  * @generated
  */
-public class StructureDefinitionImpl extends EObjectImpl implements StructureDefinition {
+public class StructureDefinitionImpl extends BaseElementImpl implements StructureDefinition {
   /**
    * The default value of the '{@link #getQname() <em>Qname</em>}' attribute.
    * <!-- begin-user-doc -->

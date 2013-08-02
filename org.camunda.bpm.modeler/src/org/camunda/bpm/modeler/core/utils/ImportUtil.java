@@ -15,6 +15,8 @@ import org.eclipse.bpmn2.Import;
 import org.eclipse.bpmn2.ItemDefinition;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
@@ -120,10 +122,26 @@ public class ImportUtil {
   }
 
   private static StructureDefinition getStructureDefinition(ItemDefinition itemDefinition) {
-    if (itemDefinition.getStructureRef() instanceof StructureDefinition) {
-      return (StructureDefinition) itemDefinition.getStructureRef();
+    resolveStructureDefinitionProxy(itemDefinition);
+    Object structureRef = itemDefinition.getStructureRef();
+    if (structureRef instanceof StructureDefinition) {
+      return (StructureDefinition) structureRef;
+    } else if (structureRef instanceof InternalEObject) {
+      Resource eResource = itemDefinition.eResource();
+      String uri = ((InternalEObject) structureRef).eProxyURI().toString();
+      return (StructureDefinition) eResource.getEObject(uri);
     }
     return null;
+  }
+  
+  public static void resolveStructureDefinitionProxy(ItemDefinition itemDefinition) {
+    Object structureRef = itemDefinition.getStructureRef();
+    if (structureRef != null && structureRef instanceof InternalEObject) {
+      Resource eResource = itemDefinition.eResource();
+      URI proxyURI = ((InternalEObject) structureRef).eProxyURI();
+      if (proxyURI != null)
+        itemDefinition.setStructureRef((StructureDefinition) eResource.getEObject(proxyURI.toString()));
+    }
   }
 
   /**
@@ -206,6 +224,7 @@ public class ImportUtil {
       String locationAsString = schema.getTargetNamespace() + "#" + typeDefinition.getName();
       StructureDefinition structDef = BptFactory.eINSTANCE.createStructureDefinition();
       structDef.setQname(locationAsString);
+      ModelUtil.setID(structDef);
       ExtensionUtil.addExtension(itemDefinition, BptPackage.eINSTANCE.getDocumentRoot_StructureDefinition(), structDef);
       itemDefinition.setStructureRef(structDef);
 

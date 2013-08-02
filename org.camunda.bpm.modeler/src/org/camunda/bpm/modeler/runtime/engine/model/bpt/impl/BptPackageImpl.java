@@ -625,6 +625,7 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
     // Add supertypes to classes
     primaryKeyEClass.getESuperTypes().add(this.getRelationalKey());
     foreignKeyEClass.getESuperTypes().add(this.getRelationalKey());
+    structureDefinitionEClass.getESuperTypes().add(theBpmn2Package.getBaseElement());
 
     // Initialize classes and features; add operations and parameters
     initEClass(primaryKeyEClass, PrimaryKey.class, "PrimaryKey", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -669,7 +670,7 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
     initEAttribute(getCorrelationInformation_AttributeName(), theXMLTypePackage.getString(), "attributeName", "", 0, 1, CorrelationInformation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(structureDefinitionEClass, StructureDefinition.class, "StructureDefinition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getStructureDefinition_Qname(), theXMLTypePackage.getString(), "qname", "", 0, 1, StructureDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getStructureDefinition_Qname(), theXMLTypePackage.getString(), "qname", "", 0, 1, StructureDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Initialize enums and add enum literals
     initEEnum(primaryKeyTypeEEnum, PrimaryKeyType.class, "PrimaryKeyType");

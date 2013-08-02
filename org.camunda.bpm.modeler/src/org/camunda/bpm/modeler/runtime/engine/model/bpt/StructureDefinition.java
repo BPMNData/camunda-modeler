@@ -6,6 +6,7 @@
  */
 package org.camunda.bpm.modeler.runtime.engine.model.bpt;
 
+import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -24,7 +25,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model extendedMetaData="name='tStructureDefinition' kind='mixed' namespace='##targetNamespace'"
  * @generated
  */
-public interface StructureDefinition extends EObject {
+public interface StructureDefinition extends BaseElement {
   /**
    * Returns the value of the '<em><b>Qname</b></em>' attribute.
    * The default value is <code>""</code>.
@@ -37,7 +38,7 @@ public interface StructureDefinition extends EObject {
    * @return the value of the '<em>Qname</em>' attribute.
    * @see #setQname(String)
    * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage#getStructureDefinition_Qname()
-   * @model default="" id="true" dataType="org.eclipse.emf.ecore.xml.type.String"
+   * @model default="" dataType="org.eclipse.emf.ecore.xml.type.String"
    *        extendedMetaData="kind='attribute' name='qname'"
    * @generated
    */

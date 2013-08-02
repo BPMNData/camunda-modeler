@@ -2,6 +2,7 @@
  */
 package org.camunda.bpm.modeler.runtime.engine.model.bpt;
 
+import org.eclipse.bpmn2.Bpmn2Package;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
@@ -484,13 +485,58 @@ public interface BptPackage extends EPackage {
   int STRUCTURE_DEFINITION = 10;
 
     /**
+   * The feature id for the '<em><b>Extension Values</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int STRUCTURE_DEFINITION__EXTENSION_VALUES = Bpmn2Package.BASE_ELEMENT__EXTENSION_VALUES;
+
+    /**
+   * The feature id for the '<em><b>Documentation</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int STRUCTURE_DEFINITION__DOCUMENTATION = Bpmn2Package.BASE_ELEMENT__DOCUMENTATION;
+
+    /**
+   * The feature id for the '<em><b>Extension Definitions</b></em>' reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int STRUCTURE_DEFINITION__EXTENSION_DEFINITIONS = Bpmn2Package.BASE_ELEMENT__EXTENSION_DEFINITIONS;
+
+    /**
+   * The feature id for the '<em><b>Id</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int STRUCTURE_DEFINITION__ID = Bpmn2Package.BASE_ELEMENT__ID;
+
+    /**
+   * The feature id for the '<em><b>Any Attribute</b></em>' attribute list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int STRUCTURE_DEFINITION__ANY_ATTRIBUTE = Bpmn2Package.BASE_ELEMENT__ANY_ATTRIBUTE;
+
+    /**
    * The feature id for the '<em><b>Qname</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int STRUCTURE_DEFINITION__QNAME = 0;
+  int STRUCTURE_DEFINITION__QNAME = Bpmn2Package.BASE_ELEMENT_FEATURE_COUNT + 0;
 
     /**
    * The number of structural features of the '<em>Structure Definition</em>' class.
@@ -499,7 +545,7 @@ public interface BptPackage extends EPackage {
    * @generated
    * @ordered
    */
-  int STRUCTURE_DEFINITION_FEATURE_COUNT = 1;
+  int STRUCTURE_DEFINITION_FEATURE_COUNT = Bpmn2Package.BASE_ELEMENT_FEATURE_COUNT + 1;
 
     /**
    * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType <em>Primary Key Type</em>}' enum.

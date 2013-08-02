@@ -1012,14 +1012,14 @@
         </eAnnotations>
       </eStructuralFeatures>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="StructureDefinition">
+    <eClassifiers xsi:type="ecore:EClass" name="StructureDefinition" eSuperTypes="../../org.eclipse.bpmn2/model/BPMN20.ecore#//BaseElement">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="name" value="tStructureDefinition"/>
         <details key="kind" value="mixed"/>
         <details key="namespace" value="##targetNamespace"/>
       </eAnnotations>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="qname" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
-          defaultValueLiteral="" iD="true">
+          defaultValueLiteral="">
         <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
           <details key="kind" value="attribute"/>
           <details key="name" value="qname"/>
