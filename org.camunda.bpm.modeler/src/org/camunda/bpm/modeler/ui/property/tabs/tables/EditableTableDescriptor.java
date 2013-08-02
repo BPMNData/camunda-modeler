@@ -1,5 +1,8 @@
 package org.camunda.bpm.modeler.ui.property.tabs.tables;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.camunda.bpm.modeler.ui.property.tabs.util.Events;
 import org.camunda.bpm.modeler.ui.property.tabs.util.Events.RowAdded;
 import org.eclipse.emf.ecore.EObject;
@@ -48,9 +51,17 @@ public class EditableTableDescriptor<T> extends TableDescriptor<T> {
 	private AddStrategy addStrategy;
 	
 	private ElementFactory<T> elementFactory;
+
+	private List<MenuItem> customsMenuItems = new ArrayList<MenuItem>();
+	
+	private List<CustomMenuItemDescriptor> customMenuItemDescriptors = new ArrayList<CustomMenuItemDescriptor>();
 	
 	public void setElementFactory(ElementFactory<T> elementFactory) {
 		this.elementFactory = elementFactory;
+	}
+	
+	public void addCustomMenuItem(CustomMenuItemDescriptor customMenuItem) {
+	  this.customMenuItemDescriptors.add(customMenuItem);
 	}
 
 	/**
@@ -158,6 +169,12 @@ public class EditableTableDescriptor<T> extends TableDescriptor<T> {
 		addEntryMenuItem.setText("Add");
 		addEntryMenuItem.setEnabled(addStrategy != null);
 		
+		for (CustomMenuItemDescriptor menuItemDescriptor : customMenuItemDescriptors) {
+		  MenuItem customItem = new MenuItem(menu, SWT.PUSH);
+		  customItem.setText(menuItemDescriptor.getText());
+		  customItem.addListener(SWT.Selection, menuItemDescriptor.getSelectionListener(table, viewer));
+		}
+		
 		// activation of menu items
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			
@@ -165,7 +182,11 @@ public class EditableTableDescriptor<T> extends TableDescriptor<T> {
 			public void selectionChanged(SelectionChangedEvent event) {
 				ISelection selection = event.getSelection();
 
-				deleteEntryMenuItem.setEnabled(!selection.isEmpty());
+				boolean isSomethingSelected = !selection.isEmpty();
+        deleteEntryMenuItem.setEnabled(isSomethingSelected);
+        for (MenuItem customMenuItem : customsMenuItems) {
+          customMenuItem.setEnabled(isSomethingSelected);
+        }
 				addEntryMenuItem.setEnabled(addStrategy != null);
 			}
 		});
@@ -192,7 +213,7 @@ public class EditableTableDescriptor<T> extends TableDescriptor<T> {
 				}
 			}
 		});
-		
+
 		table.setMenu(menu);
 	}
 
@@ -402,5 +423,12 @@ public class EditableTableDescriptor<T> extends TableDescriptor<T> {
 					|| event.eventType == ColumnViewerEditorActivationEvent.PROGRAMMATIC
 					|| event.eventType == ColumnViewerEditorActivationEvent.TRAVERSAL);
 		}
+	}
+	
+	public static interface CustomMenuItemDescriptor {
+	  
+	  String getText();
+	  
+	  Listener getSelectionListener(Table table, TableViewer viewer);
 	}
 }
