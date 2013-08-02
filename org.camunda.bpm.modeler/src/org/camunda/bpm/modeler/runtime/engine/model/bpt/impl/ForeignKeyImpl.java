@@ -18,22 +18,22 @@ import org.eclipse.emf.ecore.EClass;
  */
 public class ForeignKeyImpl extends RelationalKeyImpl implements ForeignKey {
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected ForeignKeyImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return BptPackage.Literals.FOREIGN_KEY;
-    }
+    return BptPackage.Literals.FOREIGN_KEY;
+  }
 
 } //ForeignKeyImpl

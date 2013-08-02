@@ -24,136 +24,136 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class PrimaryKeyImpl extends RelationalKeyImpl implements PrimaryKey {
     /**
-     * The default value of the '{@link #getType() <em>Type</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getType() <em>Type</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getType()
-     * @generated
-     * @ordered
-     */
+   * @see #getType()
+   * @generated
+   * @ordered
+   */
     protected static final PrimaryKeyType TYPE_EDEFAULT = PrimaryKeyType.DEFAULT;
     /**
-     * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getType()
-     * @generated
-     * @ordered
-     */
+   * @see #getType()
+   * @generated
+   * @ordered
+   */
     protected PrimaryKeyType type = TYPE_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected PrimaryKeyImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return BptPackage.Literals.PRIMARY_KEY;
-    }
+    return BptPackage.Literals.PRIMARY_KEY;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public PrimaryKeyType getType() {
-        return type;
-    }
+    return type;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void setType(PrimaryKeyType newType) {
-        PrimaryKeyType oldType = type;
-        type = newType == null ? TYPE_EDEFAULT : newType;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, BptPackage.PRIMARY_KEY__TYPE, oldType, type));
-    }
+    PrimaryKeyType oldType = type;
+    type = newType == null ? TYPE_EDEFAULT : newType;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, BptPackage.PRIMARY_KEY__TYPE, oldType, type));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case BptPackage.PRIMARY_KEY__TYPE:
-                return getType();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case BptPackage.PRIMARY_KEY__TYPE:
+        return getType();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case BptPackage.PRIMARY_KEY__TYPE:
-                setType((PrimaryKeyType)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case BptPackage.PRIMARY_KEY__TYPE:
+        setType((PrimaryKeyType)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case BptPackage.PRIMARY_KEY__TYPE:
-                setType(TYPE_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case BptPackage.PRIMARY_KEY__TYPE:
+        setType(TYPE_EDEFAULT);
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case BptPackage.PRIMARY_KEY__TYPE:
-                return type != TYPE_EDEFAULT;
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case BptPackage.PRIMARY_KEY__TYPE:
+        return type != TYPE_EDEFAULT;
     }
+    return super.eIsSet(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (type: ");
-        result.append(type);
-        result.append(')');
-        return result.toString();
-    }
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (type: ");
+    result.append(type);
+    result.append(')');
+    return result.toString();
+  }
 
 } //PrimaryKeyImpl

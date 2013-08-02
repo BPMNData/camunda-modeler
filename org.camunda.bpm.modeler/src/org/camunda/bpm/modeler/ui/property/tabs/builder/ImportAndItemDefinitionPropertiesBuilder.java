@@ -48,8 +48,9 @@ public class ImportAndItemDefinitionPropertiesBuilder extends AbstractProperties
       Bpmn2Package.eINSTANCE.getImport_Namespace() };
 
   private static final EStructuralFeature ITEM_DEFINITONS_FEATURE = Bpmn2Package.eINSTANCE.getDefinitions_RootElements();
-  private static final String[] ITEM_DEFINITONS_TABLE_HEADERS = { "is collection" };
-  private static final EStructuralFeature[] ITEM_DEFINITONS_FEATURES = { Bpmn2Package.eINSTANCE.getItemDefinition_IsCollection() };
+  private static final String[] ITEM_DEFINITONS_TABLE_HEADERS = { "structure reference", "is collection", "kind" };
+  private static final EStructuralFeature[] ITEM_DEFINITONS_FEATURES = { Bpmn2Package.eINSTANCE.getItemDefinition_StructureRef(),
+      Bpmn2Package.eINSTANCE.getItemDefinition_IsCollection(), Bpmn2Package.eINSTANCE.getItemDefinition_ItemKind() };
 
   public ImportAndItemDefinitionPropertiesBuilder(Composite parent, GFPropertySection section, Definitions bo) {
     super(parent, section, bo);
@@ -134,12 +135,6 @@ public class ImportAndItemDefinitionPropertiesBuilder extends AbstractProperties
       @Override
       protected ItemDefinition doCreate() {
         ItemDefinition itemDefinition = Bpmn2Factory.eINSTANCE.createItemDefinition();
-        List<Import> imports = bo.getImports();
-        Import imp = null;
-        if (!imports.isEmpty()) {
-          imp = imports.get(0);
-        }
-        itemDefinition.setImport(imp);
         itemDefinition.setIsCollection(false);
         itemDefinition.setItemKind(ItemKind.INFORMATION);
         ModelUtil.setID(itemDefinition);

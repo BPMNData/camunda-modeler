@@ -919,17 +919,112 @@
         </eAnnotations>
       </eStructuralFeatures>
       <eStructuralFeatures xsi:type="ecore:EReference" name="foreignKey" upperBound="-2"
-          eType="#//bpt/ForeignKey" volatile="true" transient="true" derived="true"
-          containment="true" resolveProxies="false">
+          eType="#//bpt/ForeignKey" volatile="true" derived="true" containment="true"
+          resolveProxies="false">
         <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
           <details key="kind" value="element"/>
           <details key="name" value="foreignKey"/>
           <details key="namespace" value="http://bpt.hpi.uni-potsdam.de"/>
         </eAnnotations>
       </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="messageContentDefinition"
+          upperBound="-2" eType="#//bpt/MessageContentDefinition" volatile="true"
+          derived="true" containment="true" resolveProxies="false">
+        <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+          <details key="kind" value="element"/>
+          <details key="name" value="contentDefinition"/>
+          <details key="namespace" value="http://bpt.hpi.uni-potsdam.de"/>
+        </eAnnotations>
+      </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="messageObject" upperBound="-2"
+          eType="#//bpt/MessageObject" volatile="true" derived="true" containment="true"
+          resolveProxies="false">
+        <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+          <details key="kind" value="element"/>
+          <details key="name" value="messageObject"/>
+          <details key="namespace" value="http://bpt.hpi.uni-potsdam.de"/>
+        </eAnnotations>
+      </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="correlationInformation"
+          upperBound="-2" eType="#//bpt/CorrelationInformation" volatile="true" derived="true"
+          containment="true" resolveProxies="false">
+        <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+          <details key="kind" value="element"/>
+          <details key="name" value="messageObject"/>
+          <details key="namespace" value="http://bpt.hpi.uni-potsdam.de"/>
+        </eAnnotations>
+      </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="structureDefinition"
+          upperBound="-2" eType="#//bpt/StructureDefinition" volatile="true" derived="true"
+          containment="true" resolveProxies="false">
+        <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+          <details key="kind" value="element"/>
+          <details key="name" value="structureDefinition"/>
+          <details key="namespace" value="http://bpt.hpi.uni-potsdam.de"/>
+        </eAnnotations>
+      </eStructuralFeatures>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MessageContentDefinition">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="payloadRef" eType="ecore:EClass ../../org.eclipse.bpmn2/model/BPMN20.ecore#//ItemDefinition"/>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="name" value="tMessageContent"/>
+        <details key="kind" value="mixed"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="payloadRef" eType="ecore:EClass ../../org.eclipse.bpmn2/model/BPMN20.ecore#//ItemDefinition"
+          derived="true" containment="true">
+        <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+          <details key="kind" value="element"/>
+          <details key="name" value="payloadRef"/>
+          <details key="namespace" value="http://bpt.hpi.uni-potsdam.de"/>
+        </eAnnotations>
+      </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="correlationIdentifierRef"
+          upperBound="-2" eType="ecore:EClass ../../org.eclipse.bpmn2/model/BPMN20.ecore#//ItemDefinition"
+          volatile="true" derived="true" containment="true" resolveProxies="false">
+        <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+          <details key="kind" value="element"/>
+          <details key="name" value="correlationIdentifierRef"/>
+          <details key="namespace" value="http://bpt.hpi.uni-potsdam.de"/>
+        </eAnnotations>
+      </eStructuralFeatures>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="MessageObject">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="name" value="tMessageObject"/>
+        <details key="kind" value="empty"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="CorrelationInformation">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="name" value="tCorrelationInformation"/>
+        <details key="kind" value="mixed"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeName" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
+          defaultValueLiteral="">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="documentation" value="A correlation information describes an attribute which can be used for correlation."/>
+        </eAnnotations>
+        <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+          <details key="kind" value="attribute"/>
+          <details key="name" value="attributeName"/>
+        </eAnnotations>
+      </eStructuralFeatures>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="StructureDefinition">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="name" value="tStructureDefinition"/>
+        <details key="kind" value="mixed"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="qname" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
+          defaultValueLiteral="" iD="true">
+        <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+          <details key="kind" value="attribute"/>
+          <details key="name" value="qname"/>
+        </eAnnotations>
+      </eStructuralFeatures>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>

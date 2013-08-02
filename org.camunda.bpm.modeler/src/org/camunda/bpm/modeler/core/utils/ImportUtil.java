@@ -7,15 +7,18 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.camunda.bpm.modeler.core.ModelHandler;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptFactory;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.StructureDefinition;
 import org.eclipse.bpmn2.Definitions;
 import org.eclipse.bpmn2.Import;
 import org.eclipse.bpmn2.ItemDefinition;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
+import org.eclipse.xsd.XSDAnnotation;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDResourceImpl;
@@ -87,6 +90,10 @@ public class ImportUtil {
     }
   }
 
+  /**
+   * Inserts or updates the new {@link ItemDefinition} objects into the given
+   * {@link Definitions} object.
+   */
   private static void insertItemDefinitions(final List<ItemDefinition> newItemDefinitions, final Definitions definitions) {
     List<ItemDefinition> oldItemDefinitions = ModelUtil.getAllRootElements(definitions, ItemDefinition.class);
     for (ItemDefinition newItemDefinition : newItemDefinitions) {
@@ -95,12 +102,28 @@ public class ImportUtil {
     }
   }
 
+  /**
+   * Reomves existing {@link ItemDefinition} objects that reference the same
+   * structure.
+   */
   private static void removeExistingItemDefinition(ItemDefinition newItemDefinition, List<ItemDefinition> oldItemDefinitions, Definitions definitions) {
+    StructureDefinition newStructureDef = getStructureDefinition(newItemDefinition);
+    if (newStructureDef == null)
+      return;
+
     for (ItemDefinition oldItemDefinition : oldItemDefinitions) {
-      if (newItemDefinition.getStructureRef().equals(oldItemDefinition.getStructureRef())) {
+      StructureDefinition oldStructureDef = getStructureDefinition(oldItemDefinition);
+      if (oldStructureDef != null && newStructureDef.getQname().equals(oldStructureDef.getQname())) {
         definitions.getRootElements().remove(oldItemDefinition);
       }
     }
+  }
+
+  private static StructureDefinition getStructureDefinition(ItemDefinition itemDefinition) {
+    if (itemDefinition.getStructureRef() instanceof StructureDefinition) {
+      return (StructureDefinition) itemDefinition.getStructureRef();
+    }
+    return null;
   }
 
   /**
@@ -145,8 +168,9 @@ public class ImportUtil {
 
   }
 
-  /** 
+  /**
    * Loader for XML Schema files.
+   * 
    * @author Sebastian
    */
   public static class XsdLoader extends AbstractLoader {
@@ -164,12 +188,7 @@ public class ImportUtil {
         XSDSchema schema = resource.getSchema();
         EList<XSDTypeDefinition> typeDefinitions = schema.getTypeDefinitions();
         for (XSDTypeDefinition typeDefinition : typeDefinitions) {
-          ItemDefinition itemDefinition = ModelHandler.create(specification.eResource(), ItemDefinition.class);
-          String locationAsString = schema.getTargetNamespace() + "/" + typeDefinition.getName();
-          DynamicEObjectImpl structureRef = new DynamicEObjectImpl();
-          URI locationAsUri = URI.createURI(locationAsString);
-          structureRef.eSetProxyURI(locationAsUri);
-          itemDefinition.setStructureRef(structureRef);
+          ItemDefinition itemDefinition = createItemDefinition(specification, schema, typeDefinition);
           itemDefinitions.add(itemDefinition);
         }
 
@@ -178,6 +197,24 @@ public class ImportUtil {
       }
 
       return itemDefinitions;
+    }
+
+    private ItemDefinition createItemDefinition(Import specification, XSDSchema schema, XSDTypeDefinition typeDefinition) {
+      ItemDefinition itemDefinition = ModelHandler.create(specification.eResource(), ItemDefinition.class);
+
+      // set structure ref
+      String locationAsString = schema.getTargetNamespace() + "#" + typeDefinition.getName();
+      StructureDefinition structDef = BptFactory.eINSTANCE.createStructureDefinition();
+      structDef.setQname(locationAsString);
+      ExtensionUtil.addExtension(itemDefinition, BptPackage.eINSTANCE.getDocumentRoot_StructureDefinition(), structDef);
+      itemDefinition.setStructureRef(structDef);
+
+      // extract extensions
+      EList<XSDAnnotation> annotations = typeDefinition.getAnnotations();
+      for (XSDAnnotation annotation : annotations) {
+        System.out.println(annotation);
+      }
+      return itemDefinition;
     }
 
   }
