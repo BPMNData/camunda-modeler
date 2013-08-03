@@ -401,7 +401,7 @@ public interface BptPackage extends EPackage {
   int MESSAGE_CONTENT_DEFINITION = 7;
 
     /**
-   * The feature id for the '<em><b>Payload Ref</b></em>' containment reference.
+   * The feature id for the '<em><b>Payload Ref</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -410,13 +410,13 @@ public interface BptPackage extends EPackage {
   int MESSAGE_CONTENT_DEFINITION__PAYLOAD_REF = 0;
 
     /**
-   * The feature id for the '<em><b>Correlation Identifier Ref</b></em>' containment reference.
+   * The feature id for the '<em><b>Correlation Identifier Links</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MESSAGE_CONTENT_DEFINITION__CORRELATION_IDENTIFIER_REF = 1;
+  int MESSAGE_CONTENT_DEFINITION__CORRELATION_IDENTIFIER_LINKS = 1;
 
     /**
    * The number of structural features of the '<em>Message Content Definition</em>' class.
@@ -428,6 +428,34 @@ public interface BptPackage extends EPackage {
   int MESSAGE_CONTENT_DEFINITION_FEATURE_COUNT = 2;
 
     /**
+   * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.ItemDefinitionLinkImpl <em>Item Definition Link</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.ItemDefinitionLinkImpl
+   * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.BptPackageImpl#getItemDefinitionLink()
+   * @generated
+   */
+  int ITEM_DEFINITION_LINK = 8;
+
+    /**
+   * The feature id for the '<em><b>Ref</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ITEM_DEFINITION_LINK__REF = 0;
+
+    /**
+   * The number of structural features of the '<em>Item Definition Link</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ITEM_DEFINITION_LINK_FEATURE_COUNT = 1;
+
+    /**
    * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.MessageObjectImpl <em>Message Object</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -435,7 +463,7 @@ public interface BptPackage extends EPackage {
    * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.BptPackageImpl#getMessageObject()
    * @generated
    */
-  int MESSAGE_OBJECT = 8;
+  int MESSAGE_OBJECT = 9;
 
     /**
    * The number of structural features of the '<em>Message Object</em>' class.
@@ -454,7 +482,7 @@ public interface BptPackage extends EPackage {
    * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.BptPackageImpl#getCorrelationInformation()
    * @generated
    */
-  int CORRELATION_INFORMATION = 9;
+  int CORRELATION_INFORMATION = 10;
 
     /**
    * The feature id for the '<em><b>Attribute Name</b></em>' attribute.
@@ -482,7 +510,7 @@ public interface BptPackage extends EPackage {
    * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.BptPackageImpl#getStructureDefinition()
    * @generated
    */
-  int STRUCTURE_DEFINITION = 10;
+  int STRUCTURE_DEFINITION = 11;
 
     /**
    * The feature id for the '<em><b>Extension Values</b></em>' containment reference list.
@@ -555,7 +583,7 @@ public interface BptPackage extends EPackage {
    * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.BptPackageImpl#getPrimaryKeyType()
    * @generated
    */
-    int PRIMARY_KEY_TYPE = 11;
+    int PRIMARY_KEY_TYPE = 12;
 
     /**
    * Returns the meta object for class '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey <em>Primary Key</em>}'.
@@ -836,10 +864,10 @@ public interface BptPackage extends EPackage {
   EClass getMessageContentDefinition();
 
     /**
-   * Returns the meta object for the containment reference '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.MessageContentDefinition#getPayloadRef <em>Payload Ref</em>}'.
+   * Returns the meta object for the reference '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.MessageContentDefinition#getPayloadRef <em>Payload Ref</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Payload Ref</em>'.
+   * @return the meta object for the reference '<em>Payload Ref</em>'.
    * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.MessageContentDefinition#getPayloadRef()
    * @see #getMessageContentDefinition()
    * @generated
@@ -847,15 +875,36 @@ public interface BptPackage extends EPackage {
   EReference getMessageContentDefinition_PayloadRef();
 
     /**
-   * Returns the meta object for the containment reference '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.MessageContentDefinition#getCorrelationIdentifierRef <em>Correlation Identifier Ref</em>}'.
+   * Returns the meta object for the containment reference list '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.MessageContentDefinition#getCorrelationIdentifierLinks <em>Correlation Identifier Links</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Correlation Identifier Ref</em>'.
-   * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.MessageContentDefinition#getCorrelationIdentifierRef()
+   * @return the meta object for the containment reference list '<em>Correlation Identifier Links</em>'.
+   * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.MessageContentDefinition#getCorrelationIdentifierLinks()
    * @see #getMessageContentDefinition()
    * @generated
    */
-  EReference getMessageContentDefinition_CorrelationIdentifierRef();
+  EReference getMessageContentDefinition_CorrelationIdentifierLinks();
+
+    /**
+   * Returns the meta object for class '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.ItemDefinitionLink <em>Item Definition Link</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Item Definition Link</em>'.
+   * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.ItemDefinitionLink
+   * @generated
+   */
+  EClass getItemDefinitionLink();
+
+    /**
+   * Returns the meta object for the reference '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.ItemDefinitionLink#getRef <em>Ref</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Ref</em>'.
+   * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.ItemDefinitionLink#getRef()
+   * @see #getItemDefinitionLink()
+   * @generated
+   */
+  EReference getItemDefinitionLink_Ref();
 
     /**
    * Returns the meta object for class '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.MessageObject <em>Message Object</em>}'.
@@ -1166,7 +1215,7 @@ public interface BptPackage extends EPackage {
     EClass MESSAGE_CONTENT_DEFINITION = eINSTANCE.getMessageContentDefinition();
 
         /**
-     * The meta object literal for the '<em><b>Payload Ref</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Payload Ref</b></em>' reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -1174,12 +1223,30 @@ public interface BptPackage extends EPackage {
     EReference MESSAGE_CONTENT_DEFINITION__PAYLOAD_REF = eINSTANCE.getMessageContentDefinition_PayloadRef();
 
         /**
-     * The meta object literal for the '<em><b>Correlation Identifier Ref</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Correlation Identifier Links</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference MESSAGE_CONTENT_DEFINITION__CORRELATION_IDENTIFIER_REF = eINSTANCE.getMessageContentDefinition_CorrelationIdentifierRef();
+    EReference MESSAGE_CONTENT_DEFINITION__CORRELATION_IDENTIFIER_LINKS = eINSTANCE.getMessageContentDefinition_CorrelationIdentifierLinks();
+
+        /**
+     * The meta object literal for the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.ItemDefinitionLinkImpl <em>Item Definition Link</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.ItemDefinitionLinkImpl
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.BptPackageImpl#getItemDefinitionLink()
+     * @generated
+     */
+    EClass ITEM_DEFINITION_LINK = eINSTANCE.getItemDefinitionLink();
+
+        /**
+     * The meta object literal for the '<em><b>Ref</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ITEM_DEFINITION_LINK__REF = eINSTANCE.getItemDefinitionLink_Ref();
 
         /**
      * The meta object literal for the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.MessageObjectImpl <em>Message Object</em>}' class.

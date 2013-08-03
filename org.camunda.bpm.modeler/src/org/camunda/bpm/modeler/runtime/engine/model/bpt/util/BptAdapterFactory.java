@@ -101,6 +101,10 @@ public class BptAdapterFactory extends AdapterFactoryImpl {
         return createMessageContentDefinitionAdapter();
       }
       @Override
+      public Adapter caseItemDefinitionLink(ItemDefinitionLink object) {
+        return createItemDefinitionLinkAdapter();
+      }
+      @Override
       public Adapter caseMessageObject(MessageObject object) {
         return createMessageObjectAdapter();
       }
@@ -245,6 +249,20 @@ public class BptAdapterFactory extends AdapterFactoryImpl {
    * @generated
    */
   public Adapter createMessageContentDefinitionAdapter() {
+    return null;
+  }
+
+    /**
+   * Creates a new adapter for an object of class '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.ItemDefinitionLink <em>Item Definition Link</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.ItemDefinitionLink
+   * @generated
+   */
+  public Adapter createItemDefinitionLinkAdapter() {
     return null;
   }
 

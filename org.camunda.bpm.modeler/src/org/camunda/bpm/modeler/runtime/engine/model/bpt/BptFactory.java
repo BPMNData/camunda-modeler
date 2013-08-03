@@ -85,6 +85,15 @@ public interface BptFactory extends EFactory {
   MessageContentDefinition createMessageContentDefinition();
 
     /**
+   * Returns a new object of class '<em>Item Definition Link</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Item Definition Link</em>'.
+   * @generated
+   */
+  ItemDefinitionLink createItemDefinitionLink();
+
+    /**
    * Returns a new object of class '<em>Message Object</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

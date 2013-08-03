@@ -11,6 +11,7 @@ import org.camunda.bpm.modeler.runtime.engine.model.bpt.Condition;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.CorrelationInformation;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.ForeignKey;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.ItemDefinitionLink;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.MessageContentDefinition;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.MessageObject;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey;
@@ -104,6 +105,13 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
    * @generated
    */
   private EClass messageContentDefinitionEClass = null;
+
+    /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass itemDefinitionLinkEClass = null;
 
     /**
    * <!-- begin-user-doc -->
@@ -457,8 +465,26 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getMessageContentDefinition_CorrelationIdentifierRef() {
+  public EReference getMessageContentDefinition_CorrelationIdentifierLinks() {
     return (EReference)messageContentDefinitionEClass.getEStructuralFeatures().get(1);
+  }
+
+    /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getItemDefinitionLink() {
+    return itemDefinitionLinkEClass;
+  }
+
+    /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getItemDefinitionLink_Ref() {
+    return (EReference)itemDefinitionLinkEClass.getEStructuralFeatures().get(0);
   }
 
     /**
@@ -577,7 +603,10 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
 
     messageContentDefinitionEClass = createEClass(MESSAGE_CONTENT_DEFINITION);
     createEReference(messageContentDefinitionEClass, MESSAGE_CONTENT_DEFINITION__PAYLOAD_REF);
-    createEReference(messageContentDefinitionEClass, MESSAGE_CONTENT_DEFINITION__CORRELATION_IDENTIFIER_REF);
+    createEReference(messageContentDefinitionEClass, MESSAGE_CONTENT_DEFINITION__CORRELATION_IDENTIFIER_LINKS);
+
+    itemDefinitionLinkEClass = createEClass(ITEM_DEFINITION_LINK);
+    createEReference(itemDefinitionLinkEClass, ITEM_DEFINITION_LINK__REF);
 
     messageObjectEClass = createEClass(MESSAGE_OBJECT);
 
@@ -661,8 +690,11 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
     initEReference(getDocumentRoot_StructureDefinition(), this.getStructureDefinition(), null, "structureDefinition", null, 0, -2, null, !IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
     initEClass(messageContentDefinitionEClass, MessageContentDefinition.class, "MessageContentDefinition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getMessageContentDefinition_PayloadRef(), theBpmn2Package.getItemDefinition(), null, "payloadRef", null, 0, 1, MessageContentDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-    initEReference(getMessageContentDefinition_CorrelationIdentifierRef(), theBpmn2Package.getItemDefinition(), null, "correlationIdentifierRef", null, 0, -2, MessageContentDefinition.class, !IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+    initEReference(getMessageContentDefinition_PayloadRef(), theBpmn2Package.getItemDefinition(), null, "payloadRef", null, 0, 1, MessageContentDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+    initEReference(getMessageContentDefinition_CorrelationIdentifierLinks(), this.getItemDefinitionLink(), null, "correlationIdentifierLinks", null, 0, -1, MessageContentDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+    initEClass(itemDefinitionLinkEClass, ItemDefinitionLink.class, "ItemDefinitionLink", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getItemDefinitionLink_Ref(), theBpmn2Package.getItemDefinition(), null, "ref", null, 0, 1, ItemDefinitionLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(messageObjectEClass, MessageObject.class, "MessageObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -871,7 +903,7 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
        source, 
        new String[] {
        "kind", "element",
-       "name", "messageObject",
+       "name", "correlationInformation",
        "namespace", "http://bpt.hpi.uni-potsdam.de"
        });		
     addAnnotation
@@ -894,17 +926,31 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
       (getMessageContentDefinition_PayloadRef(), 
        source, 
        new String[] {
-       "kind", "element",
-       "name", "payloadRef",
-       "namespace", "http://bpt.hpi.uni-potsdam.de"
+       "kind", "attribute",
+       "name", "payloadRef"
        });		
     addAnnotation
-      (getMessageContentDefinition_CorrelationIdentifierRef(), 
+      (getMessageContentDefinition_CorrelationIdentifierLinks(), 
        source, 
        new String[] {
        "kind", "element",
-       "name", "correlationIdentifierRef",
+       "name", "correlationIdentifierLink",
        "namespace", "http://bpt.hpi.uni-potsdam.de"
+       });		
+    addAnnotation
+      (itemDefinitionLinkEClass, 
+       source, 
+       new String[] {
+       "name", "tItemDefinitionLink",
+       "kind", "mixed",
+       "namespace", "##targetNamespace"
+       });		
+    addAnnotation
+      (getItemDefinitionLink_Ref(), 
+       source, 
+       new String[] {
+       "kind", "attribute",
+       "name", "ref"
        });		
     addAnnotation
       (messageObjectEClass, 
@@ -919,7 +965,7 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
        source, 
        new String[] {
        "name", "tCorrelationInformation",
-       "kind", "mixed",
+       "kind", "elementOnly",
        "namespace", "##targetNamespace"
        });			
     addAnnotation

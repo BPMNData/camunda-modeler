@@ -117,6 +117,12 @@ public class BptSwitch<T> extends Switch<T> {
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case BptPackage.ITEM_DEFINITION_LINK: {
+        ItemDefinitionLink itemDefinitionLink = (ItemDefinitionLink)theEObject;
+        T result = caseItemDefinitionLink(itemDefinitionLink);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case BptPackage.MESSAGE_OBJECT: {
         MessageObject messageObject = (MessageObject)theEObject;
         T result = caseMessageObject(messageObject);
@@ -257,6 +263,21 @@ public class BptSwitch<T> extends Switch<T> {
    * @generated
    */
   public T caseMessageContentDefinition(MessageContentDefinition object) {
+    return null;
+  }
+
+    /**
+   * Returns the result of interpreting the object as an instance of '<em>Item Definition Link</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Item Definition Link</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseItemDefinitionLink(ItemDefinitionLink object) {
     return null;
   }
 

@@ -230,7 +230,7 @@ public interface DocumentRoot extends EObject {
    * @see #setCorrelationInformation(CorrelationInformation)
    * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage#getDocumentRoot_CorrelationInformation()
    * @model containment="true" upper="-2" volatile="true" derived="true"
-   *        extendedMetaData="kind='element' name='messageObject' namespace='http://bpt.hpi.uni-potsdam.de'"
+   *        extendedMetaData="kind='element' name='correlationInformation' namespace='http://bpt.hpi.uni-potsdam.de'"
    * @generated
    */
   CorrelationInformation getCorrelationInformation();

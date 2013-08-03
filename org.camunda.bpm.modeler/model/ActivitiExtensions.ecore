@@ -950,7 +950,7 @@
           containment="true" resolveProxies="false">
         <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
           <details key="kind" value="element"/>
-          <details key="name" value="messageObject"/>
+          <details key="name" value="correlationInformation"/>
           <details key="namespace" value="http://bpt.hpi.uni-potsdam.de"/>
         </eAnnotations>
       </eStructuralFeatures>
@@ -970,21 +970,32 @@
         <details key="kind" value="mixed"/>
         <details key="namespace" value="##targetNamespace"/>
       </eAnnotations>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="payloadRef" eType="ecore:EClass ../../org.eclipse.bpmn2/model/BPMN20.ecore#//ItemDefinition"
-          derived="true" containment="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="payloadRef" ordered="false"
+          eType="ecore:EClass ../../org.eclipse.bpmn2/model/BPMN20.ecore#//ItemDefinition">
+        <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+          <details key="kind" value="attribute"/>
+          <details key="name" value="payloadRef"/>
+        </eAnnotations>
+      </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="correlationIdentifierLinks"
+          ordered="false" upperBound="-1" eType="#//bpt/ItemDefinitionLink" containment="true">
         <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
           <details key="kind" value="element"/>
-          <details key="name" value="payloadRef"/>
+          <details key="name" value="correlationIdentifierLink"/>
           <details key="namespace" value="http://bpt.hpi.uni-potsdam.de"/>
         </eAnnotations>
       </eStructuralFeatures>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="correlationIdentifierRef"
-          upperBound="-2" eType="ecore:EClass ../../org.eclipse.bpmn2/model/BPMN20.ecore#//ItemDefinition"
-          volatile="true" derived="true" containment="true" resolveProxies="false">
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ItemDefinitionLink">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="name" value="tItemDefinitionLink"/>
+        <details key="kind" value="mixed"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="ecore:EClass ../../org.eclipse.bpmn2/model/BPMN20.ecore#//ItemDefinition">
         <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
-          <details key="kind" value="element"/>
-          <details key="name" value="correlationIdentifierRef"/>
-          <details key="namespace" value="http://bpt.hpi.uni-potsdam.de"/>
+          <details key="kind" value="attribute"/>
+          <details key="name" value="ref"/>
         </eAnnotations>
       </eStructuralFeatures>
     </eClassifiers>
@@ -998,7 +1009,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="CorrelationInformation">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="name" value="tCorrelationInformation"/>
-        <details key="kind" value="mixed"/>
+        <details key="kind" value="elementOnly"/>
         <details key="namespace" value="##targetNamespace"/>
       </eAnnotations>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeName" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"

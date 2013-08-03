@@ -64,6 +64,7 @@ public class BptFactoryImpl extends EFactoryImpl implements BptFactory {
       case BptPackage.SCOPE_INFORMATION: return createScopeInformation();
       case BptPackage.DOCUMENT_ROOT: return createDocumentRoot();
       case BptPackage.MESSAGE_CONTENT_DEFINITION: return createMessageContentDefinition();
+      case BptPackage.ITEM_DEFINITION_LINK: return createItemDefinitionLink();
       case BptPackage.MESSAGE_OBJECT: return createMessageObject();
       case BptPackage.CORRELATION_INFORMATION: return createCorrelationInformation();
       case BptPackage.STRUCTURE_DEFINITION: return createStructureDefinition();
@@ -170,6 +171,16 @@ public class BptFactoryImpl extends EFactoryImpl implements BptFactory {
   public MessageContentDefinition createMessageContentDefinition() {
     MessageContentDefinitionImpl messageContentDefinition = new MessageContentDefinitionImpl();
     return messageContentDefinition;
+  }
+
+    /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ItemDefinitionLink createItemDefinitionLink() {
+    ItemDefinitionLinkImpl itemDefinitionLink = new ItemDefinitionLinkImpl();
+    return itemDefinitionLink;
   }
 
     /**

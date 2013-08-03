@@ -9,6 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.camunda.bpm.modeler.core.ModelHandler;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptFactory;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.CorrelationInformation;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.MessageObject;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.StructureDefinition;
 import org.eclipse.bpmn2.Definitions;
 import org.eclipse.bpmn2.Import;
@@ -24,6 +26,8 @@ import org.eclipse.xsd.XSDAnnotation;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDResourceImpl;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * This class is in charge of loading {@link Import} files and create
@@ -133,14 +137,22 @@ public class ImportUtil {
     }
     return null;
   }
-  
-  public static void resolveStructureDefinitionProxy(ItemDefinition itemDefinition) {
+
+  public static void resolveStructureDefinitionProxy(final ItemDefinition itemDefinition) {
     Object structureRef = itemDefinition.getStructureRef();
     if (structureRef != null && structureRef instanceof InternalEObject) {
-      Resource eResource = itemDefinition.eResource();
-      URI proxyURI = ((InternalEObject) structureRef).eProxyURI();
-      if (proxyURI != null)
-        itemDefinition.setStructureRef((StructureDefinition) eResource.getEObject(proxyURI.toString()));
+      final Resource eResource = itemDefinition.eResource();
+      final URI proxyURI = ((InternalEObject) structureRef).eProxyURI();
+      if (proxyURI != null) {
+        TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(itemDefinition);
+        editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
+          
+          @Override
+          protected void doExecute() {
+            itemDefinition.setStructureRef((StructureDefinition) eResource.getEObject(proxyURI.toString()));
+          }
+        });
+      }
     }
   }
 
@@ -193,6 +205,11 @@ public class ImportUtil {
    */
   public static class XsdLoader extends AbstractLoader {
 
+    public static final String CI_ATTRIBUTE_NAME_ATTRIBUTE = "attributeName";
+    public static final String BPMN_DATA_NS = "http://bpt.hpi.uni-potsdam.de/bpmn-data/";
+    public static final String CORRELATION_IDENTIFIER_ELEMENT = "correlationIdentifier";
+    public static final String MESSAGE_OBJECT_ELEMENT = "message";
+
     @Override
     public List<ItemDefinition> loadItemDefinitions(Import specification) {
       List<ItemDefinition> itemDefinitions = new ArrayList<ItemDefinition>();
@@ -230,9 +247,35 @@ public class ImportUtil {
 
       // extract extensions
       EList<XSDAnnotation> annotations = typeDefinition.getAnnotations();
+      List<String> ciAttributes = new ArrayList<String>();
+      boolean isMessageObject = false;
       for (XSDAnnotation annotation : annotations) {
-        System.out.println(annotation);
+        for (Element appInfo : annotation.getApplicationInformation()) {
+          Node child = appInfo.getFirstChild();
+          while (child != null) {
+            if (BPMN_DATA_NS.equals(child.getNamespaceURI())) {
+              if (MESSAGE_OBJECT_ELEMENT.equals(child.getLocalName())) {
+                isMessageObject = true;
+              } else if (CORRELATION_IDENTIFIER_ELEMENT.equals(child.getLocalName())) {
+                ciAttributes.add(child.getAttributes().getNamedItem(CI_ATTRIBUTE_NAME_ATTRIBUTE).getNodeValue());
+              }
+            }
+            child = child.getNextSibling();
+          }
+        }
       }
+
+      if (isMessageObject) {
+        MessageObject messageObject = BptFactory.eINSTANCE.createMessageObject();
+        ExtensionUtil.addExtension(itemDefinition, BptPackage.eINSTANCE.getDocumentRoot_MessageObject(), messageObject);
+      }
+
+      for (String ciAttribute : ciAttributes) {
+        CorrelationInformation ciInfo = BptFactory.eINSTANCE.createCorrelationInformation();
+        ciInfo.setAttributeName(ciAttribute);
+        ExtensionUtil.addExtension(itemDefinition, BptPackage.eINSTANCE.getDocumentRoot_CorrelationInformation(), ciInfo);
+      }
+
       return itemDefinition;
     }
 

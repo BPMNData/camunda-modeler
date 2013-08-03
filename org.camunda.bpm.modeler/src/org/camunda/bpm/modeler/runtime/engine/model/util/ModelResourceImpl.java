@@ -121,31 +121,39 @@ public class ModelResourceImpl extends Bpmn2ModelerResourceImpl {
 			
 			@Override
 			protected boolean shouldSaveFeature(EObject o, EStructuralFeature f) {
+			  System.out.print("Saving "+o.eClass().getName()+" -> "+f.getName()+"? ");
 				if (f == ModelPackage.eINSTANCE.getExecutionListenerType_Event() ||
 					f == ModelPackage.eINSTANCE.getTaskListenerType_Event()) {
-				
+				  System.out.println("true");
 					return true;
 				}
 				
 				if (o instanceof Point) {
+				  System.out.println("true");
 					return true;
 				}
 				
 				if (o instanceof Bounds) {
+				  System.out.println("true");
 					return true;
 				}
 				
 				if (o instanceof FormalExpression && f.getName().equals(Bpmn2Package.eINSTANCE.getFormalExpression_Body().getName())){
+				  System.out.println("false");
 					return false;
 				}
 				if (o instanceof Documentation && f.getName().equals(Bpmn2Package.eINSTANCE.getDocumentation_Text().getName())) {
+				  System.out.println("false");
 					return false;
 				}
 				if (o instanceof FailedJobRetryTimeCycleType && f.getName().equals(FoxPackage.eINSTANCE.getFailedJobRetryTimeCycleType_Text().getName())) {
+				  System.out.println("false");
 					return false;
 				}
 				
-				return super.shouldSaveFeature(o, f);
+				boolean shouldSaveFeature = super.shouldSaveFeature(o, f);
+				System.out.println(shouldSaveFeature);
+        return shouldSaveFeature;
 			}
 			
 			

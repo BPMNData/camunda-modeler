@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  *
  * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage#getCorrelationInformation()
- * @model extendedMetaData="name='tCorrelationInformation' kind='mixed' namespace='##targetNamespace'"
+ * @model extendedMetaData="name='tCorrelationInformation' kind='elementOnly' namespace='##targetNamespace'"
  * @generated
  */
 public interface CorrelationInformation extends EObject {

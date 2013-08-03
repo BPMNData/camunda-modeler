@@ -37,6 +37,7 @@ import org.camunda.bpm.modeler.core.Activator;
 import org.camunda.bpm.modeler.core.preferences.Bpmn2Preferences;
 import org.camunda.bpm.modeler.core.runtime.TargetRuntime;
 import org.camunda.bpm.modeler.core.utils.ModelUtil;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage;
 import org.eclipse.bpmn2.Bpmn2Package;
 import org.eclipse.bpmn2.Definitions;
 import org.eclipse.bpmn2.Import;
@@ -627,7 +628,8 @@ public class Bpmn2ModelerResourceImpl extends Bpmn2ResourceImpl {
 					pkg != BpmnDiPackage.eINSTANCE &&
 					pkg != DcPackage.eINSTANCE &&
 					pkg != DiPackage.eINSTANCE &&
-					pkg != TargetRuntime.getCurrentRuntime().getModelDescriptor().getEPackage()) {
+					pkg != TargetRuntime.getCurrentRuntime().getModelDescriptor().getEPackage() &&
+					pkg != BptPackage.eINSTANCE) {
 				return eClass.getEStructuralFeature(name);
 			}
 			return super.getFeature(eClass, namespaceURI, name, isElement);

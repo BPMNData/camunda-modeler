@@ -26,6 +26,7 @@ import org.camunda.bpm.modeler.ui.property.tabs.DefinitionsTabSection;
 import org.camunda.bpm.modeler.ui.property.tabs.EventTabSection;
 import org.camunda.bpm.modeler.ui.property.tabs.GeneralTabSection;
 import org.camunda.bpm.modeler.ui.property.tabs.ListenerTabSection;
+import org.camunda.bpm.modeler.ui.property.tabs.MessageContentDefinitionTabSection;
 import org.camunda.bpm.modeler.ui.property.tabs.MultiInstanceTabSection;
 import org.camunda.bpm.modeler.ui.property.tabs.RelationalKeysTabSection;
 import org.camunda.bpm.modeler.ui.property.tabs.ScopeInformationTabSection;
@@ -35,6 +36,7 @@ import org.eclipse.bpmn2.DataAssociation;
 import org.eclipse.bpmn2.DataObject;
 import org.eclipse.bpmn2.Event;
 import org.eclipse.bpmn2.Gateway;
+import org.eclipse.bpmn2.Message;
 import org.eclipse.bpmn2.Participant;
 import org.eclipse.bpmn2.Process;
 import org.eclipse.bpmn2.SequenceFlow;
@@ -111,6 +113,10 @@ public class PropertiesTabDescriptorProvider implements ITabDescriptorProvider {
                 tabs.add(createRelationKeysTabDescriptor());
             }
             
+            // BPMNData Message Definition
+            if (businessObject instanceof Message) {
+              tabs.add(createMessageContentDefinitionTabDescriptor());
+            }
         }
 
         return tabs.toArray(new ITabDescriptor[] {});
@@ -165,6 +171,11 @@ public class PropertiesTabDescriptorProvider implements ITabDescriptorProvider {
     private ITabDescriptor createRelationKeysTabDescriptor() {
         return createTabDescriptor("relationalKeysTab", "BPMN Data Keys",
                 new RelationalKeysTabSection());
+    }
+    
+    private ITabDescriptor createMessageContentDefinitionTabDescriptor() {
+      return createTabDescriptor("messageContentDefinitionTab", "BPMN Data Message",
+          new MessageContentDefinitionTabSection());
     }
 
 }
