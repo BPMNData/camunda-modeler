@@ -145,7 +145,7 @@ public class LabelUtil {
       String separator = "";
       for (ItemDefinition correlationObject : correlationObjects) {
         sb.append(separator).append(ItemDefinitionHandler.getCorrelationIdentifierName(correlationObject));
-        separator = ", ";
+        separator = ",\nCI: ";
       }
     }
     

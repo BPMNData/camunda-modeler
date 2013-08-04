@@ -13,6 +13,7 @@ import org.camunda.bpm.modeler.runtime.engine.model.bpt.CorrelationInformation;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.MessageObject;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.StructureDefinition;
 import org.eclipse.bpmn2.Definitions;
+import org.eclipse.bpmn2.DocumentRoot;
 import org.eclipse.bpmn2.Import;
 import org.eclipse.bpmn2.ItemDefinition;
 import org.eclipse.emf.common.util.EList;
@@ -137,6 +138,27 @@ public class ImportUtil {
     }
     return null;
   }
+  
+  /**
+   *  Gets or creates a XML namespace declaration in the document root for the given uri.
+   */
+  private static String getOrCreateNamespacePrefix(String namespaceUri, Import importElement) {
+    Resource resource = importElement.eResource();
+    DocumentRoot docRoot = (DocumentRoot) resource.getContents().get(0);
+    Map<String, String> prefixMap = docRoot.getXMLNSPrefixMap();
+    int i = 1;
+    while (true) {
+      String prefix = "import" + i;
+      String uri= prefixMap.get(prefix);
+      if (uri == null) {
+        prefixMap.put(prefix, namespaceUri);
+        return prefix;
+      } else if (uri.equals(namespaceUri)) {
+        return prefix;
+      }
+      i++;
+    }
+  }
 
   /**
    * An import exception describes that it was not possible to do an import as
@@ -203,9 +225,11 @@ public class ImportUtil {
         resource.load(Collections.emptyMap());
 
         XSDSchema schema = resource.getSchema();
+        String targetNamespace = schema.getTargetNamespace();
+        String prefix = getOrCreateNamespacePrefix(targetNamespace, specification);
         EList<XSDTypeDefinition> typeDefinitions = schema.getTypeDefinitions();
         for (XSDTypeDefinition typeDefinition : typeDefinitions) {
-          ItemDefinition itemDefinition = createItemDefinition(specification, schema, typeDefinition);
+          ItemDefinition itemDefinition = createItemDefinition(specification, prefix, typeDefinition);
           itemDefinitions.add(itemDefinition);
         }
 
@@ -216,11 +240,11 @@ public class ImportUtil {
       return itemDefinitions;
     }
 
-    private ItemDefinition createItemDefinition(Import specification, XSDSchema schema, XSDTypeDefinition typeDefinition) {
+    private ItemDefinition createItemDefinition(Import specification, String prefix, XSDTypeDefinition typeDefinition) {
       ItemDefinition itemDefinition = ModelHandler.create(specification.eResource(), ItemDefinition.class);
 
       // set structure ref
-      String locationAsString = schema.getTargetNamespace() + "#" + typeDefinition.getName();
+      String locationAsString = prefix + ":" + typeDefinition.getName();
       StructureDefinition structDef = BptFactory.eINSTANCE.createStructureDefinition();
       structDef.setQname(locationAsString);
       ModelUtil.setID(structDef);

@@ -168,8 +168,8 @@ public class ModelImport {
 				throw new ResourceImportException("No document root in resource bundle");
 			} else {
 				DocumentRoot documentRoot = (DocumentRoot) contents.get(0);
+				preProcess(documentRoot);
 				handleDocumentRoot(documentRoot);
-				postProcess(documentRoot);
 				
 				if (contents.size() > 1) {
 					// TODO: is there a possibility for a resource to have multiple DocumentRoots?
@@ -833,7 +833,7 @@ public class ModelImport {
 		diagramElementMap.put(bpmnElement.getId(), diagramElement);
 	}
 	
-	protected void postProcess(DocumentRoot documentRoot) {
+	protected void preProcess(DocumentRoot documentRoot) {
 	  resolveStructureDefinitionProxies(documentRoot);
 	}
 	
