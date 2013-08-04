@@ -5,12 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.camunda.bpm.modeler.core.handler.ItemDefinitionHandler;
 import org.camunda.bpm.modeler.core.utils.ExtensionUtil;
-import org.camunda.bpm.modeler.core.utils.ImportUtil;
 import org.camunda.bpm.modeler.core.utils.ModelUtil;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptFactory;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage;
-import org.camunda.bpm.modeler.runtime.engine.model.bpt.CorrelationInformation;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.ItemDefinitionLink;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.MessageContentDefinition;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.StructureDefinition;
@@ -96,7 +95,7 @@ public class MessageContentDefinitionBuilder extends AbstractPropertiesBuilder<M
       List<ItemDefinition> itemDefinitions = ModelUtil.getAllRootElements(definitions, ItemDefinition.class);
       for (ItemDefinition itemDefinition : itemDefinitions) {
         if (isSelected(itemDefinition)) {
-          ImportUtil.resolveStructureDefinitionProxy(itemDefinition);
+//          ImportUtil.resolveStructureDefinitionProxy(itemDefinition);
           Object structureRef = itemDefinition.getStructureRef();
           String name = itemDefinition.getId();
           if (structureRef != null && structureRef instanceof StructureDefinition) {
@@ -156,6 +155,7 @@ public class MessageContentDefinitionBuilder extends AbstractPropertiesBuilder<M
           protected void doExecute() {
             doSetModelValue(value);
             setCorrelationIdentifiers();
+            ExtensionUtil.enforceNotification(bo);
           }
         });
       }
@@ -198,7 +198,8 @@ public class MessageContentDefinitionBuilder extends AbstractPropertiesBuilder<M
 
     @Override
     protected String createName(ItemDefinition itemDefinition, Object structureRef) {
-      return ((StructureDefinition) structureRef).getQname();
+      ItemDefinitionHandler.resolveStructureDefinitionProxy(itemDefinition, false);
+      return ItemDefinitionHandler.getInterpretableName(itemDefinition);
     }
 
     @Override
@@ -214,8 +215,7 @@ public class MessageContentDefinitionBuilder extends AbstractPropertiesBuilder<M
 
     @Override
     protected boolean isSelected(ItemDefinition itemDefinition) {
-      Object msgObjectExtension = ExtensionUtil.getExtension(itemDefinition, BptPackage.eINSTANCE.getDocumentRoot_MessageObject());
-      return msgObjectExtension != null;
+      return ItemDefinitionHandler.isMessageObject(itemDefinition);
     }
 
   }
@@ -228,16 +228,7 @@ public class MessageContentDefinitionBuilder extends AbstractPropertiesBuilder<M
 
     @Override
     protected String createName(ItemDefinition itemDefinition, Object structureRef) {
-      String name = ((StructureDefinition) structureRef).getQname() + " (";
-      String separator = "";
-      List<Object> correlationInfos = ExtensionUtil.getExtensions(itemDefinition, BptPackage.eINSTANCE.getDocumentRoot_CorrelationInformation());
-      for (Object o : correlationInfos) {
-        CorrelationInformation correlationInfo = (CorrelationInformation) o;
-        name += separator + correlationInfo.getAttributeName();
-        separator = ", ";
-      }
-      name += ")";
-      return name;
+      return ItemDefinitionHandler.getCorrelationIdentifierName(itemDefinition);
     }
 
     @Override
@@ -256,8 +247,7 @@ public class MessageContentDefinitionBuilder extends AbstractPropertiesBuilder<M
 
     @Override
     protected boolean isSelected(ItemDefinition itemDefinition) {
-      Object extension = ExtensionUtil.getExtension(itemDefinition, BptPackage.eINSTANCE.getDocumentRoot_CorrelationInformation());
-      return extension != null;
+      return !ItemDefinitionHandler.getCorrelationAttributes(itemDefinition).isEmpty();
     }
 
     @Override

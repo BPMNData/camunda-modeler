@@ -16,7 +16,7 @@ import static org.camunda.bpm.modeler.core.utils.FeatureSupport.getChildElementO
 
 import org.camunda.bpm.modeler.core.utils.BusinessObjectUtil;
 import org.camunda.bpm.modeler.core.utils.GraphicsUtil;
-import org.camunda.bpm.modeler.core.utils.ModelUtil;
+import org.camunda.bpm.modeler.core.utils.LabelUtil;
 import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.graphiti.features.IFeatureProvider;
@@ -48,7 +48,7 @@ public class UpdateBaseElementNameFeature extends AbstractUpdateFeature {
 			return false;
 		}
 		
-		return ModelUtil.hasName(element);
+		return LabelUtil.canLabel(element);
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class UpdateBaseElementNameFeature extends AbstractUpdateFeature {
 
 		Shape textShape = getChildElementOfType(container, TEXT_ELEMENT, Boolean.toString(true), Shape.class);
 		if (textShape!=null) {
-			String oldLabel = ModelUtil.getName(element);
+			String oldLabel = LabelUtil.getLabelText(element);
 			if (oldLabel==null || oldLabel.isEmpty())
 				oldLabel = "";
 			String newLabel = "";
@@ -85,7 +85,7 @@ public class UpdateBaseElementNameFeature extends AbstractUpdateFeature {
 		Shape textShape = getChildElementOfType(pe, TEXT_ELEMENT, Boolean.toString(true), Shape.class);
 		if (textShape != null) {
 			AbstractText text = (AbstractText) textShape.getGraphicsAlgorithm();
-			String name = ModelUtil.getName(element);
+			String name = LabelUtil.getLabelText(element);
 			if (name == null) {
 				name = "";
 			}
@@ -116,7 +116,7 @@ public class UpdateBaseElementNameFeature extends AbstractUpdateFeature {
 			int y = textGA.getY();
 			
 			BaseElement o = BusinessObjectUtil.getFirstElementOfType(context.getPictogramElement(), BaseElement.class);
-			String name = ModelUtil.getName(o);
+			String name = LabelUtil.getLabelText(o);
 			
 			if (name == null) {
 				gaService.setLocationAndSize(textGA, x, y, 0, 0);

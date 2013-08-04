@@ -126,7 +126,7 @@ public class ImportUtil {
   }
 
   private static StructureDefinition getStructureDefinition(ItemDefinition itemDefinition) {
-    resolveStructureDefinitionProxy(itemDefinition);
+//    resolveStructureDefinitionProxy(itemDefinition);
     Object structureRef = itemDefinition.getStructureRef();
     if (structureRef instanceof StructureDefinition) {
       return (StructureDefinition) structureRef;
@@ -136,24 +136,6 @@ public class ImportUtil {
       return (StructureDefinition) eResource.getEObject(uri);
     }
     return null;
-  }
-
-  public static void resolveStructureDefinitionProxy(final ItemDefinition itemDefinition) {
-    Object structureRef = itemDefinition.getStructureRef();
-    if (structureRef != null && structureRef instanceof InternalEObject) {
-      final Resource eResource = itemDefinition.eResource();
-      final URI proxyURI = ((InternalEObject) structureRef).eProxyURI();
-      if (proxyURI != null) {
-        TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(itemDefinition);
-        editingDomain.getCommandStack().execute(new RecordingCommand(editingDomain) {
-          
-          @Override
-          protected void doExecute() {
-            itemDefinition.setStructureRef((StructureDefinition) eResource.getEObject(proxyURI.toString()));
-          }
-        });
-      }
-    }
   }
 
   /**

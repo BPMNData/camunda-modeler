@@ -112,8 +112,7 @@ public class MessageFeatureContainer extends BaseElementFeatureContainer {
 			
 			@Override
 			protected boolean isCreateExternalLabel() {
-				// TODO Auto-generated method stub
-				return false;
+				return true;
 			}
 		};
 	}

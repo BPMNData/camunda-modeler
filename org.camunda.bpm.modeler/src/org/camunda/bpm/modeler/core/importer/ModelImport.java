@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.camunda.bpm.modeler.core.di.DIUtils;
+import org.camunda.bpm.modeler.core.handler.ItemDefinitionHandler;
 import org.camunda.bpm.modeler.core.importer.handlers.AbstractDiagramElementHandler;
 import org.camunda.bpm.modeler.core.importer.handlers.AbstractShapeHandler;
 import org.camunda.bpm.modeler.core.importer.handlers.ArtifactShapeHandler;
@@ -63,6 +64,7 @@ import org.eclipse.bpmn2.FlowElementsContainer;
 import org.eclipse.bpmn2.FlowNode;
 import org.eclipse.bpmn2.Gateway;
 import org.eclipse.bpmn2.InputOutputSpecification;
+import org.eclipse.bpmn2.ItemDefinition;
 import org.eclipse.bpmn2.Lane;
 import org.eclipse.bpmn2.LaneSet;
 import org.eclipse.bpmn2.Message;
@@ -167,6 +169,7 @@ public class ModelImport {
 			} else {
 				DocumentRoot documentRoot = (DocumentRoot) contents.get(0);
 				handleDocumentRoot(documentRoot);
+				postProcess(documentRoot);
 				
 				if (contents.size() > 1) {
 					// TODO: is there a possibility for a resource to have multiple DocumentRoots?
@@ -830,9 +833,26 @@ public class ModelImport {
 		diagramElementMap.put(bpmnElement.getId(), diagramElement);
 	}
 	
-	// Error logging ////////////////////////////////////////////
+	protected void postProcess(DocumentRoot documentRoot) {
+	  resolveStructureDefinitionProxies(documentRoot);
+	}
 	
-	public void log(ImportException e) {
+	private void resolveStructureDefinitionProxies(DocumentRoot documentRoot) {
+	  Definitions definitions = documentRoot.getDefinitions();
+	  if (definitions == null)
+	    return;
+	  
+	  List<ItemDefinition> itemDefinitions = ModelUtil.getAllRootElements(definitions, ItemDefinition.class);
+	  for (ItemDefinition itemDefinition : itemDefinitions) {
+	    ItemDefinitionHandler.resolveStructureDefinitionProxy(itemDefinition, false);
+	  }
+	  
+	}
+	
+	
+	// Error logging ////////////////////////////////////////////
+
+  public void log(ImportException e) {
 		warnings.add(e);
 		ErrorLogger.log(e);
 	}
