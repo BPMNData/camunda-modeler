@@ -374,5 +374,29 @@
          </enablement>
      </commonWizard>
   </extension>
+  <extension
+        point="org.eclipse.ui.popupMenus">
+     <objectContribution
+           id="org.camunda.bpm.modeler.popup_contributio"
+           nameFilter="*.bpmn"
+           objectClass="org.eclipse.core.resources.IFile">
+        <menu
+              id="org.camunda.bpm.modeler.bpmnDataMenu"
+              label="BPMN Data"
+              path="additions">
+           <separator
+                 name="mainGroup">
+           </separator>
+        </menu>
+        <action
+              class="org.camunda.bpm.modeler.popup.actions.CompileAction"
+              enablesFor="1"
+              icon="icons/obj16/bpmn2operation.png"
+              id="org.camunda.bpm.modeler.compileAction"
+              label="Compile"
+              menubarPath="org.camunda.bpm.modeler.bpmnDataMenu/mainGroup">
+        </action>
+     </objectContribution>
+  </extension>
 
 </plugin>

@@ -119,4 +119,15 @@ public class ItemDefinitionHandler {
       return (StructureDefinition) structureRef;
     return null;
   }
+
+  /**
+   * Creates the name of the correlation key that is defined by this item
+   * definition.<br>
+   * This is actually the local name of the item definition.
+   */
+  public static String getCorrelationKeyName(ItemDefinition itemDefinition) {
+    StructureDefinition structureDefinition = getExtensionStructureRef(itemDefinition);
+    return structureDefinition.getQname().split(":")[1];
+
+  }
 }
