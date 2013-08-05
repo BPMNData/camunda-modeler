@@ -7,6 +7,8 @@ import org.eclipse.bpmn2.Activity;
 import org.eclipse.bpmn2.DataInput;
 import org.eclipse.bpmn2.DataOutput;
 import org.eclipse.bpmn2.InputOutputSpecification;
+import org.eclipse.bpmn2.InputSet;
+import org.eclipse.bpmn2.OutputSet;
 
 /**
  * Implements some utility methods for {@link Activity} objects.
@@ -46,6 +48,10 @@ public class ActivityHandler {
     InputOutputSpecification ioSpecification = activity.getIoSpecification();
     if (ioSpecification == null) {
       ioSpecification = modelHandler.create(InputOutputSpecification.class);
+      InputSet inputSet = modelHandler.create(InputSet.class);
+      ioSpecification.getInputSets().add(inputSet);
+      OutputSet outputSet = modelHandler.create(OutputSet.class);
+      ioSpecification.getOutputSets().add(outputSet);
       activity.setIoSpecification(ioSpecification);
     }
     return ioSpecification;
