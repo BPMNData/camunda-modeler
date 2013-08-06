@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: de.unipotsdam.hpi.bpmndata.schemamapping;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: .
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Export-Package: de.unipotsdam.hpi.bpmndata.schemamapping,
+ de.unipotsdam.hpi.bpmndata.schemamapping.impl,
+ de.unipotsdam.hpi.bpmndata.schemamapping.util
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.emf.ecore.xmi;visibility:=reexport,
+ org.eclipse.ui
+Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy

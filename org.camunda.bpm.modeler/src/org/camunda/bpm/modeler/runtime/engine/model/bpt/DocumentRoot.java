@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot#getMessageObject <em>Message Object</em>}</li>
  *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot#getCorrelationInformation <em>Correlation Information</em>}</li>
  *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot#getStructureDefinition <em>Structure Definition</em>}</li>
+ *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot#getSchemaMappingImports <em>Schema Mapping Imports</em>}</li>
  * </ul>
  * </p>
  *
@@ -271,5 +272,32 @@ public interface DocumentRoot extends EObject {
    * @generated
    */
   void setStructureDefinition(StructureDefinition value);
+
+    /**
+   * Returns the value of the '<em><b>Schema Mapping Imports</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Schema Mapping Imports</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Schema Mapping Imports</em>' containment reference.
+   * @see #setSchemaMappingImports(SchemaMappingImport)
+   * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage#getDocumentRoot_SchemaMappingImports()
+   * @model containment="true" upper="-2" transient="true" volatile="true" derived="true"
+   *        extendedMetaData="kind='element' name='schemaMappingImport' namespace='http://bpt.hpi.uni-potsdam.de'"
+   * @generated
+   */
+  SchemaMappingImport getSchemaMappingImports();
+
+    /**
+   * Sets the value of the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot#getSchemaMappingImports <em>Schema Mapping Imports</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Schema Mapping Imports</em>' containment reference.
+   * @see #getSchemaMappingImports()
+   * @generated
+   */
+  void setSchemaMappingImports(SchemaMappingImport value);
 
 } // DocumentRoot

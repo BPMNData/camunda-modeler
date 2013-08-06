@@ -59,6 +59,10 @@
 		<module>org.camunda.bpm.modeler.tests</module>
 		<module>org.camunda.bpm.modeler.feature</module>
 		<module>org.camunda.bpm.modeler.updatesite.feature</module>
+		<module>de.unipotsdam.hpi.bpmndata.schemamapping</module>
+		<module>de.unipotsdam.hpi.bpmndata.schemamapping.edit</module>
+		<module>de.unipotsdam.hpi.bpmndata.schemamapping.editor</module>
+		<module>de.unipotsdam.hpi.bpmndata.schemamapping.feature</module>
 	</modules>
 
 	<repositories>

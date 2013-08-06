@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.camunda.bpm.modeler/src" modelPluginID="org.camunda.bpm.modeler.runtime.engine.model"
-    redirection="" forceOverwrite="true" modelName="ActivitiExtensions" modelPluginClass=""
-    importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0" copyrightFields="false"
-    usedGenPackages="../../org.eclipse.bpmn2/model/BPMN20.genmodel#//bpmn2 ../../org.eclipse.bpmn2/model/BPMN20.genmodel#//di ../../org.eclipse.bpmn2/model/BPMN20.genmodel#//di.1 ../../org.eclipse.bpmn2/model/BPMN20.genmodel#//dc"
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.camunda.bpm.modeler/src"
+    modelPluginID="org.camunda.bpm.modeler.runtime.engine.model" redirection="" forceOverwrite="true"
+    modelName="ActivitiExtensions" modelPluginClass="" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="6.0" copyrightFields="false" usedGenPackages="../../org.eclipse.bpmn2/model/BPMN20.genmodel#//bpmn2 ../../org.eclipse.bpmn2/model/BPMN20.genmodel#//di ../../org.eclipse.bpmn2/model/BPMN20.genmodel#//di.1 ../../org.eclipse.bpmn2/model/BPMN20.genmodel#//dc"
     classNamePattern="">
   <foreignModel>ActivitiExtensions.ecore</foreignModel>
   <genPackages prefix="Model" basePackage="org.camunda.bpm.modeler.runtime.engine"
@@ -60,7 +61,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ActivitiExtensions.ecore#//DocumentRoot/priority"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ActivitiExtensions.ecore#//DocumentRoot/resultVariableName"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ActivitiExtensions.ecore#//DocumentRoot/failedJobRetryTimeCycle"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ActivitiExtensions.ecore#//DocumentRoot/primaryKey"/>
     </genClasses>
     <genClasses ecoreClass="ActivitiExtensions.ecore#//ExecutionListenerType">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute ActivitiExtensions.ecore#//ExecutionListenerType/group"/>
@@ -117,14 +117,70 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ActivitiExtensions.ecore#//ValueType/id"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ActivitiExtensions.ecore#//ValueType/name"/>
     </genClasses>
-    <genClasses ecoreClass="ActivitiExtensions.ecore#//PrimaryKey">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ActivitiExtensions.ecore#//PrimaryKey/id"/>
-    </genClasses>
     <nestedGenPackages prefix="Fox" resource="XML" disposableProviderFactory="true"
         ecorePackage="ActivitiExtensions.ecore#//fox">
       <genClasses ecoreClass="ActivitiExtensions.ecore#//fox/FailedJobRetryTimeCycleType">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute ActivitiExtensions.ecore#//fox/FailedJobRetryTimeCycleType/mixed"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ActivitiExtensions.ecore#//fox/FailedJobRetryTimeCycleType/text"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Bpt" resource="XML" disposableProviderFactory="true"
+        ecorePackage="ActivitiExtensions.ecore#//bpt">
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="ActivitiExtensions.ecore#//bpt/PrimaryKeyType">
+        <genEnumLiterals ecoreEnumLiteral="ActivitiExtensions.ecore#//bpt/PrimaryKeyType/default"/>
+        <genEnumLiterals ecoreEnumLiteral="ActivitiExtensions.ecore#//bpt/PrimaryKeyType/new"/>
+        <genEnumLiterals ecoreEnumLiteral="ActivitiExtensions.ecore#//bpt/PrimaryKeyType/delete"/>
+      </genEnums>
+      <genClasses ecoreClass="ActivitiExtensions.ecore#//bpt/PrimaryKey">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ActivitiExtensions.ecore#//bpt/PrimaryKey/type"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="ActivitiExtensions.ecore#//bpt/RelationalKey">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ActivitiExtensions.ecore#//bpt/RelationalKey/id"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ActivitiExtensions.ecore#//bpt/RelationalKey/value"/>
+      </genClasses>
+      <genClasses ecoreClass="ActivitiExtensions.ecore#//bpt/ForeignKey"/>
+      <genClasses ecoreClass="ActivitiExtensions.ecore#//bpt/Condition">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ActivitiExtensions.ecore#//bpt/Condition/id"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ActivitiExtensions.ecore#//bpt/Condition/value"/>
+      </genClasses>
+      <genClasses ecoreClass="ActivitiExtensions.ecore#//bpt/Cardinality">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ActivitiExtensions.ecore#//bpt/Cardinality/id"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ActivitiExtensions.ecore#//bpt/Cardinality/value"/>
+      </genClasses>
+      <genClasses ecoreClass="ActivitiExtensions.ecore#//bpt/ScopeInformation">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ActivitiExtensions.ecore#//bpt/ScopeInformation/id"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ActivitiExtensions.ecore#//bpt/ScopeInformation/caseObject"/>
+      </genClasses>
+      <genClasses ecoreClass="ActivitiExtensions.ecore#//bpt/DocumentRoot">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ActivitiExtensions.ecore#//bpt/DocumentRoot/primaryKey"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ActivitiExtensions.ecore#//bpt/DocumentRoot/cardinality"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ActivitiExtensions.ecore#//bpt/DocumentRoot/condition"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ActivitiExtensions.ecore#//bpt/DocumentRoot/scopeInformation"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ActivitiExtensions.ecore#//bpt/DocumentRoot/foreignKey"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ActivitiExtensions.ecore#//bpt/DocumentRoot/messageContentDefinition"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ActivitiExtensions.ecore#//bpt/DocumentRoot/messageObject"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ActivitiExtensions.ecore#//bpt/DocumentRoot/correlationInformation"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ActivitiExtensions.ecore#//bpt/DocumentRoot/structureDefinition"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ActivitiExtensions.ecore#//bpt/DocumentRoot/schemaMappingImports"/>
+      </genClasses>
+      <genClasses ecoreClass="ActivitiExtensions.ecore#//bpt/MessageContentDefinition">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference ActivitiExtensions.ecore#//bpt/MessageContentDefinition/payloadRef"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ActivitiExtensions.ecore#//bpt/MessageContentDefinition/correlationIdentifierLinks"/>
+      </genClasses>
+      <genClasses ecoreClass="ActivitiExtensions.ecore#//bpt/ItemDefinitionLink">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference ActivitiExtensions.ecore#//bpt/ItemDefinitionLink/ref"/>
+      </genClasses>
+      <genClasses ecoreClass="ActivitiExtensions.ecore#//bpt/MessageObject"/>
+      <genClasses ecoreClass="ActivitiExtensions.ecore#//bpt/CorrelationInformation">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ActivitiExtensions.ecore#//bpt/CorrelationInformation/attributeName"/>
+      </genClasses>
+      <genClasses ecoreClass="ActivitiExtensions.ecore#//bpt/StructureDefinition">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ActivitiExtensions.ecore#//bpt/StructureDefinition/qname"/>
+      </genClasses>
+      <genClasses ecoreClass="ActivitiExtensions.ecore#//bpt/SchemaMappingImport">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ActivitiExtensions.ecore#//bpt/SchemaMappingImport/location"/>
       </genClasses>
     </nestedGenPackages>
   </genPackages>

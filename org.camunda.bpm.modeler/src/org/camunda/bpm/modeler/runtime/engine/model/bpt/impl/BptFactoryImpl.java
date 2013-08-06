@@ -68,6 +68,7 @@ public class BptFactoryImpl extends EFactoryImpl implements BptFactory {
       case BptPackage.MESSAGE_OBJECT: return createMessageObject();
       case BptPackage.CORRELATION_INFORMATION: return createCorrelationInformation();
       case BptPackage.STRUCTURE_DEFINITION: return createStructureDefinition();
+      case BptPackage.SCHEMA_MAPPING_IMPORT: return createSchemaMappingImport();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -211,6 +212,16 @@ public class BptFactoryImpl extends EFactoryImpl implements BptFactory {
   public StructureDefinition createStructureDefinition() {
     StructureDefinitionImpl structureDefinition = new StructureDefinitionImpl();
     return structureDefinition;
+  }
+
+    /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public SchemaMappingImport createSchemaMappingImport() {
+    SchemaMappingImportImpl schemaMappingImport = new SchemaMappingImportImpl();
+    return schemaMappingImport;
   }
 
     /**

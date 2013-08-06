@@ -142,6 +142,12 @@ public class BptSwitch<T> extends Switch<T> {
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case BptPackage.SCHEMA_MAPPING_IMPORT: {
+        SchemaMappingImport schemaMappingImport = (SchemaMappingImport)theEObject;
+        T result = caseSchemaMappingImport(schemaMappingImport);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       default: return defaultCase(theEObject);
     }
   }
@@ -323,6 +329,21 @@ public class BptSwitch<T> extends Switch<T> {
    * @generated
    */
   public T caseStructureDefinition(StructureDefinition object) {
+    return null;
+  }
+
+    /**
+   * Returns the result of interpreting the object as an instance of '<em>Schema Mapping Import</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Schema Mapping Import</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSchemaMappingImport(SchemaMappingImport object) {
     return null;
   }
 

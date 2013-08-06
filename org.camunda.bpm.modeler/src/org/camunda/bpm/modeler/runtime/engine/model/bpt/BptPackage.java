@@ -382,13 +382,22 @@ public interface BptPackage extends EPackage {
   int DOCUMENT_ROOT__STRUCTURE_DEFINITION = 8;
 
     /**
+   * The feature id for the '<em><b>Schema Mapping Imports</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DOCUMENT_ROOT__SCHEMA_MAPPING_IMPORTS = 9;
+
+    /**
    * The number of structural features of the '<em>Document Root</em>' class.
    * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-    int DOCUMENT_ROOT_FEATURE_COUNT = 9;
+    int DOCUMENT_ROOT_FEATURE_COUNT = 10;
 
     /**
    * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.MessageContentDefinitionImpl <em>Message Content Definition</em>}' class.
@@ -576,6 +585,34 @@ public interface BptPackage extends EPackage {
   int STRUCTURE_DEFINITION_FEATURE_COUNT = Bpmn2Package.BASE_ELEMENT_FEATURE_COUNT + 1;
 
     /**
+   * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.SchemaMappingImportImpl <em>Schema Mapping Import</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.SchemaMappingImportImpl
+   * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.BptPackageImpl#getSchemaMappingImport()
+   * @generated
+   */
+  int SCHEMA_MAPPING_IMPORT = 12;
+
+    /**
+   * The feature id for the '<em><b>Location</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SCHEMA_MAPPING_IMPORT__LOCATION = 0;
+
+    /**
+   * The number of structural features of the '<em>Schema Mapping Import</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SCHEMA_MAPPING_IMPORT_FEATURE_COUNT = 1;
+
+    /**
    * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType <em>Primary Key Type</em>}' enum.
    * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -583,7 +620,7 @@ public interface BptPackage extends EPackage {
    * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.BptPackageImpl#getPrimaryKeyType()
    * @generated
    */
-    int PRIMARY_KEY_TYPE = 12;
+    int PRIMARY_KEY_TYPE = 13;
 
     /**
    * Returns the meta object for class '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey <em>Primary Key</em>}'.
@@ -854,6 +891,17 @@ public interface BptPackage extends EPackage {
   EReference getDocumentRoot_StructureDefinition();
 
     /**
+   * Returns the meta object for the containment reference '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot#getSchemaMappingImports <em>Schema Mapping Imports</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Schema Mapping Imports</em>'.
+   * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.DocumentRoot#getSchemaMappingImports()
+   * @see #getDocumentRoot()
+   * @generated
+   */
+  EReference getDocumentRoot_SchemaMappingImports();
+
+    /**
    * Returns the meta object for class '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.MessageContentDefinition <em>Message Content Definition</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -957,6 +1005,27 @@ public interface BptPackage extends EPackage {
    * @generated
    */
   EAttribute getStructureDefinition_Qname();
+
+    /**
+   * Returns the meta object for class '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.SchemaMappingImport <em>Schema Mapping Import</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Schema Mapping Import</em>'.
+   * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.SchemaMappingImport
+   * @generated
+   */
+  EClass getSchemaMappingImport();
+
+    /**
+   * Returns the meta object for the attribute '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.SchemaMappingImport#getLocation <em>Location</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Location</em>'.
+   * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.SchemaMappingImport#getLocation()
+   * @see #getSchemaMappingImport()
+   * @generated
+   */
+  EAttribute getSchemaMappingImport_Location();
 
     /**
    * Returns the meta object for enum '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType <em>Primary Key Type</em>}'.
@@ -1205,6 +1274,14 @@ public interface BptPackage extends EPackage {
     EReference DOCUMENT_ROOT__STRUCTURE_DEFINITION = eINSTANCE.getDocumentRoot_StructureDefinition();
 
         /**
+     * The meta object literal for the '<em><b>Schema Mapping Imports</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference DOCUMENT_ROOT__SCHEMA_MAPPING_IMPORTS = eINSTANCE.getDocumentRoot_SchemaMappingImports();
+
+        /**
      * The meta object literal for the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.MessageContentDefinitionImpl <em>Message Content Definition</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1293,6 +1370,24 @@ public interface BptPackage extends EPackage {
      * @generated
      */
     EAttribute STRUCTURE_DEFINITION__QNAME = eINSTANCE.getStructureDefinition_Qname();
+
+        /**
+     * The meta object literal for the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.SchemaMappingImportImpl <em>Schema Mapping Import</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.SchemaMappingImportImpl
+     * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.BptPackageImpl#getSchemaMappingImport()
+     * @generated
+     */
+    EClass SCHEMA_MAPPING_IMPORT = eINSTANCE.getSchemaMappingImport();
+
+        /**
+     * The meta object literal for the '<em><b>Location</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute SCHEMA_MAPPING_IMPORT__LOCATION = eINSTANCE.getSchemaMappingImport_Location();
 
         /**
      * The meta object literal for the '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType <em>Primary Key Type</em>}' enum.

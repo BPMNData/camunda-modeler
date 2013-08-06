@@ -963,6 +963,15 @@
           <details key="namespace" value="http://bpt.hpi.uni-potsdam.de"/>
         </eAnnotations>
       </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="schemaMappingImports"
+          upperBound="-2" eType="#//bpt/SchemaMappingImport" volatile="true" transient="true"
+          derived="true" containment="true" resolveProxies="false">
+        <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+          <details key="kind" value="element"/>
+          <details key="name" value="schemaMappingImport"/>
+          <details key="namespace" value="http://bpt.hpi.uni-potsdam.de"/>
+        </eAnnotations>
+      </eStructuralFeatures>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MessageContentDefinition">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
@@ -1034,6 +1043,21 @@
         <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
           <details key="kind" value="attribute"/>
           <details key="name" value="qname"/>
+        </eAnnotations>
+      </eStructuralFeatures>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SchemaMappingImport">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="name" value="tSchemaMappingImport"/>
+        <details key="kind" value="empty"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="location" ordered="false"
+          lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+          derived="true">
+        <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+          <details key="kind" value="attribute"/>
+          <details key="name" value="location"/>
         </eAnnotations>
       </eStructuralFeatures>
     </eClassifiers>

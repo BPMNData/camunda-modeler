@@ -117,6 +117,10 @@ public class BptAdapterFactory extends AdapterFactoryImpl {
         return createStructureDefinitionAdapter();
       }
       @Override
+      public Adapter caseSchemaMappingImport(SchemaMappingImport object) {
+        return createSchemaMappingImportAdapter();
+      }
+      @Override
       public Adapter caseBaseElement(BaseElement object) {
         return createBaseElementAdapter();
       }
@@ -305,6 +309,20 @@ public class BptAdapterFactory extends AdapterFactoryImpl {
    * @generated
    */
   public Adapter createStructureDefinitionAdapter() {
+    return null;
+  }
+
+    /**
+   * Creates a new adapter for an object of class '{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.SchemaMappingImport <em>Schema Mapping Import</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.camunda.bpm.modeler.runtime.engine.model.bpt.SchemaMappingImport
+   * @generated
+   */
+  public Adapter createSchemaMappingImportAdapter() {
     return null;
   }
 

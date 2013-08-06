@@ -1,6 +1,7 @@
 package org.camunda.bpm.modeler.popup.actions;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,8 +12,11 @@ import org.camunda.bpm.modeler.core.ProxyURIConverterImplExtension;
 import org.camunda.bpm.modeler.core.handler.ItemDefinitionHandler;
 import org.camunda.bpm.modeler.core.handler.MessageHandler;
 import org.camunda.bpm.modeler.core.model.Bpmn2ModelerResourceImpl;
+import org.camunda.bpm.modeler.core.utils.ExtensionUtil;
 import org.camunda.bpm.modeler.core.utils.ModelUtil;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.MessageContentDefinition;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.SchemaMappingImport;
 import org.camunda.bpm.modeler.runtime.engine.model.util.ModelResourceFactoryImpl;
 import org.eclipse.bpmn2.Collaboration;
 import org.eclipse.bpmn2.ConversationNode;
@@ -29,7 +33,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -41,6 +47,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
+
+import de.unipotsdam.hpi.bpmndata.schemamapping.SchemaMapping;
 
 public class CompileAction implements IObjectActionDelegate {
 
@@ -73,6 +81,7 @@ public class CompileAction implements IObjectActionDelegate {
 
     Bpmn2ResourceImpl bpmnResource = loadBpmnResource();
     createCorrelationKeys(bpmnResource);
+    createTransformations(bpmnResource);
     saveBpmnResource(bpmnResource);
   }
 
@@ -120,6 +129,11 @@ public class CompileAction implements IObjectActionDelegate {
   private void createCorrelationKeys(Bpmn2ResourceImpl bpmnResource) {
     CorrelationKeyCreator correlationKeyCreator = new CorrelationKeyCreator(bpmnResource);
     correlationKeyCreator.run();
+  }
+  
+  private void createTransformations(Bpmn2ResourceImpl bpmnResource) {
+    TransformationCreator transformationCreator = new TransformationCreator(bpmnResource);
+    transformationCreator.run();
   }
 
   /**
@@ -245,4 +259,48 @@ public class CompileAction implements IObjectActionDelegate {
 
   }
 
+  private static class TransformationCreator {
+
+    private Resource resource;
+    private DocumentRoot documentRoot;
+    private ModelHandler modelHandler;
+
+    private TransformationCreator(Resource resource) {
+      this.resource = resource;
+      this.documentRoot = (DocumentRoot) resource.getContents().get(0);
+      this.modelHandler = ModelHandler.getInstance((Bpmn2ResourceImpl) resource);
+    }
+
+    public void run() {
+      Definitions definitions = documentRoot.getDefinitions();
+      if (definitions == null) {
+        Activator.logWarning("No definitions found.");
+      }
+
+      SchemaMappingImport schemaMappingImport = ExtensionUtil.getExtension(definitions, BptPackage.eINSTANCE.getDocumentRoot_SchemaMappingImports());
+      if (schemaMappingImport == null) {
+        Activator.logWarning("No schema mapping import found.");
+      }
+      
+      SchemaMapping schemaMapping = loadSchemaMapping(schemaMappingImport);
+      if (schemaMapping == null) {
+        Activator.logWarning("Could not load a schema mapping");
+        return;
+      }
+    }
+
+    private SchemaMapping loadSchemaMapping(SchemaMappingImport schemaMappingImport) {
+      try {
+        ResourceSet resourceSet = resource.getResourceSet();
+        Resource schemaMappingResource = resourceSet.createResource(URI.createPlatformResourceURI(schemaMappingImport.getLocation(), true));
+        schemaMappingResource.load(Collections.emptyMap());
+        EList<EObject> contents = schemaMappingResource.getContents();
+        SchemaMapping schemaMapping = (SchemaMapping) contents.get(0);
+        return schemaMapping;
+      } catch (Exception e) {
+        Activator.logError(e);
+        return null;
+      }
+    }
+  }
 }

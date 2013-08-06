@@ -18,6 +18,7 @@ import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey;
 
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKeyType;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.RelationalKey;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.SchemaMappingImport;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.ScopeInformation;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.StructureDefinition;
 import org.camunda.bpm.modeler.runtime.engine.model.fox.FoxPackage;
@@ -133,6 +134,13 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
    * @generated
    */
   private EClass structureDefinitionEClass = null;
+
+    /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass schemaMappingImportEClass = null;
 
     /**
    * <!-- begin-user-doc -->
@@ -447,6 +455,15 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
    * <!-- end-user-doc -->
    * @generated
    */
+  public EReference getDocumentRoot_SchemaMappingImports() {
+    return (EReference)documentRootEClass.getEStructuralFeatures().get(9);
+  }
+
+    /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getMessageContentDefinition() {
     return messageContentDefinitionEClass;
   }
@@ -534,6 +551,24 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
 
     /**
    * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getSchemaMappingImport() {
+    return schemaMappingImportEClass;
+  }
+
+    /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getSchemaMappingImport_Location() {
+    return (EAttribute)schemaMappingImportEClass.getEStructuralFeatures().get(0);
+  }
+
+    /**
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
    * @generated
    */
@@ -600,6 +635,7 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
     createEReference(documentRootEClass, DOCUMENT_ROOT__MESSAGE_OBJECT);
     createEReference(documentRootEClass, DOCUMENT_ROOT__CORRELATION_INFORMATION);
     createEReference(documentRootEClass, DOCUMENT_ROOT__STRUCTURE_DEFINITION);
+    createEReference(documentRootEClass, DOCUMENT_ROOT__SCHEMA_MAPPING_IMPORTS);
 
     messageContentDefinitionEClass = createEClass(MESSAGE_CONTENT_DEFINITION);
     createEReference(messageContentDefinitionEClass, MESSAGE_CONTENT_DEFINITION__PAYLOAD_REF);
@@ -615,6 +651,9 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
 
     structureDefinitionEClass = createEClass(STRUCTURE_DEFINITION);
     createEAttribute(structureDefinitionEClass, STRUCTURE_DEFINITION__QNAME);
+
+    schemaMappingImportEClass = createEClass(SCHEMA_MAPPING_IMPORT);
+    createEAttribute(schemaMappingImportEClass, SCHEMA_MAPPING_IMPORT__LOCATION);
 
     // Create enums
     primaryKeyTypeEEnum = createEEnum(PRIMARY_KEY_TYPE);
@@ -688,6 +727,7 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
     initEReference(getDocumentRoot_MessageObject(), this.getMessageObject(), null, "messageObject", null, 0, -2, null, !IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
     initEReference(getDocumentRoot_CorrelationInformation(), this.getCorrelationInformation(), null, "correlationInformation", null, 0, -2, null, !IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
     initEReference(getDocumentRoot_StructureDefinition(), this.getStructureDefinition(), null, "structureDefinition", null, 0, -2, null, !IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+    initEReference(getDocumentRoot_SchemaMappingImports(), this.getSchemaMappingImport(), null, "schemaMappingImports", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
     initEClass(messageContentDefinitionEClass, MessageContentDefinition.class, "MessageContentDefinition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getMessageContentDefinition_PayloadRef(), theBpmn2Package.getItemDefinition(), null, "payloadRef", null, 0, 1, MessageContentDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
@@ -703,6 +743,9 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
 
     initEClass(structureDefinitionEClass, StructureDefinition.class, "StructureDefinition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getStructureDefinition_Qname(), theXMLTypePackage.getString(), "qname", "", 0, 1, StructureDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(schemaMappingImportEClass, SchemaMappingImport.class, "SchemaMappingImport", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getSchemaMappingImport_Location(), ecorePackage.getEString(), "location", null, 1, 1, SchemaMappingImport.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
 
     // Initialize enums and add enum literals
     initEEnum(primaryKeyTypeEEnum, PrimaryKeyType.class, "PrimaryKeyType");
@@ -915,6 +958,14 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
        "namespace", "http://bpt.hpi.uni-potsdam.de"
        });		
     addAnnotation
+      (getDocumentRoot_SchemaMappingImports(), 
+       source, 
+       new String[] {
+       "kind", "element",
+       "name", "schemaMappingImport",
+       "namespace", "http://bpt.hpi.uni-potsdam.de"
+       });		
+    addAnnotation
       (messageContentDefinitionEClass, 
        source, 
        new String[] {
@@ -989,6 +1040,21 @@ public class BptPackageImpl extends EPackageImpl implements BptPackage {
        new String[] {
        "kind", "attribute",
        "name", "qname"
+       });		
+    addAnnotation
+      (schemaMappingImportEClass, 
+       source, 
+       new String[] {
+       "name", "tSchemaMappingImport",
+       "kind", "empty",
+       "namespace", "##targetNamespace"
+       });		
+    addAnnotation
+      (getSchemaMappingImport_Location(), 
+       source, 
+       new String[] {
+       "kind", "attribute",
+       "name", "location"
        });
   }
 

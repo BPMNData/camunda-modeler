@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id$
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="de.unipotsdam.hpi.bpmndata.schemamapping.presentation.SchemamappingModelWizardID"
+            name="%_UI_SchemamappingModelWizard_label"
+            class="de.unipotsdam.hpi.bpmndata.schemamapping.presentation.SchemamappingModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/SchemamappingModelFile.gif">
+         <description>%_UI_SchemamappingModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="de.unipotsdam.hpi.bpmndata.schemamapping.presentation.SchemamappingEditorID"
+            name="%_UI_SchemamappingEditor_label"
+            icon="icons/full/obj16/SchemamappingModelFile.gif"
+            extensions="schemamapping"
+            class="de.unipotsdam.hpi.bpmndata.schemamapping.presentation.SchemamappingEditor"
+            contributorClass="de.unipotsdam.hpi.bpmndata.schemamapping.presentation.SchemamappingActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>

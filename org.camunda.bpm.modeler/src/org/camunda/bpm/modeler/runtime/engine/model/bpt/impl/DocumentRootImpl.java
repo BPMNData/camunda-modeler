@@ -11,6 +11,7 @@ import org.camunda.bpm.modeler.runtime.engine.model.bpt.ForeignKey;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.MessageContentDefinition;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.MessageObject;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.PrimaryKey;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.SchemaMappingImport;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.ScopeInformation;
 
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.StructureDefinition;
@@ -37,6 +38,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.DocumentRootImpl#getMessageObject <em>Message Object</em>}</li>
  *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.DocumentRootImpl#getCorrelationInformation <em>Correlation Information</em>}</li>
  *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.DocumentRootImpl#getStructureDefinition <em>Structure Definition</em>}</li>
+ *   <li>{@link org.camunda.bpm.modeler.runtime.engine.model.bpt.impl.DocumentRootImpl#getSchemaMappingImports <em>Schema Mapping Imports</em>}</li>
  * </ul>
  * </p>
  *
@@ -388,6 +390,42 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 
     /**
    * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public SchemaMappingImport getSchemaMappingImports() {
+    // TODO: implement this method to return the 'Schema Mapping Imports' containment reference
+    // Ensure that you remove @generated or mark it @generated NOT
+    throw new UnsupportedOperationException();
+  }
+
+    /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetSchemaMappingImports(SchemaMappingImport newSchemaMappingImports, NotificationChain msgs) {
+    // TODO: implement this method to set the contained 'Schema Mapping Imports' containment reference
+    // -> this method is automatically invoked to keep the containment relationship in synch
+    // -> do not modify other features
+    // -> return msgs, after adding any generated Notification to it (if it is null, a NotificationChain object must be created first)
+    // Ensure that you remove @generated or mark it @generated NOT
+    throw new UnsupportedOperationException();
+  }
+
+    /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setSchemaMappingImports(SchemaMappingImport newSchemaMappingImports) {
+    // TODO: implement this method to set the 'Schema Mapping Imports' containment reference
+    // Ensure that you remove @generated or mark it @generated NOT
+    throw new UnsupportedOperationException();
+  }
+
+    /**
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
    * @generated
    */
@@ -412,6 +450,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
         return basicSetCorrelationInformation(null, msgs);
       case BptPackage.DOCUMENT_ROOT__STRUCTURE_DEFINITION:
         return basicSetStructureDefinition(null, msgs);
+      case BptPackage.DOCUMENT_ROOT__SCHEMA_MAPPING_IMPORTS:
+        return basicSetSchemaMappingImports(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -442,6 +482,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
         return getCorrelationInformation();
       case BptPackage.DOCUMENT_ROOT__STRUCTURE_DEFINITION:
         return getStructureDefinition();
+      case BptPackage.DOCUMENT_ROOT__SCHEMA_MAPPING_IMPORTS:
+        return getSchemaMappingImports();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -480,6 +522,9 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
         return;
       case BptPackage.DOCUMENT_ROOT__STRUCTURE_DEFINITION:
         setStructureDefinition((StructureDefinition)newValue);
+        return;
+      case BptPackage.DOCUMENT_ROOT__SCHEMA_MAPPING_IMPORTS:
+        setSchemaMappingImports((SchemaMappingImport)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -520,6 +565,9 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
       case BptPackage.DOCUMENT_ROOT__STRUCTURE_DEFINITION:
         setStructureDefinition((StructureDefinition)null);
         return;
+      case BptPackage.DOCUMENT_ROOT__SCHEMA_MAPPING_IMPORTS:
+        setSchemaMappingImports((SchemaMappingImport)null);
+        return;
     }
     super.eUnset(featureID);
   }
@@ -550,6 +598,8 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
         return getCorrelationInformation() != null;
       case BptPackage.DOCUMENT_ROOT__STRUCTURE_DEFINITION:
         return getStructureDefinition() != null;
+      case BptPackage.DOCUMENT_ROOT__SCHEMA_MAPPING_IMPORTS:
+        return getSchemaMappingImports() != null;
     }
     return super.eIsSet(featureID);
   }
