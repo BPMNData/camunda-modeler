@@ -236,7 +236,7 @@ public class CompileAction implements IObjectActionDelegate {
     }
 
     private String createXPathRetrievalCode(CorrelationKey correlationKey, CorrelationProperty correlationProperty) {
-      final String CODE_TEMPLATE = "/message/correlation/key[name=\"%s\"]/property[name=\"%s\"]";
+      final String CODE_TEMPLATE = "/message/correlation/key[@name='%s']/property[@name='%s']/text()";
 
       String keyName = correlationKey.getName();
       String propertyName = correlationProperty.getName();
