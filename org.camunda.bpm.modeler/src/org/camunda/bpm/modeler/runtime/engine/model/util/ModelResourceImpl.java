@@ -18,6 +18,7 @@
  */
 package org.camunda.bpm.modeler.runtime.engine.model.util;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -36,7 +37,6 @@ import org.eclipse.bpmn2.Definitions;
 import org.eclipse.bpmn2.DocumentRoot;
 import org.eclipse.bpmn2.Documentation;
 import org.eclipse.bpmn2.Error;
-import org.eclipse.bpmn2.FormalExpression;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dd.dc.Bounds;
@@ -120,39 +120,39 @@ public class ModelResourceImpl extends Bpmn2ModelerResourceImpl {
 			
 			@Override
 			protected boolean shouldSaveFeature(EObject o, EStructuralFeature f) {
-//			  System.out.print("Saving "+o.eClass().getName()+" -> "+f.getName()+"? ");
+			  String featureName = f.getName();
+			  if (featureName.contains("Set"))
+			    System.out.print("> ");
+        System.out.print("Saving " + " ("+ o.eClass().getName()+") -> "+featureName+"? ");
 				if (f == ModelPackage.eINSTANCE.getExecutionListenerType_Event() ||
 					f == ModelPackage.eINSTANCE.getTaskListenerType_Event()) {
-//				  System.out.println("true");
 					return true;
 				}
 				
 				if (o instanceof Point) {
-//				  System.out.println("true");
 					return true;
 				}
 				
 				if (o instanceof Bounds) {
-//				  System.out.println("true");
 					return true;
 				}
 				
-				if (o instanceof FormalExpression && f.getName().equals(Bpmn2Package.eINSTANCE.getFormalExpression_Body().getName())){
-//				  System.out.println("false");
-					return false;
-				}
+//				if (o instanceof FormalExpression && f.getName().equals(Bpmn2Package.eINSTANCE.getFormalExpression_Body().getName())){
+////				  System.out.println("false");
+//					return false;
+//				}
 				
-				if (o instanceof Documentation && f.getName().equals(Bpmn2Package.eINSTANCE.getDocumentation_Text().getName())) {
+				if (o instanceof Documentation && featureName.equals(Bpmn2Package.eINSTANCE.getDocumentation_Text().getName())) {
 //				  System.out.println("false");
 					return false;
 				}
-				if (o instanceof FailedJobRetryTimeCycleType && f.getName().equals(FoxPackage.eINSTANCE.getFailedJobRetryTimeCycleType_Text().getName())) {
+				if (o instanceof FailedJobRetryTimeCycleType && featureName.equals(FoxPackage.eINSTANCE.getFailedJobRetryTimeCycleType_Text().getName())) {
 //				  System.out.println("false");
 					return false;
 				}
 				
 				boolean shouldSaveFeature = super.shouldSaveFeature(o, f);
-//				System.out.println(shouldSaveFeature);
+				System.out.println(shouldSaveFeature);
         return shouldSaveFeature;
 			}
 			
