@@ -70,9 +70,6 @@ public class SchemamappingAdapterFactory extends AdapterFactoryImpl {
    */
   protected SchemamappingSwitch modelSwitch =
     new SchemamappingSwitch() {
-      public Object caseDocumentRoot(DocumentRoot object) {
-        return createDocumentRootAdapter();
-      }
       public Object caseSchemaMapping(SchemaMapping object) {
         return createSchemaMappingAdapter();
       }
@@ -99,20 +96,6 @@ public class SchemamappingAdapterFactory extends AdapterFactoryImpl {
     return (Adapter)modelSwitch.doSwitch((EObject)target);
   }
 
-
-  /**
-   * Creates a new adapter for an object of class '{@link de.unipotsdam.hpi.bpt.schemamapping.DocumentRoot <em>Document Root</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see de.unipotsdam.hpi.bpt.schemamapping.DocumentRoot
-   * @generated
-   */
-  public Adapter createDocumentRootAdapter() {
-    return null;
-  }
 
   /**
    * Creates a new adapter for an object of class '{@link de.unipotsdam.hpi.bpt.schemamapping.SchemaMapping <em>Schema Mapping</em>}'.

@@ -76,28 +76,6 @@ public class SchemamappingItemProviderAdapterFactory extends SchemamappingAdapte
   }
 
   /**
-   * This keeps track of the one adapter used for all {@link de.unipotsdam.hpi.bpt.schemamapping.DocumentRoot} instances.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  protected DocumentRootItemProvider documentRootItemProvider;
-
-  /**
-   * This creates an adapter for a {@link de.unipotsdam.hpi.bpt.schemamapping.DocumentRoot}.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Adapter createDocumentRootAdapter() {
-    if (documentRootItemProvider == null) {
-      documentRootItemProvider = new DocumentRootItemProvider(this);
-    }
-
-    return documentRootItemProvider;
-  }
-
-  /**
    * This keeps track of the one adapter used for all {@link de.unipotsdam.hpi.bpt.schemamapping.SchemaMapping} instances.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -259,7 +237,6 @@ public class SchemamappingItemProviderAdapterFactory extends SchemamappingAdapte
    * @generated
    */
   public void dispose() {
-    if (documentRootItemProvider != null) documentRootItemProvider.dispose();
     if (schemaMappingItemProvider != null) schemaMappingItemProvider.dispose();
     if (classMappingItemProvider != null) classMappingItemProvider.dispose();
     if (attributeMappingItemProvider != null) attributeMappingItemProvider.dispose();

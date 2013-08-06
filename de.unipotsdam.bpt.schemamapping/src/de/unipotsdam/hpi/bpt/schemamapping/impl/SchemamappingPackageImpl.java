@@ -8,7 +8,6 @@ package de.unipotsdam.hpi.bpt.schemamapping.impl;
 
 import de.unipotsdam.hpi.bpt.schemamapping.AttributeMapping;
 import de.unipotsdam.hpi.bpt.schemamapping.ClassMapping;
-import de.unipotsdam.hpi.bpt.schemamapping.DocumentRoot;
 import de.unipotsdam.hpi.bpt.schemamapping.SchemaMapping;
 import de.unipotsdam.hpi.bpt.schemamapping.SchemamappingFactory;
 import de.unipotsdam.hpi.bpt.schemamapping.SchemamappingPackage;
@@ -27,13 +26,6 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
  * @generated
  */
 public class SchemamappingPackageImpl extends EPackageImpl implements SchemamappingPackage {
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass documentRootEClass = null;
-
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -114,24 +106,6 @@ public class SchemamappingPackageImpl extends EPackageImpl implements Schemamapp
     // Update the registry and return the package
     EPackage.Registry.INSTANCE.put(SchemamappingPackage.eNS_URI, theSchemamappingPackage);
     return theSchemamappingPackage;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getDocumentRoot() {
-    return documentRootEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getDocumentRoot_SchemaMapping() {
-    return (EReference)documentRootEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -243,9 +217,6 @@ public class SchemamappingPackageImpl extends EPackageImpl implements Schemamapp
     isCreated = true;
 
     // Create classes and their features
-    documentRootEClass = createEClass(DOCUMENT_ROOT);
-    createEReference(documentRootEClass, DOCUMENT_ROOT__SCHEMA_MAPPING);
-
     schemaMappingEClass = createEClass(SCHEMA_MAPPING);
     createEReference(schemaMappingEClass, SCHEMA_MAPPING__CLASS_MAPPINGS);
 
@@ -285,9 +256,6 @@ public class SchemamappingPackageImpl extends EPackageImpl implements Schemamapp
     // Add supertypes to classes
 
     // Initialize classes and features; add operations and parameters
-    initEClass(documentRootEClass, DocumentRoot.class, "DocumentRoot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getDocumentRoot_SchemaMapping(), this.getSchemaMapping(), null, "schemaMapping", null, 1, 1, null, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
-
     initEClass(schemaMappingEClass, SchemaMapping.class, "SchemaMapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getSchemaMapping_ClassMappings(), this.getClassMapping(), null, "classMappings", null, 0, -1, SchemaMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
 
@@ -316,21 +284,6 @@ public class SchemamappingPackageImpl extends EPackageImpl implements Schemamapp
    */
   protected void createExtendedMetaDataAnnotations() {
     String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData";		
-    addAnnotation
-      (documentRootEClass, 
-       source, 
-       new String[] {
-       "name", "",
-       "kind", "mixed"
-       });		
-    addAnnotation
-      (getDocumentRoot_SchemaMapping(), 
-       source, 
-       new String[] {
-       "name", "schemaMapping",
-       "kind", "element",
-       "namespace", "##targetNamespace"
-       });		
     addAnnotation
       (schemaMappingEClass, 
        source, 

@@ -26,15 +26,6 @@ public interface SchemamappingFactory extends EFactory {
   SchemamappingFactory eINSTANCE = de.unipotsdam.hpi.bpt.schemamapping.impl.SchemamappingFactoryImpl.init();
 
   /**
-   * Returns a new object of class '<em>Document Root</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Document Root</em>'.
-   * @generated
-   */
-  DocumentRoot createDocumentRoot();
-
-  /**
    * Returns a new object of class '<em>Schema Mapping</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

@@ -79,11 +79,6 @@ import de.unipotsdam.hpi.bpt.schemamapping.provider.SchemamappingEditPlugin;
 
 import org.eclipse.core.runtime.Path;
 
-import org.eclipse.emf.ecore.EStructuralFeature;
-
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.util.ExtendedMetaData;
-
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 
@@ -167,7 +162,7 @@ public class SchemamappingModelWizard extends Wizard implements INewWizard {
   protected IWorkbench workbench;
 
   /**
-   * Caches the names of the features representing global elements.
+   * Caches the names of the types that can be created as the root object.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -188,7 +183,7 @@ public class SchemamappingModelWizard extends Wizard implements INewWizard {
   }
 
   /**
-   * Returns the names of the features representing global elements.
+   * Returns the names of the types that can be created as the root object.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -196,18 +191,7 @@ public class SchemamappingModelWizard extends Wizard implements INewWizard {
   protected Collection getInitialObjectNames() {
     if (initialObjectNames == null) {
       initialObjectNames = new ArrayList();
-      for (Iterator elements = ExtendedMetaData.INSTANCE.getAllElements(ExtendedMetaData.INSTANCE.getDocumentRoot(schemamappingPackage)).iterator(); elements.hasNext(); ) {
-        EStructuralFeature eStructuralFeature = (EStructuralFeature)elements.next();
-        if (eStructuralFeature.isChangeable()) {
-          EClassifier eClassifier = eStructuralFeature.getEType();
-          if (eClassifier instanceof EClass) {
-            EClass eClass = (EClass)eClassifier;
-            if (!eClass.isAbstract()) {
-              initialObjectNames.add(eStructuralFeature.getName());
-            }
-          }
-        }
-      }
+      initialObjectNames.add(schemamappingPackage.getSchemaMapping().getName());
       Collections.sort(initialObjectNames, java.text.Collator.getInstance());
     }
     return initialObjectNames;
@@ -220,10 +204,8 @@ public class SchemamappingModelWizard extends Wizard implements INewWizard {
    * @generated
    */
   protected EObject createInitialModel() {
-    EClass eClass = ExtendedMetaData.INSTANCE.getDocumentRoot(schemamappingPackage);
-    EStructuralFeature eStructuralFeature = eClass.getEStructuralFeature(initialObjectCreationPage.getInitialObjectName());
+    EClass eClass = (EClass)schemamappingPackage.getEClassifier(initialObjectCreationPage.getInitialObjectName());
     EObject rootObject = schemamappingFactory.create(eClass);
-    rootObject.eSet(eStructuralFeature, EcoreUtil.create((EClass)eStructuralFeature.getEType()));
     return rootObject;
   }
 
@@ -406,7 +388,8 @@ public class SchemamappingModelWizard extends Wizard implements INewWizard {
      * @generated
      */
     public void createControl(Composite parent) {
-      Composite composite = new Composite(parent, SWT.NONE); {
+      Composite composite = new Composite(parent, SWT.NONE);
+      {
         GridLayout layout = new GridLayout();
         layout.numColumns = 1;
         layout.verticalSpacing = 12;
@@ -539,19 +522,19 @@ public class SchemamappingModelWizard extends Wizard implements INewWizard {
     }
 
     /**
-     * Returns the label for the specified feature name.
+     * Returns the label for the specified type name.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected String getLabel(String featureName) {
+    protected String getLabel(String typeName) {
       try {
-        return SchemamappingEditPlugin.INSTANCE.getString("_UI_DocumentRoot_" + featureName + "_feature");
+        return SchemamappingEditPlugin.INSTANCE.getString("_UI_" + typeName + "_type");
       }
       catch(MissingResourceException mre) {
         SchemamappingEditorPlugin.INSTANCE.log(mre);
       }
-      return featureName;
+      return typeName;
     }
 
     /**
