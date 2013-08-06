@@ -33,7 +33,6 @@ import org.eclipse.bpmn2.FormalExpression;
 import org.eclipse.bpmn2.ItemAwareElement;
 import org.eclipse.bpmn2.ItemDefinition;
 import org.eclipse.bpmn2.Message;
-import org.eclipse.bpmn2.Process;
 import org.eclipse.bpmn2.ReceiveTask;
 import org.eclipse.bpmn2.SendTask;
 import org.eclipse.bpmn2.util.Bpmn2ResourceImpl;
@@ -363,7 +362,7 @@ public class CompileAction implements IObjectActionDelegate {
         sb.append("<").append(attributeMapping.getGlobalAttribute()).append(">{$").append(payloadMapping.getLocalClass()).append("/")
             .append(attributeMapping.getLocalAttribute()).append("/text()</").append(attributeMapping.getGlobalAttribute()).append(">");
       }
-      sb.append("</payload>");
+      sb.append("</").append(payloadMapping.getGlobalClass()).append("></payload>");
     }
 
     private Map<ItemDefinition, ClassMapping> collectMappings(MessageContentDefinition contentDefinition) {
@@ -401,7 +400,7 @@ public class CompileAction implements IObjectActionDelegate {
           // This assumption should hold for valid models.
           String localClassName = ((DataObject) targetRef).getName();
           ClassMapping classMapping = findClassMappingByLocalClass(localClassName);
-    
+
           StringBuilder sb = new StringBuilder();
           sb.append("let $msg := ./message/payload/").append(classMapping.getGlobalClass()).append("\n");
           sb.append("return <").append(classMapping.getLocalClass()).append(">");
