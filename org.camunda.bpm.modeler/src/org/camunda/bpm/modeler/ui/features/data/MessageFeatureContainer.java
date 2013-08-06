@@ -18,6 +18,7 @@ import org.camunda.bpm.modeler.core.features.MultiUpdateFeature;
 import org.camunda.bpm.modeler.core.features.UpdateBaseElementNameFeature;
 import org.camunda.bpm.modeler.core.features.container.BaseElementFeatureContainer;
 import org.camunda.bpm.modeler.core.features.data.AbstractCreateRootElementFeature;
+import org.camunda.bpm.modeler.core.handler.MessageHandler;
 import org.camunda.bpm.modeler.core.utils.BusinessObjectUtil;
 import org.camunda.bpm.modeler.core.utils.GraphicsUtil;
 import org.camunda.bpm.modeler.core.utils.StyleUtil;
@@ -170,7 +171,7 @@ public class MessageFeatureContainer extends BaseElementFeatureContainer {
         EObject bo = BusinessObjectUtil.getBusinessObjectForPictogramElement(targetConnection);
         if (bo != null && bo instanceof MessageFlow) {
           MessageFlow messageFlow = (MessageFlow) bo;
-          messageFlow.setMessageRef(message);
+          MessageHandler.applyTo(message, messageFlow);
         }
       }
     };

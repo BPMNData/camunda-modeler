@@ -103,6 +103,10 @@ public class Activator extends AbstractUIPlugin {
 		logStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
 	}
 	
+	public static void logWarning(String text) {
+	  logStatus(new Status(IStatus.WARNING, Activator.PLUGIN_ID, text));
+	}
+	
 	/**
 	 * Initializes the table of images used in this plugin.
 	 */

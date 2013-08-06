@@ -12,6 +12,7 @@
  ******************************************************************************/
 package org.camunda.bpm.modeler.ui.features.flow;
 
+import org.camunda.bpm.modeler.core.Activator;
 import org.camunda.bpm.modeler.core.ModelHandler;
 import org.camunda.bpm.modeler.core.features.DirectEditNamedConnectionFeature;
 import org.camunda.bpm.modeler.core.features.UpdateBaseElementNameFeature;
@@ -20,13 +21,13 @@ import org.camunda.bpm.modeler.core.features.flow.AbstractAddFlowFeature;
 import org.camunda.bpm.modeler.core.features.flow.AbstractCreateFlowFeature;
 import org.camunda.bpm.modeler.core.features.flow.AbstractReconnectFlowFeature;
 import org.camunda.bpm.modeler.core.handler.ConversationHandler;
+import org.camunda.bpm.modeler.core.handler.MessageHandler;
 import org.camunda.bpm.modeler.core.utils.BusinessObjectUtil;
 import org.camunda.bpm.modeler.core.utils.ConnectionLabelUtil;
 import org.camunda.bpm.modeler.core.utils.StyleUtil;
 import org.camunda.bpm.modeler.ui.ImageProvider;
 import org.camunda.bpm.modeler.ui.diagram.BPMN2FeatureProvider;
 import org.camunda.bpm.modeler.ui.features.choreography.ChoreographyUtil;
-import org.eclipse.bpmn2.Activity;
 import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.Bpmn2Package;
 import org.eclipse.bpmn2.Collaboration;
@@ -37,7 +38,6 @@ import org.eclipse.bpmn2.Message;
 import org.eclipse.bpmn2.MessageFlow;
 import org.eclipse.bpmn2.Participant;
 import org.eclipse.bpmn2.Process;
-import org.eclipse.bpmn2.SendTask;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.graphiti.features.IAddFeature;
@@ -67,7 +67,6 @@ import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaService;
 import org.eclipse.graphiti.services.IPeService;
 import org.eclipse.graphiti.util.IColorConstant;
-import org.eclipse.xsd.util.XSDResourceImpl;
 
 public class MessageFlowFeatureContainer extends BaseElementConnectionFeatureContainer {
 
@@ -176,8 +175,7 @@ public class MessageFlowFeatureContainer extends BaseElementConnectionFeatureCon
       }
       Object[] createdObjects = createMessageFeature.create(createContext);
       Message message = (Message) createdObjects[0];
-      messageFlow.setMessageRef(message);
-
+      MessageHandler.applyTo(message, messageFlow);
     }
     
   }
@@ -285,7 +283,7 @@ public class MessageFlowFeatureContainer extends BaseElementConnectionFeatureCon
       // Add the message flow to a conversation.
       EObject diagramBo = BusinessObjectUtil.getBusinessObjectForPictogramElement(getDiagram());
       if (diagramBo == null || !(diagramBo instanceof Collaboration)) {
-        System.err.println("Warning: expected diagram to be a collaboration");
+        Activator.logWarning("Expected diagram to be a collaboration.");
         return;
       }
       Collaboration collaboration = (Collaboration) diagramBo;
@@ -365,6 +363,16 @@ public class MessageFlowFeatureContainer extends BaseElementConnectionFeatureCon
     @Override
     protected Class<? extends EObject> getSourceClass() {
       return InteractionNode.class;
+    }
+    
+    @Override
+    public void postReconnect(IReconnectionContext context) {
+      super.postReconnect(context);
+      
+      // Update the message refs of the newly connected tasks.
+      Connection connection = context.getConnection();
+      MessageFlow messageFlow = BusinessObjectUtil.getFirstElementOfType(connection, MessageFlow.class);
+      MessageHandler.ensureTaskMessageRefs(messageFlow);
     }
   }
 }

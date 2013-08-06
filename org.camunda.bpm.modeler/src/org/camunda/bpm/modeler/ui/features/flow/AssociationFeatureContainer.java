@@ -17,6 +17,7 @@ import org.camunda.bpm.modeler.core.features.container.BaseElementConnectionFeat
 import org.camunda.bpm.modeler.core.features.flow.AbstractAddFlowFeature;
 import org.camunda.bpm.modeler.core.features.flow.AbstractCreateFlowFeature;
 import org.camunda.bpm.modeler.core.features.flow.AbstractReconnectFlowFeature;
+import org.camunda.bpm.modeler.core.handler.MessageHandler;
 import org.camunda.bpm.modeler.core.utils.AnchorUtil;
 import org.camunda.bpm.modeler.core.utils.BusinessObjectUtil;
 import org.camunda.bpm.modeler.ui.ImageProvider;
@@ -265,7 +266,7 @@ public class AssociationFeatureContainer extends BaseElementConnectionFeatureCon
     }
     
     if (messageFlow != null && message != null) {
-      messageFlow.setMessageRef(message);
+      MessageHandler.applyTo(message, messageFlow);
     }
   }
 }
