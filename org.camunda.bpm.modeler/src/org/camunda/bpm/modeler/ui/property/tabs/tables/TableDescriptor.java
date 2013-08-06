@@ -105,8 +105,9 @@ public abstract class TableDescriptor<T> {
 	private void createColumns(TableViewer viewer,
 			TableColumnLayout2 layout, List<TableColumnDescriptor> tableColumnDescriptors) {
 
+	  int columnIndex = 0;
 		for (TableColumnDescriptor descriptor : tableColumnDescriptors) {
-			createColumn(viewer, layout, descriptor);
+			createColumn(viewer, layout, descriptor, columnIndex++);
 		}
 	}
 
@@ -116,8 +117,9 @@ public abstract class TableDescriptor<T> {
 	 * @param viewer
 	 * @param layout
 	 * @param descriptor
+	 * @param columnIndex 
 	 */
-	protected TableViewerColumn createColumn(TableViewer viewer, TableColumnLayout2 layout, TableColumnDescriptor descriptor) {
+	protected TableViewerColumn createColumn(TableViewer viewer, TableColumnLayout2 layout, TableColumnDescriptor descriptor, int columnIndex) {
 		TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.NONE);
 		
 		descriptor.configureViewer(viewer, viewerColumn, layout);

@@ -10,56 +10,64 @@ import org.eclipse.swt.widgets.TableColumn;
 
 public class TableColumnDescriptor {
 
-	private String title;
-	private int weight;
+  private String title;
+  private int weight;
+  private ColumnLabelProvider labelProvider;
 
-	public TableColumnDescriptor(String title, int weight) {
-		this.title = title;
-		this.weight = weight;
-	}
+  public TableColumnDescriptor(String title, int weight, ColumnLabelProvider labelProvider) {
+    this.title = title;
+    this.weight = weight;
+    this.labelProvider = labelProvider;
+  }
 
-	public TableColumnDescriptor() {
-		this.title = null;
-		this.weight = 33;
-	}
+  public TableColumnDescriptor() {
+    this.title = null;
+    this.weight = 33;
+  }
 
-	public EditingSupport getEditingSupport(TableViewer viewer) {
-		return null;
-	}
+  public EditingSupport getEditingSupport(TableViewer viewer) {
+    return null;
+  }
 
-	/**
-	 * Returns the string value of an object
-	 * 
-	 * @return
-	 */
-	public ColumnLabelProvider getColumnLabelProvider() {
-		return new SimpleLabelProvider();
-	}
+  /**
+   * Return the previously set column provider or a {@link SimpleLabelProvider} as default.
+   */
+  public ColumnLabelProvider getColumnLabelProvider() {
+    if (this.labelProvider == null)
+      return getDefaultColumnLabelProvider();
+    return this.labelProvider;
+  }
 
-	/**
-	 * Configure the specified viewer
-	 * 
-	 * @param viewerColumn
-	 * @param layout
-	 */
-	public void configureViewer(TableViewer tableViewer, TableViewerColumn viewerColumn, TableColumnLayout2 layout) {
-		viewerColumn.setLabelProvider(getColumnLabelProvider());
-		viewerColumn.setEditingSupport(getEditingSupport(tableViewer));
-		
-		configure(viewerColumn.getColumn(), layout);
-	}
-	
-	/**
-	 * Configures the underlaying column
-	 * 
-	 * @param column
-	 * @param layout 
-	 */
-	public void configure(TableColumn column, TableColumnLayout2 layout) {
-		if (title != null) {
-			column.setText(title);
-		}
+  protected ColumnLabelProvider getDefaultColumnLabelProvider() {
+    return new SimpleLabelProvider();
+  }
 
-		layout.setColumnData(column, new ColumnWeightData(weight, true));
-	}
+  /**
+   * Configure the specified viewer
+   * 
+   * @param viewerColumn
+   * @param layout
+   * @param columnIndex
+   */
+  public void configureViewer(TableViewer tableViewer, TableViewerColumn viewerColumn, TableColumnLayout2 layout) {
+    viewerColumn.setLabelProvider(getColumnLabelProvider());
+    viewerColumn.setEditingSupport(getEditingSupport(tableViewer));
+    viewerColumn.setLabelProvider(getColumnLabelProvider());
+
+    configure(viewerColumn.getColumn(), layout);
+  }
+
+  /**
+   * Configures the underlaying column
+   * 
+   * @param column
+   * @param layout
+   */
+  public void configure(TableColumn column, TableColumnLayout2 layout) {
+    if (title != null) {
+      column.setText(title);
+    }
+
+    layout.setColumnData(column, new ColumnWeightData(weight, true));
+  }
 }

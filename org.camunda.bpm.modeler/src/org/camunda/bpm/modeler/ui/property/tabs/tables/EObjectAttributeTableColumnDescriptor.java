@@ -19,34 +19,36 @@ public class EObjectAttributeTableColumnDescriptor<T extends EObject> extends Ta
 
 	private EditingSupportProvider editingSupportProvider;
 	
-	public EObjectAttributeTableColumnDescriptor(EStructuralFeature feature, String title, int weight) {
-		super(title, weight);
+	public EObjectAttributeTableColumnDescriptor(EStructuralFeature feature, String title, int weight, ColumnLabelProvider labelProvider) {
+		super(title, weight, labelProvider);
 
 		this.feature = feature;
 	}
-
-	/**
-	 * Returns the string value of an object
-	 * 
-	 * @return
-	 */
-	public ColumnLabelProvider getColumnLabelProvider() {
-		ColumnLabelProvider labelProvider = new TypedColumnLabelProvider<T>() {
-
-			@Override
-			public String getText(T element) {
-				Object value = element.eGet(feature);
-				if (value == null) {
-					return "";
-				} else {
-					return String.valueOf(element.eGet(feature));
-				}
-			}
-		};
-
-		return labelProvider;
-	}
 	
+	 /**
+   * Returns the string value of an object
+   * 
+   * @return
+   */
+	@Override
+  protected ColumnLabelProvider getDefaultColumnLabelProvider() {
+    ColumnLabelProvider labelProvider = new TypedColumnLabelProvider<T>() {
+
+      @Override
+      public String getText(T element) {
+        Object value = element.eGet(feature);
+        if (value == null) {
+          return "";
+        } else {
+          return String.valueOf(element.eGet(feature));
+        }
+      }
+    };
+
+    return labelProvider;
+  }
+  
+
 	@Override
 	public EditingSupport getEditingSupport(TableViewer viewer) {
 		if (editingSupportProvider != null) {

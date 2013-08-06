@@ -23,6 +23,7 @@ import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.graphiti.ui.platform.GFPropertySection;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -48,6 +49,7 @@ public class EObjectTableBuilder<T extends EObject> {
 
   protected EStructuralFeature[] columnFeatures;
   private String[] columnLabels;
+  private ColumnLabelProvider[] columnLabelProviders;
   private NotificationFilter changeFilter;
 
   private ContentProvider<T> contentProvider;
@@ -105,6 +107,11 @@ public class EObjectTableBuilder<T extends EObject> {
     return this;
   }
 
+  public EObjectTableBuilder<T> labelProviders(ColumnLabelProvider... columnLabelProviders) {
+    this.columnLabelProviders = columnLabelProviders;
+    return this;
+  }
+
   public EObjectTableBuilder<T> model(EObject model) {
     this.model = model;
 
@@ -124,8 +131,9 @@ public class EObjectTableBuilder<T extends EObject> {
     return tableDescriptor;
   }
 
-  protected EObjectAttributeTableColumnDescriptor<T> createAttributeTableColumnDescriptor(EStructuralFeature columnFeature, String columnLabel, int weight) {
-    EObjectAttributeTableColumnDescriptor<T> columnDescriptor = new EObjectAttributeTableColumnDescriptor<T>(columnFeature, columnLabel, 30);
+  protected EObjectAttributeTableColumnDescriptor<T> createAttributeTableColumnDescriptor(EStructuralFeature columnFeature, String columnLabel, int weight,
+      ColumnLabelProvider labelProvider) {
+    EObjectAttributeTableColumnDescriptor<T> columnDescriptor = new EObjectAttributeTableColumnDescriptor<T>(columnFeature, columnLabel, 30, labelProvider);
     columnDescriptor.setEditingSupportProvider(editingSupportProvider);
 
     return columnDescriptor;
@@ -145,6 +153,10 @@ public class EObjectTableBuilder<T extends EObject> {
       throw new IllegalArgumentException("ColumnLabels are null");
     }
 
+    if (columnLabelProviders == null) {
+      // There is a fallback option for those guys, so we can simply pass null to the column descriptor creation.
+      columnLabelProviders = new ColumnLabelProvider[columnFeatures.length];
+    }
     // table descriptor
     EditableTableDescriptor<T> tableDescriptor = createTableDescriptor();
 
@@ -153,14 +165,15 @@ public class EObjectTableBuilder<T extends EObject> {
     for (int i = 0; i < columnFeatures.length; i++) {
       EStructuralFeature columnFeature = columnFeatures[i];
       String columnLabel = columnLabels[i];
+      ColumnLabelProvider labelProvider = columnLabelProviders[i];
 
-      EObjectAttributeTableColumnDescriptor<T> descriptor = createAttributeTableColumnDescriptor(columnFeature, columnLabel, 30);
+      EObjectAttributeTableColumnDescriptor<T> descriptor = createAttributeTableColumnDescriptor(columnFeature, columnLabel, 30, labelProvider);
 
       columns.add(descriptor);
     }
 
     tableDescriptor.setColumns(columns);
-    
+
     for (CustomMenuItemDescriptor descriptor : customMenuItemDescriptors) {
       tableDescriptor.addCustomMenuItem(descriptor);
     }

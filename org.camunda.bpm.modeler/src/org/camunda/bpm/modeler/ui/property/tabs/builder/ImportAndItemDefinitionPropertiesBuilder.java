@@ -2,9 +2,11 @@ package org.camunda.bpm.modeler.ui.property.tabs.builder;
 
 import java.util.List;
 
+import org.camunda.bpm.modeler.core.handler.ItemDefinitionHandler;
 import org.camunda.bpm.modeler.core.utils.ImportUtil;
 import org.camunda.bpm.modeler.core.utils.ImportUtil.ImportException;
 import org.camunda.bpm.modeler.core.utils.ModelUtil;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.StructureDefinition;
 import org.camunda.bpm.modeler.ui.change.filter.FeatureChangeFilter;
 import org.camunda.bpm.modeler.ui.change.filter.NestedFeatureChangeFilter;
 import org.camunda.bpm.modeler.ui.property.tabs.builder.table.EObjectTableBuilder.ContentProvider;
@@ -29,6 +31,7 @@ import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.graphiti.ui.platform.GFPropertySection;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Composite;
@@ -125,7 +128,7 @@ public class ImportAndItemDefinitionPropertiesBuilder extends AbstractProperties
       }
     };
 
-    createMappingsTable(section, parent, Import.class, "Imports", IMPORTS_FEATURE, IMPORT_FEATURES, IMPORT_TABLE_HEADERS, factory, contentProvider,
+    createMappingsTable(section, parent, Import.class, "Imports", IMPORTS_FEATURE, IMPORT_FEATURES, IMPORT_TABLE_HEADERS, null, factory, contentProvider,
         deleteHandler, executeMenuItemDescriptor);
   }
 
@@ -163,20 +166,33 @@ public class ImportAndItemDefinitionPropertiesBuilder extends AbstractProperties
       }
     };
 
+    ColumnLabelProvider[] labelProviders = new ColumnLabelProvider[3];
+    labelProviders[0] = new ColumnLabelProvider() {
+      @Override
+      public String getText(Object element) {
+        ItemDefinition itemDefinition = (ItemDefinition) element;
+        StructureDefinition structureDefinition = ItemDefinitionHandler.getExtensionStructureRef(itemDefinition);
+        if (structureDefinition != null)
+          return structureDefinition.getQname();
+        return super.getText(element);
+      }
+    };
+    
     createMappingsTable(section, parent, ItemDefinition.class, "Item Definitions", ITEM_DEFINITONS_FEATURE, ITEM_DEFINITONS_FEATURES,
-        ITEM_DEFINITONS_TABLE_HEADERS, factory, contentProvider, deleteHandler);
+        ITEM_DEFINITONS_TABLE_HEADERS, labelProviders, factory, contentProvider, deleteHandler);
   }
 
   protected <T extends EObject> void createMappingsTable(GFPropertySection section, Composite parent, final Class<T> typeCls, String label,
-      final EStructuralFeature feature, EStructuralFeature[] columnFeatures, String[] columnLabels, ElementFactory<T> elementFactory,
-      ContentProvider<T> contentProvider, DeletedRowHandler<T> deleteHandler, CustomMenuItemDescriptor... customMenuItemDescriptors) {
+      final EStructuralFeature feature, EStructuralFeature[] columnFeatures, String[] columnLabels, ColumnLabelProvider[] labelProviders,
+      ElementFactory<T> elementFactory, ContentProvider<T> contentProvider, DeletedRowHandler<T> deleteHandler,
+      CustomMenuItemDescriptor... customMenuItemDescriptors) {
 
     Composite composite = PropertyUtil.createStandardComposite(section, parent);
 
     EditableEObjectTableBuilder<T> builder = new EditableEObjectTableBuilder<T>(section, composite, typeCls);
     builder.elementFactory(elementFactory).contentProvider(contentProvider).columnFeatures(columnFeatures).columnLabels(columnLabels)
         .deletedRowHandler(deleteHandler).model(bo).changeFilter(new NestedFeatureChangeFilter(bo, feature).or(new FeatureChangeFilter(bo, feature)))
-        .withCustomMenuItems(customMenuItemDescriptors);
+        .withCustomMenuItems(customMenuItemDescriptors).labelProviders(labelProviders);
     final TableViewer viewer = builder.build();
 
     final Composite tableComposite = viewer.getTable().getParent();
