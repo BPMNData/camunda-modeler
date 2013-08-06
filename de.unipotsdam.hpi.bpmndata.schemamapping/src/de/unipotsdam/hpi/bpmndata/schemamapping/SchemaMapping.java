@@ -38,10 +38,10 @@ public interface SchemaMapping extends EObject {
    * <!-- end-user-doc -->
    * @return the value of the '<em>Class Mappings</em>' containment reference list.
    * @see de.unipotsdam.hpi.bpmndata.schemamapping.SchemamappingPackage#getSchemaMapping_ClassMappings()
-   * @model type="de.unipotsdam.hpi.bpmndata.schemamapping.ClassMapping" containment="true" derived="true" ordered="false"
+   * @model containment="true" derived="true" ordered="false"
    *        extendedMetaData="name='classMapping' kind='element' namespace='##targetNamespace'"
    * @generated
    */
-  EList getClassMappings();
+  EList<ClassMapping> getClassMappings();
 
 } // SchemaMapping

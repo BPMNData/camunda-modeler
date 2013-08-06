@@ -18,16 +18,24 @@ import org.camunda.bpm.modeler.runtime.engine.model.bpt.BptPackage;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.MessageContentDefinition;
 import org.camunda.bpm.modeler.runtime.engine.model.bpt.SchemaMappingImport;
 import org.camunda.bpm.modeler.runtime.engine.model.util.ModelResourceFactoryImpl;
+import org.eclipse.bpmn2.Bpmn2Package;
 import org.eclipse.bpmn2.Collaboration;
 import org.eclipse.bpmn2.ConversationNode;
 import org.eclipse.bpmn2.CorrelationKey;
 import org.eclipse.bpmn2.CorrelationProperty;
 import org.eclipse.bpmn2.CorrelationPropertyRetrievalExpression;
+import org.eclipse.bpmn2.DataInputAssociation;
+import org.eclipse.bpmn2.DataObject;
+import org.eclipse.bpmn2.DataOutputAssociation;
 import org.eclipse.bpmn2.Definitions;
 import org.eclipse.bpmn2.DocumentRoot;
 import org.eclipse.bpmn2.FormalExpression;
+import org.eclipse.bpmn2.ItemAwareElement;
 import org.eclipse.bpmn2.ItemDefinition;
 import org.eclipse.bpmn2.Message;
+import org.eclipse.bpmn2.Process;
+import org.eclipse.bpmn2.ReceiveTask;
+import org.eclipse.bpmn2.SendTask;
 import org.eclipse.bpmn2.util.Bpmn2ResourceImpl;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
@@ -48,6 +56,8 @@ import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
+import de.unipotsdam.hpi.bpmndata.schemamapping.AttributeMapping;
+import de.unipotsdam.hpi.bpmndata.schemamapping.ClassMapping;
 import de.unipotsdam.hpi.bpmndata.schemamapping.SchemaMapping;
 
 public class CompileAction implements IObjectActionDelegate {
@@ -130,7 +140,7 @@ public class CompileAction implements IObjectActionDelegate {
     CorrelationKeyCreator correlationKeyCreator = new CorrelationKeyCreator(bpmnResource);
     correlationKeyCreator.run();
   }
-  
+
   private void createTransformations(Bpmn2ResourceImpl bpmnResource) {
     TransformationCreator transformationCreator = new TransformationCreator(bpmnResource);
     transformationCreator.run();
@@ -264,6 +274,7 @@ public class CompileAction implements IObjectActionDelegate {
     private Resource resource;
     private DocumentRoot documentRoot;
     private ModelHandler modelHandler;
+    private SchemaMapping schemaMapping;
 
     private TransformationCreator(Resource resource) {
       this.resource = resource;
@@ -281,12 +292,140 @@ public class CompileAction implements IObjectActionDelegate {
       if (schemaMappingImport == null) {
         Activator.logWarning("No schema mapping import found.");
       }
-      
-      SchemaMapping schemaMapping = loadSchemaMapping(schemaMappingImport);
+
+      schemaMapping = loadSchemaMapping(schemaMappingImport);
       if (schemaMapping == null) {
         Activator.logWarning("Could not load a schema mapping");
         return;
       }
+
+      createSendTaskTransformations(definitions);
+      createReceiveTaskTransformations(definitions);
+    }
+
+    private void createSendTaskTransformations(Definitions definitions) {
+      List<EObject> allReachableObjects = ModelUtil.getAllReachableObjects(definitions, Bpmn2Package.eINSTANCE.getSendTask());
+      for (EObject reachableObject : allReachableObjects) {
+        SendTask sendTask = (SendTask) reachableObject;
+        List<DataInputAssociation> inputAssociations = sendTask.getDataInputAssociations();
+        Message message = sendTask.getMessageRef();
+        MessageContentDefinition contentDefinition = MessageHandler.getMessageContentDefinition(message);
+        if (contentDefinition == null) {
+          Activator.logWarning("No content definition found for message " + message.getId());
+        }
+
+        StringBuilder sb = new StringBuilder();
+        // XXX: Validation is possible at this point...
+        Map<ItemDefinition, ClassMapping> globalClass2ClassMapping = collectMappings(contentDefinition);
+        for (ClassMapping classMapping : globalClass2ClassMapping.values()) {
+          sb.append("let $").append(classMapping.getLocalClass()).append(" := ./DataObjects/").append(classMapping.getLocalClass()).append("\n");
+        }
+
+        sb.append("return <message name=\"").append(message.getId()).append("\">");
+
+        createCorrelationPart(contentDefinition, sb, globalClass2ClassMapping);
+
+        createPayloadPart(contentDefinition, sb, globalClass2ClassMapping);
+
+        sb.append("</message>");
+        System.out.println(sb.toString());
+        for (DataInputAssociation inputAssociation : inputAssociations) {
+          FormalExpression formalExpression = modelHandler.create(FormalExpression.class);
+          formalExpression.setLanguage("XQuery");
+          formalExpression.setBody(sb.toString());
+          inputAssociation.setTransformation(formalExpression);
+        }
+      }
+
+    }
+
+    private void createCorrelationPart(MessageContentDefinition contentDefinition, StringBuilder sb, Map<ItemDefinition, ClassMapping> globalClass2ClassMapping) {
+      sb.append("<correlation>");
+      for (ItemDefinition correlationItemDefinition : MessageHandler.getCorrelationObjects(contentDefinition)) {
+        List<String> correlationAttributes = ItemDefinitionHandler.getCorrelationAttributes(correlationItemDefinition);
+        ClassMapping classMapping = globalClass2ClassMapping.get(correlationItemDefinition);
+        sb.append("<key name=\"").append(classMapping.getGlobalClass()).append(">");
+        for (AttributeMapping attributeMapping : classMapping.getAttributeMappings()) {
+          if (!correlationAttributes.contains(attributeMapping.getGlobalAttribute()))
+            continue;
+          sb.append("<property name=\"").append(attributeMapping.getGlobalAttribute()).append("\">{$").append(classMapping.getLocalClass()).append("/")
+              .append(attributeMapping.getLocalAttribute()).append("/text()}</property>");
+        }
+        sb.append("</key>");
+      }
+      sb.append("</correlation>");
+    }
+
+    private void createPayloadPart(MessageContentDefinition contentDefinition, StringBuilder sb, Map<ItemDefinition, ClassMapping> globalClass2ClassMapping) {
+      ClassMapping payloadMapping = globalClass2ClassMapping.get(contentDefinition.getPayloadRef());
+      sb.append("<payload><").append(payloadMapping.getGlobalClass()).append(">");
+      for (AttributeMapping attributeMapping : payloadMapping.getAttributeMappings()) {
+        sb.append("<").append(attributeMapping.getGlobalAttribute()).append(">{$").append(payloadMapping.getLocalClass()).append("/")
+            .append(attributeMapping.getLocalAttribute()).append("/text()</").append(attributeMapping.getGlobalAttribute()).append(">");
+      }
+      sb.append("</payload>");
+    }
+
+    private Map<ItemDefinition, ClassMapping> collectMappings(MessageContentDefinition contentDefinition) {
+      Map<ItemDefinition, ClassMapping> classMappings = new HashMap<ItemDefinition, ClassMapping>();
+      for (ItemDefinition itemDefinition : MessageHandler.getCorrelationObjects(contentDefinition)) {
+        ClassMapping mapping = findClassMappingByGlobalClass(itemDefinition);
+        classMappings.put(itemDefinition, mapping);
+      }
+      return classMappings;
+    }
+
+    private ClassMapping findClassMappingByGlobalClass(ItemDefinition itemDefinition) {
+      String name = ItemDefinitionHandler.getShortInterpretableName(itemDefinition);
+      for (ClassMapping classMapping : schemaMapping.getClassMappings()) {
+        if (classMapping.getGlobalClass().equals(name)) {
+          return classMapping;
+        }
+      }
+      return null;
+    }
+
+    private void createReceiveTaskTransformations(Definitions definitions) {
+      List<EObject> allReachableObjects = ModelUtil.getAllReachableObjects(definitions, Bpmn2Package.eINSTANCE.getReceiveTask());
+      for (EObject reachableObject : allReachableObjects) {
+        ReceiveTask receiveTask = (ReceiveTask) reachableObject;
+        List<DataOutputAssociation> outputAssociations = receiveTask.getDataOutputAssociations();
+        for (DataOutputAssociation outputAssociation : outputAssociations) {
+          ItemAwareElement targetRef = outputAssociation.getTargetRef();
+          if (targetRef == null || !(targetRef instanceof DataObject)) {
+            Activator.logWarning("Expected a data object as target for data association " + outputAssociation.getId());
+            continue;
+          }
+          // XXX: Since we did not (yet) apply item definitions, we assume, that
+          // the data object's name corresponds to the item definition name.
+          // This assumption should hold for valid models.
+          String localClassName = ((DataObject) targetRef).getName();
+          ClassMapping classMapping = findClassMappingByLocalClass(localClassName);
+    
+          StringBuilder sb = new StringBuilder();
+          sb.append("let $msg := ./message/payload/").append(classMapping.getGlobalClass()).append("\n");
+          sb.append("return <").append(classMapping.getLocalClass()).append(">");
+          for (AttributeMapping attributeMapping : classMapping.getAttributeMappings()) {
+            sb.append("<").append(attributeMapping.getLocalAttribute()).append(">{$msg/").append(attributeMapping.getGlobalAttribute()).append("/text()}</")
+                .append(attributeMapping.getLocalAttribute()).append(">");
+          }
+          sb.append("</").append(classMapping.getLocalClass()).append(">");
+          System.out.println(sb.toString());
+          FormalExpression formalExpression = modelHandler.create(FormalExpression.class);
+          formalExpression.setLanguage("XQuery");
+          formalExpression.setBody(sb.toString());
+          outputAssociation.setTransformation(formalExpression);
+        }
+      }
+    }
+
+    private ClassMapping findClassMappingByLocalClass(String localClassName) {
+      for (ClassMapping classMapping : schemaMapping.getClassMappings()) {
+        if (classMapping.getLocalClass().equals(localClassName)) {
+          return classMapping;
+        }
+      }
+      return null;
     }
 
     private SchemaMapping loadSchemaMapping(SchemaMappingImport schemaMappingImport) {

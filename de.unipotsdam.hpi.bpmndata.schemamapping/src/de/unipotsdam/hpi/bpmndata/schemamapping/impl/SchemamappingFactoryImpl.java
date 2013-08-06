@@ -57,6 +57,7 @@ public class SchemamappingFactoryImpl extends EFactoryImpl implements Schemamapp
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public EObject create(EClass eClass) {
     switch (eClass.getClassifierID()) {
       case SchemamappingPackage.SCHEMA_MAPPING: return createSchemaMapping();
@@ -112,6 +113,7 @@ public class SchemamappingFactoryImpl extends EFactoryImpl implements Schemamapp
    * @deprecated
    * @generated
    */
+  @Deprecated
   public static SchemamappingPackage getPackage() {
     return SchemamappingPackage.eINSTANCE;
   }

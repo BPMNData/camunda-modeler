@@ -90,7 +90,7 @@ public class ClassMappingImpl extends EObjectImpl implements ClassMapping {
    * @generated
    * @ordered
    */
-  protected EList attributeMappings;
+  protected EList<AttributeMapping> attributeMappings;
 
   /**
    * <!-- begin-user-doc -->
@@ -106,6 +106,7 @@ public class ClassMappingImpl extends EObjectImpl implements ClassMapping {
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   protected EClass eStaticClass() {
     return SchemamappingPackage.Literals.CLASS_MAPPING;
   }
@@ -157,9 +158,9 @@ public class ClassMappingImpl extends EObjectImpl implements ClassMapping {
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList getAttributeMappings() {
+  public EList<AttributeMapping> getAttributeMappings() {
     if (attributeMappings == null) {
-      attributeMappings = new EObjectContainmentEList(AttributeMapping.class, this, SchemamappingPackage.CLASS_MAPPING__ATTRIBUTE_MAPPINGS);
+      attributeMappings = new EObjectContainmentEList<AttributeMapping>(AttributeMapping.class, this, SchemamappingPackage.CLASS_MAPPING__ATTRIBUTE_MAPPINGS);
     }
     return attributeMappings;
   }
@@ -169,10 +170,11 @@ public class ClassMappingImpl extends EObjectImpl implements ClassMapping {
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case SchemamappingPackage.CLASS_MAPPING__ATTRIBUTE_MAPPINGS:
-        return ((InternalEList)getAttributeMappings()).basicRemove(otherEnd, msgs);
+        return ((InternalEList<?>)getAttributeMappings()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -182,6 +184,7 @@ public class ClassMappingImpl extends EObjectImpl implements ClassMapping {
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case SchemamappingPackage.CLASS_MAPPING__LOCAL_CLASS:
@@ -199,6 +202,8 @@ public class ClassMappingImpl extends EObjectImpl implements ClassMapping {
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
+  @Override
   public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case SchemamappingPackage.CLASS_MAPPING__LOCAL_CLASS:
@@ -209,7 +214,7 @@ public class ClassMappingImpl extends EObjectImpl implements ClassMapping {
         return;
       case SchemamappingPackage.CLASS_MAPPING__ATTRIBUTE_MAPPINGS:
         getAttributeMappings().clear();
-        getAttributeMappings().addAll((Collection)newValue);
+        getAttributeMappings().addAll((Collection<? extends AttributeMapping>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -220,6 +225,7 @@ public class ClassMappingImpl extends EObjectImpl implements ClassMapping {
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public void eUnset(int featureID) {
     switch (featureID) {
       case SchemamappingPackage.CLASS_MAPPING__LOCAL_CLASS:
@@ -240,6 +246,7 @@ public class ClassMappingImpl extends EObjectImpl implements ClassMapping {
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public boolean eIsSet(int featureID) {
     switch (featureID) {
       case SchemamappingPackage.CLASS_MAPPING__LOCAL_CLASS:
@@ -257,6 +264,7 @@ public class ClassMappingImpl extends EObjectImpl implements ClassMapping {
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
   public String toString() {
     if (eIsProxy()) return super.toString();
 

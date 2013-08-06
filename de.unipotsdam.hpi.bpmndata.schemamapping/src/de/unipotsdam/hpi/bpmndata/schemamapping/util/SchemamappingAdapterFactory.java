@@ -52,6 +52,7 @@ public class SchemamappingAdapterFactory extends AdapterFactoryImpl {
    * @return whether this factory is applicable for the type of the object.
    * @generated
    */
+  @Override
   public boolean isFactoryForType(Object object) {
     if (object == modelPackage) {
       return true;
@@ -68,18 +69,22 @@ public class SchemamappingAdapterFactory extends AdapterFactoryImpl {
    * <!-- end-user-doc -->
    * @generated
    */
-  protected SchemamappingSwitch modelSwitch =
-    new SchemamappingSwitch() {
-      public Object caseSchemaMapping(SchemaMapping object) {
+  protected SchemamappingSwitch<Adapter> modelSwitch =
+    new SchemamappingSwitch<Adapter>() {
+      @Override
+      public Adapter caseSchemaMapping(SchemaMapping object) {
         return createSchemaMappingAdapter();
       }
-      public Object caseClassMapping(ClassMapping object) {
+      @Override
+      public Adapter caseClassMapping(ClassMapping object) {
         return createClassMappingAdapter();
       }
-      public Object caseAttributeMapping(AttributeMapping object) {
+      @Override
+      public Adapter caseAttributeMapping(AttributeMapping object) {
         return createAttributeMappingAdapter();
       }
-      public Object defaultCase(EObject object) {
+      @Override
+      public Adapter defaultCase(EObject object) {
         return createEObjectAdapter();
       }
     };
@@ -92,8 +97,9 @@ public class SchemamappingAdapterFactory extends AdapterFactoryImpl {
    * @return the adapter for the <code>target</code>.
    * @generated
    */
+  @Override
   public Adapter createAdapter(Notifier target) {
-    return (Adapter)modelSwitch.doSwitch((EObject)target);
+    return modelSwitch.doSwitch((EObject)target);
   }
 
 

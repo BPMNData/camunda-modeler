@@ -94,10 +94,10 @@ public interface ClassMapping extends EObject {
    * <!-- end-user-doc -->
    * @return the value of the '<em>Attribute Mappings</em>' containment reference list.
    * @see de.unipotsdam.hpi.bpmndata.schemamapping.SchemamappingPackage#getClassMapping_AttributeMappings()
-   * @model type="de.unipotsdam.hpi.bpmndata.schemamapping.AttributeMapping" containment="true" derived="true" ordered="false"
+   * @model containment="true" derived="true" ordered="false"
    *        extendedMetaData="name='attributeMapping' kind='element' namespace='##targetNamespace'"
    * @generated
    */
-  EList getAttributeMappings();
+  EList<AttributeMapping> getAttributeMappings();
 
 } // ClassMapping
