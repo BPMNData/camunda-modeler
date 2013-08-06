@@ -54,15 +54,36 @@ public class ItemDefinitionHandler {
       return structureRef.getQname();
     return itemDefinition.getId();
   }
+  
+  /**
+   * Returns a string that shall aid a user to identify this item definition.
+   */
+  public static String getShortInterpretableName(ItemDefinition itemDefinition) {
+    if (itemDefinition == null)
+      return "(none)";
+    resolveStructureDefinitionProxy(itemDefinition, true);
+    StructureDefinition structureRef = getExtensionStructureRef(itemDefinition);
+    if (structureRef != null)
+      return structureRef.getQname().split(":")[1];
+    return itemDefinition.getId();
+  }
 
   /**
    * Returns a string that shall aid a user to identify this item definition and
    * recognize its correlation attributes.
    */
   public static String getCorrelationIdentifierName(ItemDefinition itemDefinition) {
+    return getCorrelationIdentifierName(itemDefinition, false);
+  }
+  
+  /**
+   * Returns a string that shall aid a user to identify this item definition and
+   * recognize its correlation attributes.
+   */
+  public static String getCorrelationIdentifierName(ItemDefinition itemDefinition, boolean useShortName) {
     if (itemDefinition == null)
       return "(none)";
-    String name = getInterpretableName(itemDefinition);
+    String name = useShortName ? getShortInterpretableName(itemDefinition) : getInterpretableName(itemDefinition);
     List<String> correlationAttributes = getCorrelationAttributes(itemDefinition);
     StringBuilder sb = new StringBuilder();
     sb.append(name).append(".");

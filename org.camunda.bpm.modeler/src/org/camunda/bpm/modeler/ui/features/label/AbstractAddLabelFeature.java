@@ -70,7 +70,7 @@ public abstract class AbstractAddLabelFeature extends AbstractAddBpmnShapeFeatur
 		MultiText text = gaService.createDefaultMultiText(diagram, textShape, name);
 
 		StyleUtil.applyStyle(text, baseElement);
-		text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
+		text.setHorizontalAlignment(Orientation.ALIGNMENT_LEFT);
 		text.setVerticalAlignment(Orientation.ALIGNMENT_TOP);
 		
 		LabelUtil.makeLabel(newLabelShape);

@@ -137,14 +137,14 @@ public class LabelUtil {
     StringBuilder sb = new StringBuilder();
 
     ItemDefinition payload = contentDef.getPayloadRef();
-    sb.append(ItemDefinitionHandler.getInterpretableName(payload));
+    sb.append(ItemDefinitionHandler.getShortInterpretableName(payload));
     
     List<ItemDefinition> correlationObjects = MessageHandler.getCorrelationObjects(contentDef);
     if (!correlationObjects.isEmpty()) {
       sb.append("\n").append("CI: ");
       String separator = "";
       for (ItemDefinition correlationObject : correlationObjects) {
-        sb.append(separator).append(ItemDefinitionHandler.getCorrelationIdentifierName(correlationObject));
+        sb.append(separator).append(ItemDefinitionHandler.getCorrelationIdentifierName(correlationObject, true));
         separator = ",\nCI: ";
       }
     }
