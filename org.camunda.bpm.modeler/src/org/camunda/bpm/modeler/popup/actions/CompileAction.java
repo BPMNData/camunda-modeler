@@ -59,18 +59,17 @@ import de.unipotsdam.hpi.bpmndata.schemamapping.AttributeMapping;
 import de.unipotsdam.hpi.bpmndata.schemamapping.ClassMapping;
 import de.unipotsdam.hpi.bpmndata.schemamapping.SchemaMapping;
 
+/**
+ * This action takes a BPMN resource with BPMN Data extensions and derives an
+ * executable BPMN diagram.
+ * 
+ * @author Sebastian
+ */
 public class CompileAction implements IObjectActionDelegate {
 
   private Shell shell;
 
   private IFile file;
-
-  /**
-   * Constructor for Action1.
-   */
-  public CompileAction() {
-    super();
-  }
 
   /**
    * @see IObjectActionDelegate#setActivePart(IAction, IWorkbenchPart)
@@ -158,6 +157,12 @@ public class CompileAction implements IObjectActionDelegate {
     }
   }
 
+  /**
+   * This class derives correlation keys from imported item definitions with
+   * BPMN data extensions.
+   * 
+   * @author Sebastian
+   */
   private class CorrelationKeyCreator {
 
     private Resource resource;
@@ -268,6 +273,13 @@ public class CompileAction implements IObjectActionDelegate {
 
   }
 
+  /**
+   * This class can derive transformations to send tasks and from receive tasks
+   * by evaluating BPMN Data extensions.
+   * 
+   * @author Sebastian
+   * 
+   */
   private static class TransformationCreator {
 
     private Resource resource;
