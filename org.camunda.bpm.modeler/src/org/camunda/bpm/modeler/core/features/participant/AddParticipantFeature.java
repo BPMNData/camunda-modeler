@@ -97,7 +97,7 @@ public class AddParticipantFeature extends AbstractAddBpmnShapeFeature<Participa
 
     // BPMN Data Fix: We must set the multiplicity property to false, as the
     // current shape state dispays a single-instance participant. The update
-    // feature can correct this the.
+    // feature can correct this then.
     peService.setPropertyValue(newShape, MULTIPLICITY, Boolean.toString(false));
   }
 

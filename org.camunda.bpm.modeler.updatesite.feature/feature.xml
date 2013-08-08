@@ -18,15 +18,19 @@ Authors: Ivar Meikas, Bob Brodt, Nico Rehwaldt, Andreas Drobisch
    </description>
 
    <copyright url="http://www.example.com/copyright">
-   .
+      .
    </copyright>
 
    <license url="http://www.example.com/license">
-   .
+      .
    </license>
 
    <includes
          id="org.camunda.bpm.modeler.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="de.unipotsdam.hpi.bpmndata.schemamapping.feature"
          version="0.0.0"/>
 
 </feature>

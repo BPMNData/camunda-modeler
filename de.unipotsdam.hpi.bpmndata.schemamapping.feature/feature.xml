@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.unipotsdam.hpi.bpmndata.schemamapping.feature"
+      label="Simple Schema Mapping"
+      version="2.1.0.qualifier"
+      provider-name="BPMN Data">
+
+   <description>
+      Simple Schema Mapping metamodel and editor.
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <plugin
+         id="de.unipotsdam.hpi.bpmndata.schemamapping"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.unipotsdam.hpi.bpmndata.schemamapping.edit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.unipotsdam.hpi.bpmndata.schemamapping.editor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
