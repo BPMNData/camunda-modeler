@@ -139,6 +139,10 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
         return createValueTypeAdapter();
       }
       @Override
+      public Adapter caseEndPointAddress(EndPointAddress object) {
+        return createEndPointAddressAdapter();
+      }
+      @Override
       public Adapter caseBpmn2_DocumentRoot(org.eclipse.bpmn2.DocumentRoot object) {
         return createBpmn2_DocumentRootAdapter();
       }
@@ -479,6 +483,20 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
   }
 
 	/**
+   * Creates a new adapter for an object of class '{@link org.camunda.bpm.modeler.runtime.engine.model.EndPointAddress <em>End Point Address</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.camunda.bpm.modeler.runtime.engine.model.EndPointAddress
+   * @generated
+   */
+  public Adapter createEndPointAddressAdapter() {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for the default case.
    * <!-- begin-user-doc -->
 	 * This default implementation returns null.

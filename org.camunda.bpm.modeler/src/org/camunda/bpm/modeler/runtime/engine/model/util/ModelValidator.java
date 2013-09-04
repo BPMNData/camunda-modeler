@@ -132,6 +132,8 @@ public class ModelValidator extends EObjectValidator {
         return validateBoundaryEvent((BoundaryEvent)value, diagnostics, context);
       case ModelPackage.VALUE_TYPE:
         return validateValueType((ValueType)value, diagnostics, context);
+      case ModelPackage.END_POINT_ADDRESS:
+        return validateEndPointAddress((EndPointAddress)value, diagnostics, context);
       case ModelPackage.EVENT_TYPE:
         return validateEventType((EventType)value, diagnostics, context);
       case ModelPackage.EVENT_TYPE1:
@@ -250,6 +252,15 @@ public class ModelValidator extends EObjectValidator {
   }
 
 	/**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public boolean validateEndPointAddress(EndPointAddress endPointAddress, DiagnosticChain diagnostics, Map<Object, Object> context) {
+    return validate_EveryDefaultConstraint(endPointAddress, diagnostics, context);
+  }
+
+  /**
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
    * @generated

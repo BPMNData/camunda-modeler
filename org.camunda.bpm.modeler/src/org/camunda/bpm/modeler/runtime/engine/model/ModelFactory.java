@@ -116,6 +116,15 @@ public interface ModelFactory extends EFactory {
 	ValueType createValueType();
 
 	/**
+   * Returns a new object of class '<em>End Point Address</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>End Point Address</em>'.
+   * @generated
+   */
+  EndPointAddress createEndPointAddress();
+
+  /**
    * Returns the package supported by this factory.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

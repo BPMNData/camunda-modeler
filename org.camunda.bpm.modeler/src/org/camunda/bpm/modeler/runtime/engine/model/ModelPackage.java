@@ -1543,13 +1543,22 @@ public interface ModelPackage extends EPackage {
 	int DOCUMENT_ROOT__FAILED_JOB_RETRY_TIME_CYCLE = Bpmn2Package.DOCUMENT_ROOT_FEATURE_COUNT + 24;
 
 	/**
+   * The feature id for the '<em><b>Address</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DOCUMENT_ROOT__ADDRESS = Bpmn2Package.DOCUMENT_ROOT_FEATURE_COUNT + 25;
+
+  /**
    * The number of structural features of the '<em>Document Root</em>' class.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-	int DOCUMENT_ROOT_FEATURE_COUNT = Bpmn2Package.DOCUMENT_ROOT_FEATURE_COUNT + 25;
+	int DOCUMENT_ROOT_FEATURE_COUNT = Bpmn2Package.DOCUMENT_ROOT_FEATURE_COUNT + 26;
 
 	/**
    * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.impl.ExecutionListenerTypeImpl <em>Execution Listener Type</em>}' class.
@@ -2488,6 +2497,34 @@ public interface ModelPackage extends EPackage {
 	int VALUE_TYPE_FEATURE_COUNT = 2;
 
 	/**
+   * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.impl.EndPointAddressImpl <em>End Point Address</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.camunda.bpm.modeler.runtime.engine.model.impl.EndPointAddressImpl
+   * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getEndPointAddress()
+   * @generated
+   */
+  int END_POINT_ADDRESS = 10;
+
+  /**
+   * The feature id for the '<em><b>Value</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int END_POINT_ADDRESS__VALUE = 0;
+
+  /**
+   * The number of structural features of the '<em>End Point Address</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int END_POINT_ADDRESS_FEATURE_COUNT = 1;
+
+  /**
    * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.EventType <em>Event Type</em>}' enum.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2495,7 +2532,7 @@ public interface ModelPackage extends EPackage {
    * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getEventType()
    * @generated
    */
-	int EVENT_TYPE = 10;
+	int EVENT_TYPE = 11;
 
 	/**
    * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.EventType1 <em>Event Type1</em>}' enum.
@@ -2505,7 +2542,7 @@ public interface ModelPackage extends EPackage {
    * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getEventType1()
    * @generated
    */
-	int EVENT_TYPE1 = 11;
+	int EVENT_TYPE1 = 12;
 
 	/**
    * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.HistoryType <em>History Type</em>}' enum.
@@ -2515,7 +2552,7 @@ public interface ModelPackage extends EPackage {
    * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getHistoryType()
    * @generated
    */
-	int HISTORY_TYPE = 12;
+	int HISTORY_TYPE = 13;
 
 	/**
    * The meta object id for the '{@link org.camunda.bpm.modeler.runtime.engine.model.TypeType <em>Type Type</em>}' enum.
@@ -2525,7 +2562,7 @@ public interface ModelPackage extends EPackage {
    * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getTypeType()
    * @generated
    */
-	int TYPE_TYPE = 13;
+	int TYPE_TYPE = 14;
 
 	/**
    * The meta object id for the '<em>Class Type</em>' data type.
@@ -2535,7 +2572,7 @@ public interface ModelPackage extends EPackage {
    * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getClassType()
    * @generated
    */
-	int CLASS_TYPE = 14;
+	int CLASS_TYPE = 15;
 
 	/**
    * The meta object id for the '<em>Event Type Object</em>' data type.
@@ -2545,7 +2582,7 @@ public interface ModelPackage extends EPackage {
    * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getEventTypeObject()
    * @generated
    */
-	int EVENT_TYPE_OBJECT = 15;
+	int EVENT_TYPE_OBJECT = 16;
 
 	/**
    * The meta object id for the '<em>Event Type Object1</em>' data type.
@@ -2555,7 +2592,7 @@ public interface ModelPackage extends EPackage {
    * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getEventTypeObject1()
    * @generated
    */
-	int EVENT_TYPE_OBJECT1 = 16;
+	int EVENT_TYPE_OBJECT1 = 17;
 
 	/**
    * The meta object id for the '<em>Form Handler Class Type</em>' data type.
@@ -2565,7 +2602,7 @@ public interface ModelPackage extends EPackage {
    * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getFormHandlerClassType()
    * @generated
    */
-	int FORM_HANDLER_CLASS_TYPE = 17;
+	int FORM_HANDLER_CLASS_TYPE = 18;
 
 	/**
    * The meta object id for the '<em>History Type Object</em>' data type.
@@ -2575,7 +2612,7 @@ public interface ModelPackage extends EPackage {
    * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getHistoryTypeObject()
    * @generated
    */
-	int HISTORY_TYPE_OBJECT = 18;
+	int HISTORY_TYPE_OBJECT = 19;
 
 	/**
    * The meta object id for the '<em>TExpression</em>' data type.
@@ -2585,7 +2622,7 @@ public interface ModelPackage extends EPackage {
    * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getTExpression()
    * @generated
    */
-	int TEXPRESSION = 19;
+	int TEXPRESSION = 20;
 
 	/**
    * The meta object id for the '<em>Type Type Object</em>' data type.
@@ -2595,7 +2632,7 @@ public interface ModelPackage extends EPackage {
    * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getTypeTypeObject()
    * @generated
    */
-	int TYPE_TYPE_OBJECT = 20;
+	int TYPE_TYPE_OBJECT = 21;
 
 	/**
    * Returns the meta object for class '{@link org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot <em>Document Root</em>}'.
@@ -2883,6 +2920,17 @@ public interface ModelPackage extends EPackage {
 	EReference getDocumentRoot_FailedJobRetryTimeCycle();
 
 	/**
+   * Returns the meta object for the containment reference '{@link org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot#getAddress <em>Address</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Address</em>'.
+   * @see org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot#getAddress()
+   * @see #getDocumentRoot()
+   * @generated
+   */
+  EReference getDocumentRoot_Address();
+
+  /**
    * Returns the meta object for class '{@link org.camunda.bpm.modeler.runtime.engine.model.ExecutionListenerType <em>Execution Listener Type</em>}'.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3391,6 +3439,27 @@ public interface ModelPackage extends EPackage {
 	EAttribute getValueType_Name();
 
 	/**
+   * Returns the meta object for class '{@link org.camunda.bpm.modeler.runtime.engine.model.EndPointAddress <em>End Point Address</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>End Point Address</em>'.
+   * @see org.camunda.bpm.modeler.runtime.engine.model.EndPointAddress
+   * @generated
+   */
+  EClass getEndPointAddress();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.camunda.bpm.modeler.runtime.engine.model.EndPointAddress#getValue <em>Value</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Value</em>'.
+   * @see org.camunda.bpm.modeler.runtime.engine.model.EndPointAddress#getValue()
+   * @see #getEndPointAddress()
+   * @generated
+   */
+  EAttribute getEndPointAddress_Value();
+
+  /**
    * Returns the meta object for enum '{@link org.camunda.bpm.modeler.runtime.engine.model.EventType <em>Event Type</em>}'.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3721,6 +3790,13 @@ public interface ModelPackage extends EPackage {
      */
 		EReference DOCUMENT_ROOT__FAILED_JOB_RETRY_TIME_CYCLE = eINSTANCE.getDocumentRoot_FailedJobRetryTimeCycle();
 		/**
+     * The meta object literal for the '<em><b>Address</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference DOCUMENT_ROOT__ADDRESS = eINSTANCE.getDocumentRoot_Address();
+    /**
      * The meta object literal for the '{@link org.camunda.bpm.modeler.runtime.engine.model.impl.ExecutionListenerTypeImpl <em>Execution Listener Type</em>}' class.
      * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -4068,6 +4144,22 @@ public interface ModelPackage extends EPackage {
      */
 		EAttribute VALUE_TYPE__NAME = eINSTANCE.getValueType_Name();
 		/**
+     * The meta object literal for the '{@link org.camunda.bpm.modeler.runtime.engine.model.impl.EndPointAddressImpl <em>End Point Address</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.camunda.bpm.modeler.runtime.engine.model.impl.EndPointAddressImpl
+     * @see org.camunda.bpm.modeler.runtime.engine.model.impl.ModelPackageImpl#getEndPointAddress()
+     * @generated
+     */
+    EClass END_POINT_ADDRESS = eINSTANCE.getEndPointAddress();
+    /**
+     * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute END_POINT_ADDRESS__VALUE = eINSTANCE.getEndPointAddress_Value();
+    /**
      * The meta object literal for the '{@link org.camunda.bpm.modeler.runtime.engine.model.EventType <em>Event Type</em>}' enum.
      * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->

@@ -86,6 +86,7 @@ public class ModelFactoryImpl extends EFactoryImpl implements ModelFactory {
       case ModelPackage.CALL_ACTIVITY: return createCallActivity();
       case ModelPackage.BOUNDARY_EVENT: return createBoundaryEvent();
       case ModelPackage.VALUE_TYPE: return createValueType();
+      case ModelPackage.END_POINT_ADDRESS: return createEndPointAddress();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -262,6 +263,16 @@ public class ModelFactoryImpl extends EFactoryImpl implements ModelFactory {
   }
 
 	/**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EndPointAddress createEndPointAddress() {
+    EndPointAddressImpl endPointAddress = new EndPointAddressImpl();
+    return endPointAddress;
+  }
+
+  /**
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
    * @generated

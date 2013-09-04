@@ -9,6 +9,7 @@ package org.camunda.bpm.modeler.runtime.engine.model.impl;
 import org.camunda.bpm.modeler.runtime.engine.model.BoundaryEvent;
 import org.camunda.bpm.modeler.runtime.engine.model.CallActivity;
 import org.camunda.bpm.modeler.runtime.engine.model.DocumentRoot;
+import org.camunda.bpm.modeler.runtime.engine.model.EndPointAddress;
 import org.camunda.bpm.modeler.runtime.engine.model.EventType;
 import org.camunda.bpm.modeler.runtime.engine.model.EventType1;
 import org.camunda.bpm.modeler.runtime.engine.model.ExecutionListenerType;
@@ -113,6 +114,13 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	private EClass valueTypeEClass = null;
 
 	/**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass endPointAddressEClass = null;
+
+  /**
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
    * @generated
@@ -499,6 +507,15 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
   }
 
 	/**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getDocumentRoot_Address() {
+    return (EReference)documentRootEClass.getEStructuralFeatures().get(25);
+  }
+
+  /**
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
    * @generated
@@ -923,6 +940,24 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 
 	/**
    * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getEndPointAddress() {
+    return endPointAddressEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getEndPointAddress_Value() {
+    return (EAttribute)endPointAddressEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
    * @generated
    */
@@ -1074,6 +1109,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
     createEAttribute(documentRootEClass, DOCUMENT_ROOT__PRIORITY);
     createEAttribute(documentRootEClass, DOCUMENT_ROOT__RESULT_VARIABLE_NAME);
     createEReference(documentRootEClass, DOCUMENT_ROOT__FAILED_JOB_RETRY_TIME_CYCLE);
+    createEReference(documentRootEClass, DOCUMENT_ROOT__ADDRESS);
 
     executionListenerTypeEClass = createEClass(EXECUTION_LISTENER_TYPE);
     createEAttribute(executionListenerTypeEClass, EXECUTION_LISTENER_TYPE__GROUP);
@@ -1130,6 +1166,9 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
     valueTypeEClass = createEClass(VALUE_TYPE);
     createEAttribute(valueTypeEClass, VALUE_TYPE__ID);
     createEAttribute(valueTypeEClass, VALUE_TYPE__NAME);
+
+    endPointAddressEClass = createEClass(END_POINT_ADDRESS);
+    createEAttribute(endPointAddressEClass, END_POINT_ADDRESS__VALUE);
 
     // Create enums
     eventTypeEEnum = createEEnum(EVENT_TYPE);
@@ -1216,6 +1255,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
     initEAttribute(getDocumentRoot_Priority(), ecorePackage.getEInt(), "priority", "50", 0, 1, null, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getDocumentRoot_ResultVariableName(), ecorePackage.getEString(), "resultVariableName", null, 0, 1, null, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getDocumentRoot_FailedJobRetryTimeCycle(), theFoxPackage.getFailedJobRetryTimeCycleType(), null, "failedJobRetryTimeCycle", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+    initEReference(getDocumentRoot_Address(), this.getEndPointAddress(), null, "address", null, 0, -2, null, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
     initEClass(executionListenerTypeEClass, ExecutionListenerType.class, "ExecutionListenerType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getExecutionListenerType_Group(), ecorePackage.getEFeatureMapEntry(), "group", null, 0, -1, ExecutionListenerType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1272,6 +1312,9 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
     initEClass(valueTypeEClass, ValueType.class, "ValueType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getValueType_Id(), theXMLTypePackage.getString(), "id", null, 0, 1, ValueType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getValueType_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, ValueType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(endPointAddressEClass, EndPointAddress.class, "EndPointAddress", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getEndPointAddress_Value(), ecorePackage.getEString(), "value", null, 0, 1, EndPointAddress.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
     // Initialize enums and add enum literals
     initEEnum(eventTypeEEnum, EventType.class, "EventType");
@@ -1525,6 +1568,14 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
        "kind", "element",
        "name", "failedJobRetryTimeCycle",
        "namespace", "http://www.camunda.com/fox"
+       });		
+    addAnnotation
+      (getDocumentRoot_Address(), 
+       source, 
+       new String[] {
+       "kind", "element",
+       "name", "address",
+       "namespace", "##targetNamespace"
        });		
     addAnnotation
       (classTypeEDataType, 
@@ -1922,6 +1973,20 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
        new String[] {
        "kind", "attribute",
        "name", "name"
+       });		
+    addAnnotation
+      (endPointAddressEClass, 
+       source, 
+       new String[] {
+       "name", "tEndPointAddress",
+       "kind", "empty"
+       });			
+    addAnnotation
+      (getEndPointAddress_Value(), 
+       source, 
+       new String[] {
+       "type", "attribute",
+       "name", "value"
        });
   }
 
