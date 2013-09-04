@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.bpmn2.Process;
 import org.camunda.bpm.modeler.core.Activator;
 import org.camunda.bpm.modeler.core.ModelHandler;
 import org.camunda.bpm.modeler.core.ProxyURIConverterImplExtension;
@@ -33,13 +34,12 @@ import org.eclipse.bpmn2.FormalExpression;
 import org.eclipse.bpmn2.ItemAwareElement;
 import org.eclipse.bpmn2.ItemDefinition;
 import org.eclipse.bpmn2.Message;
+import org.eclipse.bpmn2.Participant;
 import org.eclipse.bpmn2.ReceiveTask;
 import org.eclipse.bpmn2.SendTask;
 import org.eclipse.bpmn2.util.Bpmn2ResourceImpl;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -89,11 +89,33 @@ public class CompileAction implements IObjectActionDelegate {
 
     try {
       Bpmn2ResourceImpl bpmnResource = loadBpmnResource();
+      deleteNonExecutableProcesses(bpmnResource);
       createCorrelationKeys(bpmnResource);
       createTransformations(bpmnResource);
       saveBpmnResource(bpmnResource);
     } catch (Exception e) {
       Activator.logError(e);
+    }
+  }
+
+  /** Removes any {@link Process} from the model that is not executable. */
+  private void deleteNonExecutableProcesses(Bpmn2ResourceImpl bpmnResource) {
+    // Warning: not executable processes should be empty, otherwise there might
+    // be dangling references to contained elements.
+    Definitions definitions = ModelHandler.getDefinitions(bpmnResource);
+    List<Process> processes = ModelUtil.getAllRootElements(definitions, Process.class);
+    for (Process process : processes) {
+      if (!process.isIsExecutable()) {
+        List<EObject> participants = ModelUtil.getAllReachableObjects(definitions, Bpmn2Package.eINSTANCE.getParticipant());
+        for (EObject eObject : participants) {
+          Participant participant = (Participant) eObject;
+          Process participantProcess = participant.getProcessRef();
+          if (participantProcess != null && process.equals(participantProcess)) {
+            participant.setProcessRef(null);
+          }
+        }
+        definitions.getRootElements().remove(process);
+      }
     }
   }
 
@@ -480,7 +502,7 @@ public class CompileAction implements IObjectActionDelegate {
           String localClassName = ((DataObject) targetRef).getName();
           ClassMapping classMapping = findClassMapping(localClassName, globalClassName);
           if (classMapping == null) {
-            throw new RuntimeException("No class mapping found between "+globalClassName+" and "+localClassName);
+            throw new RuntimeException("No class mapping found between " + globalClassName + " and " + localClassName);
           }
 
           // XXX: Validation possible at this point.
