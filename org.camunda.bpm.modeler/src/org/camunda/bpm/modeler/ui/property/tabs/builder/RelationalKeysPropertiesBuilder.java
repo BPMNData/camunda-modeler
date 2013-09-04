@@ -41,8 +41,11 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * Builds the property panel that gives access to the primary key etc. of a data
- * object.
+ * Builds the property panel that gives access to the following BPMN Data extensions of a {@link DataObject}:
+ * <ul>
+ * <li>{@link PrimaryKey} including operation type</li>
+ * <li>{@link ForeignKey}</li>
+ * </ol>
  */
 public class RelationalKeysPropertiesBuilder extends
         AbstractPropertiesBuilder<DataObject> {

@@ -51,6 +51,7 @@ public class SubProcessFeatureContainer extends AbstractExpandableActivityFeatur
 		MultiUpdateFeature multiUpdate = super.getUpdateFeature(fp);
 		UpdateExpandableActivityFeature updateFeature = new UpdateExpandableActivityFeature(fp);
 		multiUpdate.addUpdateFeature(updateFeature);
+		// BPMN Data: Update the case object shape on updates.
 		multiUpdate.addUpdateFeature(new UpdateCaseObjectFeature(fp));
 		return multiUpdate;
 	}

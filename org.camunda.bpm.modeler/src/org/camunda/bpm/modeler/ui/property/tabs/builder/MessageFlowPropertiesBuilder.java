@@ -1,17 +1,17 @@
 package org.camunda.bpm.modeler.ui.property.tabs.builder;
 
 import org.camunda.bpm.modeler.ui.property.tabs.util.PropertyUtil;
-import org.eclipse.bpmn2.Bpmn2Package;
 import org.eclipse.bpmn2.Message;
 import org.eclipse.bpmn2.MessageFlow;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.graphiti.ui.platform.GFPropertySection;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
+/**
+ * Builds the {@link MessageFlow} specific part of the property panel.<br>
+ * Only displays the ID of the linked {@link Message}.
+ */
 public class MessageFlowPropertiesBuilder extends AbstractPropertiesBuilder<MessageFlow> {
-
-  private static final EStructuralFeature CONDITION_EXPRESSION_FEATURE = Bpmn2Package.eINSTANCE.getSequenceFlow_ConditionExpression();
 
   public MessageFlowPropertiesBuilder(Composite parent, GFPropertySection section, MessageFlow bo) {
     super(parent, section, bo);

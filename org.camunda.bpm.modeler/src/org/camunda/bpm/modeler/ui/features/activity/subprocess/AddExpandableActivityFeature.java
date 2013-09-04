@@ -64,7 +64,8 @@ public class AddExpandableActivityFeature<T extends Activity> extends
             if (bpmnShape != null) {
                 isExpanded = bpmnShape.isIsExpanded();
             }
-            // create (empty) case object shape
+            
+            //BPMN Data: create (empty) case object shape
             Shape caseObjectShape = peService
                     .createShape(newShape, false);
             Text text = gaService.createText(caseObjectShape);

@@ -8,6 +8,7 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.jface.viewers.TableViewer;
 
+/** Editing support for BPMN extensions in table editors. Needed to enforce EMF notifications, when editing. */
 public class ExtensionEditingSupport extends
 		EObjectAttributeEditingSupport<EObject> {
 

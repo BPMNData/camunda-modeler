@@ -58,6 +58,7 @@ public class LayoutExpandableActivityFeature extends LayoutActivityFeature {
                     width, height);
         }
         
+        // BPMN Data: Layout case object shape
         String isCaseObjectProperty = peService.getPropertyValue(labelShape, Properties.IS_CASE_OBJECT_SHAPE);
         if (Boolean.parseBoolean(isCaseObjectProperty)) {
             

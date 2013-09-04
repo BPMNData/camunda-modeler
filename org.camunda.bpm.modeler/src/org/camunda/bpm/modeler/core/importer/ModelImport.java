@@ -43,6 +43,7 @@ import org.camunda.bpm.modeler.core.preferences.Bpmn2Preferences;
 import org.camunda.bpm.modeler.core.utils.FeatureSupport;
 import org.camunda.bpm.modeler.core.utils.ModelUtil;
 import org.camunda.bpm.modeler.core.utils.ScrollUtil;
+import org.camunda.bpm.modeler.runtime.engine.model.bpt.StructureDefinition;
 import org.eclipse.bpmn2.Activity;
 import org.eclipse.bpmn2.Artifact;
 import org.eclipse.bpmn2.Association;
@@ -104,872 +105,894 @@ import org.xml.sax.SAXException;
  */
 public class ModelImport {
 
-	protected IFeatureProvider featureProvider;
-	protected Bpmn2Resource resource;
-	protected IDiagramTypeProvider diagramTypeProvider;
-	protected Bpmn2Preferences preferences;
-	
-	// map collecting all DiagramElements (BPMN DI) indexed by the IDs of the ProcessElements they reference. 
-	protected Map<String, DiagramElement> diagramElementMap = new HashMap<String, DiagramElement>();
-	
-	// list collecting DI elements that do not reference bpmn model elements. (for instance, labels only)
-	protected List<DiagramElement> nonModelElements = new ArrayList<DiagramElement>();
-	
-	// list collecting the created PictogramElements (Graphiti) indexed by bpmn model elements
-	protected HashMap<BaseElement, PictogramElement> pictogramElements = new HashMap<BaseElement, PictogramElement>();
-	
-	// list of exceptions classified as warnings which occurred during the import
-	protected List<ImportException> warnings = new ArrayList<ImportException>();
-	
-	// list of deferred actions
-	protected List<DeferredAction<?>> deferredActions = new ArrayList<DeferredAction<?>>();
-	
-	// the collarboration element  if present in current definitions
-	protected Collaboration collaboration = null;
-	
-	// the process elements found in current definitions
-	protected ArrayList<Process> processes = new ArrayList<Process>();
-	
-	protected List<Message> messages = new ArrayList<Message>();
-	
-	// initial bounds of the diagram
-	IRectangle importBounds = ConversionUtil.rect(0, 0, 0, 0); 
-	
-	// the resulting diagram
-	protected Diagram rootDiagram; 
-	
-	// flag to decide if the import should add a scroll shape
-	protected boolean withScrollShape = true;
-	
-	public ModelImport(IDiagramTypeProvider diagramTypeProvider, Bpmn2Resource resource, boolean withScrollShape) {
-		this(diagramTypeProvider, resource);
-		this.withScrollShape = withScrollShape;
-	}
-	
-	public ModelImport(IDiagramTypeProvider diagramTypeProvider, Bpmn2Resource resource) {
-		
-		this.diagramTypeProvider = diagramTypeProvider;
-		this.resource = resource;
-		
-		featureProvider = diagramTypeProvider.getFeatureProvider();
-		preferences = Bpmn2Preferences.getInstance(resource);
+  protected IFeatureProvider featureProvider;
+  protected Bpmn2Resource resource;
+  protected IDiagramTypeProvider diagramTypeProvider;
+  protected Bpmn2Preferences preferences;
 
-		// log xml loading errors
-		logResourceErrors(resource);
-	}
-	
-	public void execute() {
-		long time = System.currentTimeMillis();
-		
-		try {
-			EList<EObject> contents = resource.getContents();
-			
-			if (contents.isEmpty()) {
-				throw new ResourceImportException("No document root in resource bundle");
-			} else {
-				DocumentRoot documentRoot = (DocumentRoot) contents.get(0);
-				preProcess(documentRoot);
-				handleDocumentRoot(documentRoot);
-				
-				if (contents.size() > 1) {
-					// TODO: is there a possibility for a resource to have multiple DocumentRoots?
-					InvalidContentException exception = new InvalidContentException("Multiple document roots in resource");
-					log(exception);
-				}
-			}
-		} finally {
-			time = System.currentTimeMillis() - time;
-			// System.out.println(String.format("Bpmn2Editor import model in %sms", time));
-		}
-	}
-		
-	protected void handleDocumentRoot(DocumentRoot documentRoot) {
-		Definitions definitions = documentRoot.getDefinitions();
-		if (definitions == null) {
-			throw new InvalidContentException("Document Root has no definitions", documentRoot);
-		} else {
-			handleDefinitions(definitions);
-		}
-	}
+  // map collecting all DiagramElements (BPMN DI) indexed by the IDs of the
+  // ProcessElements they reference.
+  protected Map<String, DiagramElement> diagramElementMap = new HashMap<String, DiagramElement>();
 
-	protected void handleDefinitions(Definitions definitions) {
-		// first we get the root elements
-		
-		List<RootElement> rootElements = definitions.getRootElements();
-		
-		for (RootElement rootElement: rootElements) {
-			if (rootElement instanceof Process) {
-				processes.add((Process) rootElement);
-			} else if (rootElement instanceof Collaboration) {
-				if (collaboration != null) {
-					UnsupportedFeatureException exception = new UnsupportedFeatureException("Multiple collaborations not supported. Displaying first one only", definitions);
-					log(exception);
-				} else {
-					collaboration = (Collaboration) rootElement;
-				}
-			} else if (rootElement instanceof Message) {
-			  messages.add((Message) rootElement);
-			} else {
-				// are there unhandeled root elements?
-			  
-			}
-		}
-	 
-		// next we process the DI diagrams and associate them with the process elements
-		List<BPMNDiagram> diagrams = definitions.getDiagrams();
-		for (BPMNDiagram bpmnDiagram : diagrams) {
-			handleDIBpmnDiagram(bpmnDiagram);
-		}
-		
-		// iterates over all elements in the diagram -> may be bad but is there another solution?
-		
-		// add all ids to the mapping table so that they won't be used when 
-		// new ids are generated later
-		TreeIterator<EObject> iter = definitions.eAllContents();
-		while (iter.hasNext()) {
-			ModelUtil.addID(iter.next());
-		}
+  // list collecting DI elements that do not reference bpmn model elements. (for
+  // instance, labels only)
+  protected List<DiagramElement> nonModelElements = new ArrayList<DiagramElement>();
 
-		// we create the bpmn diagram to work on
-		BPMNDiagram bpmnDiagram = getOrCreateDiagram(diagrams);
-		
-		// we have no root process or collaboration
-		// so we are going to create one
-		if (collaboration == null && processes.isEmpty()) {
-			Process defaultProcess = createDefaultDiagramContent(definitions, bpmnDiagram);
-			processes.add(defaultProcess);
-		}
-		
-		// at this point we have either a collaboration or 
-		// at minimum one process to work with
-		
-		ensureDiagramLinked(bpmnDiagram, collaboration, processes);
-		
-		// and create the graphiti diagram
-		this.rootDiagram = createEditorRootDiagram(bpmnDiagram, collaboration, processes, definitions);
-		
-		// next, process the BPMN model elements and start building the Graphiti diagram
-		// first check if we display a single process or collaboration
+  // list collecting the created PictogramElements (Graphiti) indexed by bpmn
+  // model elements
+  protected HashMap<BaseElement, PictogramElement> pictogramElements = new HashMap<BaseElement, PictogramElement>();
 
-		if (collaboration != null) {
-			// we display a collaboration
-			handleCollaboration(collaboration, rootDiagram);
-		} else {
-			// we display one or more processes
-			for (Process process : processes) {
-				handleProcess(process, rootDiagram);
-			}
-		}
-		
-		for (Message message : messages) {
-		  handleMessage(message);
-		}
-		
-		// handle deferred rendering of, e.g. associations and data associations
-		handleDeferredActions();
-		
-		// finally layout all elements
-		performLayout();
-		
-		if (withScrollShape) {
-			addScrollShape();			
-		}
-	}
-	
-	protected Shape addScrollShape() {
-		return ScrollUtil.addScrollShape(rootDiagram, importBounds, false, 0, 0);
-	}
-	
-	protected void handleDeferredActions() {
-		for (DeferredAction<?> action: deferredActions) {
-			action.handle();
-		}
-	}
+  // list of exceptions classified as warnings which occurred during the import
+  protected List<ImportException> warnings = new ArrayList<ImportException>();
 
-	/**
-	 * Ensure that the plane is properly linked with collaboration or process, respectively.
-	 * 
-	 * @param bpmnDiagram
-	 * @param collaboration
-	 * @param processes
-	 */
-	protected void ensureDiagramLinked(BPMNDiagram bpmnDiagram, Collaboration collaboration, List<Process> processes) {
-		BPMNPlane bpmnPlane = bpmnDiagram.getPlane();
-		
-		BaseElement bpmnElement = bpmnPlane.getBpmnElement();
-		
-		if (collaboration != null) {
-			if (!collaboration.equals(bpmnElement)) {
-				log(new ImportException("BPMNPlane not associated with collaboration"));
-			}
-		} else {
-			Process process = processes.get(0);
-			if (!process.equals(bpmnElement)) {
-				log(new ImportException("BPMNPlane not associated with process"));
-			}
-		}
-	}
-	
-	protected BPMNDiagram getOrCreateDiagram(List<BPMNDiagram> diagrams) {
+  // list of deferred actions
+  protected List<DeferredAction<?>> deferredActions = new ArrayList<DeferredAction<?>>();
 
-		if (diagrams.isEmpty()) {
-			BPMNDiagram newDiagram = ModelHelper.create(resource, BPMNDiagram.class);
-			diagrams.add(newDiagram);
-		}
+  // the collarboration element if present in current definitions
+  protected Collaboration collaboration = null;
 
-		BPMNDiagram bpmnDiagram = diagrams.get(0);
-		BPMNPlane bpmnPlane = bpmnDiagram.getPlane();
-		
-		if (bpmnPlane == null || bpmnPlane.eIsProxy()) {
-			bpmnPlane = ModelHelper.create(resource, BPMNPlane.class);
-			bpmnDiagram.setPlane(bpmnPlane);
-		}
-		
-		return bpmnDiagram;
-	}
+  // the process elements found in current definitions
+  protected ArrayList<Process> processes = new ArrayList<Process>();
 
-	protected Process createDefaultDiagramContent(Definitions definitions, BPMNDiagram bpmnDiagram) {
+  protected List<Message> messages = new ArrayList<Message>();
 
-		// create process
-		Process process = ModelHelper.create(resource, Process.class);
-		definitions.getRootElements().add(process);
-		
-		// associate process with bpmn plane
-		bpmnDiagram.getPlane().setBpmnElement(process);
-		
-		return process;
-	}
+  // initial bounds of the diagram
+  IRectangle importBounds = ConversionUtil.rect(0, 0, 0, 0);
 
-	protected Diagram createEditorRootDiagram(BPMNDiagram bpmnDiagram, Collaboration collaboration, List<Process> processes, Definitions definitions) {
-		IDiagramEditor diagramEditor = diagramTypeProvider.getDiagramEditor();
-		
-		Diagram diagram = DIUtils.getOrCreateDiagram(diagramEditor, bpmnDiagram);
-		diagram.setGridUnit(0);
-		
-		diagramTypeProvider.init(diagram, diagramEditor);
+  // the resulting diagram
+  protected Diagram rootDiagram;
 
-		// link collaboration or only process to diagram
-		BaseElement businessObject = collaboration != null ? collaboration : processes.get(0);
-		
-		featureProvider.link(diagram, new Object[] { businessObject, bpmnDiagram, definitions });
+  // flag to decide if the import should add a scroll shape
+  protected boolean withScrollShape = true;
 
-		return diagram;
-	}
+  public ModelImport(IDiagramTypeProvider diagramTypeProvider, Bpmn2Resource resource, boolean withScrollShape) {
+    this(diagramTypeProvider, resource);
+    this.withScrollShape = withScrollShape;
+  }
 
-	protected void performLayout() {
-		// do nothing
-	}
-	
-	// handling of BPMN Model Elements ///////////////////////////////////////////////////////////////
-	
-	protected void handleCollaboration(Collaboration collaboration, ContainerShape container) {
-		List<Participant> participants = collaboration.getParticipants();
-		
-		if (participants.isEmpty()) {
-			InvalidContentException exception = new InvalidContentException("No participants in collaboration", collaboration);
-			logAndThrow(exception);
-		}
-		
-		for (Participant participant : participants) {
-			handleParticipant(participant, container);
-		}
-		
-		for (MessageFlow messageFlow: collaboration.getMessageFlows()) {
-			handleMessageFlow(messageFlow, container);
-		}
-	}
+  public ModelImport(IDiagramTypeProvider diagramTypeProvider, Bpmn2Resource resource) {
 
-	/**
-	 * This draws a participant (Pool) in a Collaboration 
-	 * 
-	 * @param participant
-	 * @param container
-	 */
-	protected void handleParticipant(Participant participant, ContainerShape container) {
-		
-		Process process = participant.getProcessRef();
-		if (process != null) {
-			if (process.eIsProxy()) {
-				throw new InvalidContentException("Invalid process referenced by participant", participant);
-			}
-		}
-		
-		// TODO: process.isIsClosed == !collapsed ?
-		// TODO: or rather bpmnShape.isIsExpanded()
-		
-		// if (process == null || !bpmnShape.isIsExpanded()) {
-		// BPMNShape bpmnShape = (BPMNShape) getDiagramElement(participant);
-		if (process == null) {
-			// collapsed pool
-			handleCollapsedParticipant(participant, container);
-		} else {
-			handleExpandedParticipant(participant, process, container);
-		}
-	}
+    this.diagramTypeProvider = diagramTypeProvider;
+    this.resource = resource;
 
-	protected void handleExpandedParticipant(Participant participant, Process process, ContainerShape container) {
-		
-		// draw the participant (pool)
-		ParticipantShapeHandler shapeHander = new ParticipantShapeHandler(this);
-		ContainerShape participantContainer = (ContainerShape) handleDiagramElement(participant, container, shapeHander);
-		
-		List<LaneSet> laneSets = process.getLaneSets();
-		if (laneSets.isEmpty()) {
-			// if there are no lanes, simply draw the process into the pool (including sequence flows)
-			handleProcess(process, participantContainer);
-			
-		} else {
-			
-			//  draw the lanes (possibly nested). The lanes reference the task elements they contain, but not the sequence flows.
-			for (LaneSet laneSet: laneSets) {
-				handleLaneSet(laneSet, process, participantContainer);
-			}
-			
-			// draw flow elements not referenced from lanes
-			List<FlowElement> flowElements = process.getFlowElements();
-			
-			handleUnreferencedFlowElements(participantContainer, flowElements);
-			
-			// handle io specification (data input and output)
-			handleInputOutputSpecification(process, participantContainer);
-			
-			// draw the sequence flows:
-			handleSequenceFlows(participantContainer, flowElements);
-			
-			// draw artifacts (e.g. groups)
-			List<Artifact> artifacts = process.getArtifacts();		
-			handleArtifacts(container, artifacts);
-		}
-	}
+    featureProvider = diagramTypeProvider.getFeatureProvider();
+    preferences = Bpmn2Preferences.getInstance(resource);
 
-	protected void handleUnreferencedFlowElements(ContainerShape containerShape, List<FlowElement> flowElements) {
-		List<FlowElement> unreferencedFlowElements = new ArrayList<FlowElement>();
-		
-		for (FlowElement e: flowElements) {
-			// sequence flows handled after handling of unreferenced elements
-			if (e instanceof SequenceFlow) {
-				continue;
-			} else {
-				if (getPictogramElementOrNull(e) == null) {
-					if (e instanceof FlowNode) {
-						log(new UnmappedElementException("element not assigned to lane", e));
-					}
-					
-					unreferencedFlowElements.add(e);
-				}
-			}
-		}
-		
-		if (unreferencedFlowElements != null) {
-			// render 
-			handleFlowElements(containerShape, unreferencedFlowElements);
-		}
-	}
+    // log xml loading errors
+    logResourceErrors(resource);
+  }
 
-	protected void handleCollapsedParticipant(Participant participant, ContainerShape container) {
-		// draw the participant (pool)
-		ParticipantShapeHandler shapeHander = new ParticipantShapeHandler(this);
-		handleDiagramElement(participant, container, shapeHander);
-	}
+  public void execute() {
+    long time = System.currentTimeMillis();
 
-	protected void handleSequenceFlows(ContainerShape participantContainer, List<FlowElement> flowElements) {
-		for (FlowElement flowElement : flowElements) {
-			if (flowElement instanceof SequenceFlow) {
-				handleSequenceFlow((SequenceFlow) flowElement, participantContainer);				
-			}
-		}
-	}
+    try {
+      EList<EObject> contents = resource.getContents();
 
-	protected void handleDataOutputAssociations(List<DataOutputAssociation> dataOutputAssociations, ContainerShape container) {
-		for (DataOutputAssociation outputAssociation: dataOutputAssociations) {
-			handleDataOutputAssociation(outputAssociation, container);
-		}
-	}
+      if (contents.isEmpty()) {
+        throw new ResourceImportException("No document root in resource bundle");
+      } else {
+        DocumentRoot documentRoot = (DocumentRoot) contents.get(0);
+        preProcess(documentRoot);
+        handleDocumentRoot(documentRoot);
 
-	private void handleDataOutputAssociation(DataOutputAssociation flowElement, ContainerShape container) {
-		handleLater(new DeferredAction<DataOutputAssociation>(flowElement, container, new DataOutputAssociationShapeHandler(this)));
-	}
+        if (contents.size() > 1) {
+          // TODO: is there a possibility for a resource to have multiple
+          // DocumentRoots?
+          InvalidContentException exception = new InvalidContentException("Multiple document roots in resource");
+          log(exception);
+        }
+      }
+    } finally {
+      time = System.currentTimeMillis() - time;
+      // System.out.println(String.format("Bpmn2Editor import model in %sms",
+      // time));
+    }
+  }
 
-	protected void handleDataInputAssociations(List<DataInputAssociation> dataInputAssociations, ContainerShape container) {
-		for (DataInputAssociation inputAssociation: dataInputAssociations) {
-			handleDataInputAssociation(inputAssociation, container);
-		}
-	}
-	
-	private void handleDataInputAssociation(DataInputAssociation flowElement, ContainerShape container) {
-		handleLater(new DeferredAction<DataInputAssociation>(flowElement, container, new DataInputAssociationShapeHandler(this)));
-	}
+  protected void handleDocumentRoot(DocumentRoot documentRoot) {
+    Definitions definitions = documentRoot.getDefinitions();
+    if (definitions == null) {
+      throw new InvalidContentException("Document Root has no definitions", documentRoot);
+    } else {
+      handleDefinitions(definitions);
+    }
+  }
 
-	protected void handleLaneSet(LaneSet laneSet, FlowElementsContainer scope, ContainerShape container) {
-		
-		List<Lane> lanes = laneSet.getLanes();
-		if (lanes.isEmpty()) {
-			log(new InvalidContentException("LaneSet has no lanes specified", laneSet));
-		}
-		
-		for (Lane lane: lanes) {
-			handleLane(lane, scope, container);
-		}
-	}
+  protected void handleDefinitions(Definitions definitions) {
+    // first we get the root elements
 
-	protected void handleLane(Lane lane, FlowElementsContainer scope, ContainerShape container) {
-		AbstractShapeHandler<Lane> shapeHandler = new LaneShapeHandler(this);
-		
-		// TODO: Draw lane the right way
-		DiagramElement diagramElement = getDiagramElement(lane);
-		if (diagramElement == null) {
-			return;
-		}
-		
-		ContainerShape thisContainer = (ContainerShape) shapeHandler.handleDiagramElement(lane, diagramElement, container);
-		pictogramElements.put(lane, thisContainer);
-		
-		LaneSet childLaneSet = lane.getChildLaneSet();
-		if (childLaneSet != null) {
-			handleLaneSet(childLaneSet, scope, thisContainer);
-		} else {
-			List<FlowNode> referencedNodes = lane.getFlowNodeRefs();
-			handleFlowElements(thisContainer, (List)referencedNodes);
-		}
-	}
+    List<RootElement> rootElements = definitions.getRootElements();
 
-	protected void handleProcess(Process process, ContainerShape container) {
-//		handleDiagramElement(process, container, new ProcessHandler(this));
-		FeatureSupport.triggerAddFeature(container, process, featureProvider);
-		
-		// handle direct children of the process element (not displaying lanes)
-		List<FlowElement> flowElements = process.getFlowElements();
-		handleFlowElements(container, flowElements);
-		
-		handleSequenceFlows(container, flowElements);
+    for (RootElement rootElement : rootElements) {
+      if (rootElement instanceof Process) {
+        processes.add((Process) rootElement);
+      } else if (rootElement instanceof Collaboration) {
+        // BPMN Data addition: We need the collaborations for correlation keys
+        // etc.
+        if (collaboration != null) {
+          UnsupportedFeatureException exception = new UnsupportedFeatureException("Multiple collaborations not supported. Displaying first one only",
+              definitions);
+          log(exception);
+        } else {
+          collaboration = (Collaboration) rootElement;
+        }
+      } else if (rootElement instanceof Message) {
+        // BPMN Data fix: Load and visualize messages as well.
+        messages.add((Message) rootElement);
+      } else {
+        // are there unhandeled root elements?
 
-		// data store, data input, data output
-		handleInputOutputSpecification(process, container);
-		
-		// e.g. groups, text annotation, ...
-		List<Artifact> artifacts = process.getArtifacts();		
-		handleArtifacts(container, artifacts);
-	}
-	
-	protected void handleInputOutputSpecification(Process process, ContainerShape container) {
-		InputOutputSpecification inputOutputSpecification = process.getIoSpecification();
-		if (inputOutputSpecification != null) {
-			handleInputOutputSpecification(inputOutputSpecification, container);
-		}
-	}
+      }
+    }
 
-	protected void handleInputOutputSpecification(Activity activity, ContainerShape container) {
-		InputOutputSpecification inputOutputSpecification = activity.getIoSpecification();
-		if (inputOutputSpecification != null) {
-			handleInputOutputSpecification(inputOutputSpecification, container);
-		}
-	}
-	
-	private void handleInputOutputSpecification(InputOutputSpecification inputOutputSpecification, ContainerShape container) {
-		
-		// handle data inputs
-		handleDataInputs(container, inputOutputSpecification.getDataInputs());
-		
-		// and data outputs
-		handleDataOutputs(container, inputOutputSpecification.getDataOutputs());
-	}
+    // next we process the DI diagrams and associate them with the process
+    // elements
+    List<BPMNDiagram> diagrams = definitions.getDiagrams();
+    for (BPMNDiagram bpmnDiagram : diagrams) {
+      handleDIBpmnDiagram(bpmnDiagram);
+    }
 
-	protected void handleDataOutputs(ContainerShape container, List<DataOutput> dataOutputs) {
-		if (dataOutputs == null) {
-			return;
-		}
-		
-		for (DataOutput output: dataOutputs) {
-			handleDataOutput(output, container);
-		}
-	}
+    // iterates over all elements in the diagram -> may be bad but is there
+    // another solution?
 
-	protected void handleDataOutput(DataOutput output, ContainerShape container) {
-		handleDiagramElement(output, container, new DataOutputShapeHandler(this));
-	}
+    // add all ids to the mapping table so that they won't be used when
+    // new ids are generated later
+    TreeIterator<EObject> iter = definitions.eAllContents();
+    while (iter.hasNext()) {
+      ModelUtil.addID(iter.next());
+    }
 
-	protected void handleDataInputs(ContainerShape container, List<DataInput> dataInputs) {
-		if (dataInputs == null) {
-			return;
-		}
-		
-		for (DataInput input: dataInputs) {
-			handleDataInput(input, container);
-		}
-	}
+    // we create the bpmn diagram to work on
+    BPMNDiagram bpmnDiagram = getOrCreateDiagram(diagrams);
 
-	private void handleDataInput(DataInput input, ContainerShape container) {
-		handleDiagramElement(input, container, new DataInputShapeHandler(this));
-	}
+    // we have no root process or collaboration
+    // so we are going to create one
+    if (collaboration == null && processes.isEmpty()) {
+      Process defaultProcess = createDefaultDiagramContent(definitions, bpmnDiagram);
+      processes.add(defaultProcess);
+    }
 
-	protected void handleArtifacts(ContainerShape container, List<Artifact> artifacts) {
+    // at this point we have either a collaboration or
+    // at minimum one process to work with
 
-		for (Artifact artifact: artifacts) {
-			if (artifact instanceof Association) {
-				// association rendering is done deferred
-				handleAssociation((Association) artifact, container);
-			} else {
-				handleArtifact(artifact, container);
-			}
-		}
-	}
-	
-	protected void handleAssociation(Association association, ContainerShape container) {
-		
-		handleLater(new DeferredAction<Association>(association, container, new AssociationShapeHandler(this)));
-	}
+    ensureDiagramLinked(bpmnDiagram, collaboration, processes);
 
-	/**
-	 * processes all {@link FlowElement FlowElements} in a given container.
-	 * 
-	 * @param container
-	 * @param flowElementsToBeDrawn
-	 */
-	protected void handleFlowElements(ContainerShape container, List<FlowElement> flowElementsToBeDrawn) {
-		
-		List<BoundaryEvent> boundaryEvents = new ArrayList<BoundaryEvent>();
-		
-		for (FlowElement flowElement: flowElementsToBeDrawn) {
-			
-			if (flowElement instanceof BoundaryEvent) {
-				boundaryEvents.add((BoundaryEvent) flowElement);
-			} else
-		    if (flowElement instanceof Gateway) {
-				handleGateway((Gateway) flowElement, container);
-				
-			} else if (flowElement instanceof SubProcess) {
-				handleSubProcess((SubProcess) flowElement, container);
-				
-			} else if (flowElement instanceof CallActivity) {
-				handleCallActivity((CallActivity) flowElement, container);
-			
-			} else if (flowElement instanceof Task) {
-				handleTask((Task) flowElement, container);	
-				
-			} else if (flowElement instanceof Event) {
-				handleEvent((Event) flowElement, container);
-				
-			} else if (flowElement instanceof DataObject) {
-				handleDataObject((DataObject) flowElement, container);
-				
-			} else if (flowElement instanceof DataStoreReference) {
-				handleDataStoreReference((DataStoreReference) flowElement, container);
-				
-			} else {
-				// System.out.println("Unhandled: " + flowElement);
-			}
-		    
-		    if (flowElement instanceof Activity) {
-		    	Activity activity = (Activity) flowElement;
-		    	
-				handleDataInputAssociations(activity.getDataInputAssociations(), container);
-				handleDataOutputAssociations(activity.getDataOutputAssociations(), container);
-		    }
-		}
-		
-		// handle boundary events last
-		for (BoundaryEvent boundaryEvent: boundaryEvents) {
-			handleEvent(boundaryEvent, container);
-		}
-	}
+    // and create the graphiti diagram
+    this.rootDiagram = createEditorRootDiagram(bpmnDiagram, collaboration, processes, definitions);
 
-	private void handleDataObject(DataObject flowElement, ContainerShape container) {
-		
-		handleDiagramElement(flowElement, container, new DataObjectShapeHandler(this));
-	}
+    // next, process the BPMN model elements and start building the Graphiti
+    // diagram
+    // first check if we display a single process or collaboration
 
-	protected void handleSubProcess(SubProcess subProcess, ContainerShape container) {
-		
-		// draw subprocess shape
-		ContainerShape subProcessContainer = (ContainerShape) handleDiagramElement(subProcess, container, new SubProcessShapeHandler(this));
+    if (collaboration != null) {
+      // we display a collaboration
+      handleCollaboration(collaboration, rootDiagram);
+    } else {
+      // we display one or more processes
+      for (Process process : processes) {
+        handleProcess(process, rootDiagram);
+      }
+    }
 
-		// input and output associations for sub process
-		handleInputOutputSpecification(subProcess, subProcessContainer);
-		
-		// descend into scope
-		List<FlowElement> flowElements = subProcess.getFlowElements();
-		handleFlowElements(subProcessContainer, flowElements);
-		
-		handleSequenceFlows(subProcessContainer, flowElements);
-		
-		// TODO: handle artifacts?
-	}
-	
-	protected void handleArtifact(Artifact artifact, ContainerShape container) {
-		handleDiagramElement(artifact, container, new ArtifactShapeHandler(this));
-	}
+    for (Message message : messages) {
+      handleMessage(message);
+    }
 
-	protected void handleGateway(Gateway flowElement, ContainerShape container) {
-		handleDiagramElement(flowElement, container, new GatewayShapeHandler(this));
-	}
+    // handle deferred rendering of, e.g. associations and data associations
+    handleDeferredActions();
 
-	protected void handleMessageFlow(MessageFlow flowElement, ContainerShape container) {
-		handleDiagramElement(flowElement, container, new MessageFlowShapeHandler(this));
-	}
-	
-	protected void handleMessage(Message message) {
-	  handleDiagramElement(message, rootDiagram, new MessageShapeHandler(this));
+    // finally layout all elements
+    performLayout();
+
+    if (withScrollShape) {
+      addScrollShape();
+    }
+  }
+
+  protected Shape addScrollShape() {
+    return ScrollUtil.addScrollShape(rootDiagram, importBounds, false, 0, 0);
+  }
+
+  protected void handleDeferredActions() {
+    for (DeferredAction<?> action : deferredActions) {
+      action.handle();
+    }
+  }
+
+  /**
+   * Ensure that the plane is properly linked with collaboration or process,
+   * respectively.
+   * 
+   * @param bpmnDiagram
+   * @param collaboration
+   * @param processes
+   */
+  protected void ensureDiagramLinked(BPMNDiagram bpmnDiagram, Collaboration collaboration, List<Process> processes) {
+    BPMNPlane bpmnPlane = bpmnDiagram.getPlane();
+
+    BaseElement bpmnElement = bpmnPlane.getBpmnElement();
+
+    if (collaboration != null) {
+      if (!collaboration.equals(bpmnElement)) {
+        log(new ImportException("BPMNPlane not associated with collaboration"));
+      }
+    } else {
+      Process process = processes.get(0);
+      if (!process.equals(bpmnElement)) {
+        log(new ImportException("BPMNPlane not associated with process"));
+      }
+    }
+  }
+
+  protected BPMNDiagram getOrCreateDiagram(List<BPMNDiagram> diagrams) {
+
+    if (diagrams.isEmpty()) {
+      BPMNDiagram newDiagram = ModelHelper.create(resource, BPMNDiagram.class);
+      diagrams.add(newDiagram);
+    }
+
+    BPMNDiagram bpmnDiagram = diagrams.get(0);
+    BPMNPlane bpmnPlane = bpmnDiagram.getPlane();
+
+    if (bpmnPlane == null || bpmnPlane.eIsProxy()) {
+      bpmnPlane = ModelHelper.create(resource, BPMNPlane.class);
+      bpmnDiagram.setPlane(bpmnPlane);
+    }
+
+    return bpmnDiagram;
+  }
+
+  protected Process createDefaultDiagramContent(Definitions definitions, BPMNDiagram bpmnDiagram) {
+
+    // create process
+    Process process = ModelHelper.create(resource, Process.class);
+    definitions.getRootElements().add(process);
+
+    // associate process with bpmn plane
+    bpmnDiagram.getPlane().setBpmnElement(process);
+
+    return process;
+  }
+
+  protected Diagram createEditorRootDiagram(BPMNDiagram bpmnDiagram, Collaboration collaboration, List<Process> processes, Definitions definitions) {
+    IDiagramEditor diagramEditor = diagramTypeProvider.getDiagramEditor();
+
+    Diagram diagram = DIUtils.getOrCreateDiagram(diagramEditor, bpmnDiagram);
+    diagram.setGridUnit(0);
+
+    diagramTypeProvider.init(diagram, diagramEditor);
+
+    // link collaboration or only process to diagram
+    BaseElement businessObject = collaboration != null ? collaboration : processes.get(0);
+
+    featureProvider.link(diagram, new Object[] { businessObject, bpmnDiagram, definitions });
+
+    return diagram;
+  }
+
+  protected void performLayout() {
+    // do nothing
+  }
+
+  // handling of BPMN Model Elements
+  // ///////////////////////////////////////////////////////////////
+
+  protected void handleCollaboration(Collaboration collaboration, ContainerShape container) {
+    List<Participant> participants = collaboration.getParticipants();
+
+    if (participants.isEmpty()) {
+      InvalidContentException exception = new InvalidContentException("No participants in collaboration", collaboration);
+      logAndThrow(exception);
+    }
+
+    for (Participant participant : participants) {
+      handleParticipant(participant, container);
+    }
+
+    for (MessageFlow messageFlow : collaboration.getMessageFlows()) {
+      handleMessageFlow(messageFlow, container);
+    }
+  }
+
+  /**
+   * This draws a participant (Pool) in a Collaboration
+   * 
+   * @param participant
+   * @param container
+   */
+  protected void handleParticipant(Participant participant, ContainerShape container) {
+
+    Process process = participant.getProcessRef();
+    if (process != null) {
+      if (process.eIsProxy()) {
+        throw new InvalidContentException("Invalid process referenced by participant", participant);
+      }
+    }
+
+    // TODO: process.isIsClosed == !collapsed ?
+    // TODO: or rather bpmnShape.isIsExpanded()
+
+    // if (process == null || !bpmnShape.isIsExpanded()) {
+    // BPMNShape bpmnShape = (BPMNShape) getDiagramElement(participant);
+    if (process == null) {
+      // collapsed pool
+      handleCollapsedParticipant(participant, container);
+    } else {
+      handleExpandedParticipant(participant, process, container);
+    }
+  }
+
+  protected void handleExpandedParticipant(Participant participant, Process process, ContainerShape container) {
+
+    // draw the participant (pool)
+    ParticipantShapeHandler shapeHander = new ParticipantShapeHandler(this);
+    ContainerShape participantContainer = (ContainerShape) handleDiagramElement(participant, container, shapeHander);
+
+    List<LaneSet> laneSets = process.getLaneSets();
+    if (laneSets.isEmpty()) {
+      // if there are no lanes, simply draw the process into the pool (including
+      // sequence flows)
+      handleProcess(process, participantContainer);
+
+    } else {
+
+      // draw the lanes (possibly nested). The lanes reference the task elements
+      // they contain, but not the sequence flows.
+      for (LaneSet laneSet : laneSets) {
+        handleLaneSet(laneSet, process, participantContainer);
+      }
+
+      // draw flow elements not referenced from lanes
+      List<FlowElement> flowElements = process.getFlowElements();
+
+      handleUnreferencedFlowElements(participantContainer, flowElements);
+
+      // handle io specification (data input and output)
+      handleInputOutputSpecification(process, participantContainer);
+
+      // draw the sequence flows:
+      handleSequenceFlows(participantContainer, flowElements);
+
+      // draw artifacts (e.g. groups)
+      List<Artifact> artifacts = process.getArtifacts();
+      handleArtifacts(container, artifacts);
+    }
+  }
+
+  protected void handleUnreferencedFlowElements(ContainerShape containerShape, List<FlowElement> flowElements) {
+    List<FlowElement> unreferencedFlowElements = new ArrayList<FlowElement>();
+
+    for (FlowElement e : flowElements) {
+      // sequence flows handled after handling of unreferenced elements
+      if (e instanceof SequenceFlow) {
+        continue;
+      } else {
+        if (getPictogramElementOrNull(e) == null) {
+          if (e instanceof FlowNode) {
+            log(new UnmappedElementException("element not assigned to lane", e));
+          }
+
+          unreferencedFlowElements.add(e);
+        }
+      }
+    }
+
+    if (unreferencedFlowElements != null) {
+      // render
+      handleFlowElements(containerShape, unreferencedFlowElements);
+    }
+  }
+
+  protected void handleCollapsedParticipant(Participant participant, ContainerShape container) {
+    // draw the participant (pool)
+    ParticipantShapeHandler shapeHander = new ParticipantShapeHandler(this);
+    handleDiagramElement(participant, container, shapeHander);
+  }
+
+  protected void handleSequenceFlows(ContainerShape participantContainer, List<FlowElement> flowElements) {
+    for (FlowElement flowElement : flowElements) {
+      if (flowElement instanceof SequenceFlow) {
+        handleSequenceFlow((SequenceFlow) flowElement, participantContainer);
+      }
+    }
+  }
+
+  protected void handleDataOutputAssociations(List<DataOutputAssociation> dataOutputAssociations, ContainerShape container) {
+    for (DataOutputAssociation outputAssociation : dataOutputAssociations) {
+      handleDataOutputAssociation(outputAssociation, container);
+    }
+  }
+
+  private void handleDataOutputAssociation(DataOutputAssociation flowElement, ContainerShape container) {
+    handleLater(new DeferredAction<DataOutputAssociation>(flowElement, container, new DataOutputAssociationShapeHandler(this)));
+  }
+
+  protected void handleDataInputAssociations(List<DataInputAssociation> dataInputAssociations, ContainerShape container) {
+    for (DataInputAssociation inputAssociation : dataInputAssociations) {
+      handleDataInputAssociation(inputAssociation, container);
+    }
+  }
+
+  private void handleDataInputAssociation(DataInputAssociation flowElement, ContainerShape container) {
+    handleLater(new DeferredAction<DataInputAssociation>(flowElement, container, new DataInputAssociationShapeHandler(this)));
+  }
+
+  protected void handleLaneSet(LaneSet laneSet, FlowElementsContainer scope, ContainerShape container) {
+
+    List<Lane> lanes = laneSet.getLanes();
+    if (lanes.isEmpty()) {
+      log(new InvalidContentException("LaneSet has no lanes specified", laneSet));
+    }
+
+    for (Lane lane : lanes) {
+      handleLane(lane, scope, container);
+    }
+  }
+
+  protected void handleLane(Lane lane, FlowElementsContainer scope, ContainerShape container) {
+    AbstractShapeHandler<Lane> shapeHandler = new LaneShapeHandler(this);
+
+    // TODO: Draw lane the right way
+    DiagramElement diagramElement = getDiagramElement(lane);
+    if (diagramElement == null) {
+      return;
+    }
+
+    ContainerShape thisContainer = (ContainerShape) shapeHandler.handleDiagramElement(lane, diagramElement, container);
+    pictogramElements.put(lane, thisContainer);
+
+    LaneSet childLaneSet = lane.getChildLaneSet();
+    if (childLaneSet != null) {
+      handleLaneSet(childLaneSet, scope, thisContainer);
+    } else {
+      List<FlowNode> referencedNodes = lane.getFlowNodeRefs();
+      handleFlowElements(thisContainer, (List) referencedNodes);
+    }
+  }
+
+  protected void handleProcess(Process process, ContainerShape container) {
+    // handleDiagramElement(process, container, new ProcessHandler(this));
+    FeatureSupport.triggerAddFeature(container, process, featureProvider);
+
+    // handle direct children of the process element (not displaying lanes)
+    List<FlowElement> flowElements = process.getFlowElements();
+    handleFlowElements(container, flowElements);
+
+    handleSequenceFlows(container, flowElements);
+
+    // data store, data input, data output
+    handleInputOutputSpecification(process, container);
+
+    // e.g. groups, text annotation, ...
+    List<Artifact> artifacts = process.getArtifacts();
+    handleArtifacts(container, artifacts);
+  }
+
+  protected void handleInputOutputSpecification(Process process, ContainerShape container) {
+    InputOutputSpecification inputOutputSpecification = process.getIoSpecification();
+    if (inputOutputSpecification != null) {
+      handleInputOutputSpecification(inputOutputSpecification, container);
+    }
+  }
+
+  protected void handleInputOutputSpecification(Activity activity, ContainerShape container) {
+    InputOutputSpecification inputOutputSpecification = activity.getIoSpecification();
+    if (inputOutputSpecification != null) {
+      handleInputOutputSpecification(inputOutputSpecification, container);
+    }
+  }
+
+  private void handleInputOutputSpecification(InputOutputSpecification inputOutputSpecification, ContainerShape container) {
+
+    // handle data inputs
+    handleDataInputs(container, inputOutputSpecification.getDataInputs());
+
+    // and data outputs
+    handleDataOutputs(container, inputOutputSpecification.getDataOutputs());
+  }
+
+  protected void handleDataOutputs(ContainerShape container, List<DataOutput> dataOutputs) {
+    if (dataOutputs == null) {
+      return;
+    }
+
+    for (DataOutput output : dataOutputs) {
+      handleDataOutput(output, container);
+    }
+  }
+
+  protected void handleDataOutput(DataOutput output, ContainerShape container) {
+    handleDiagramElement(output, container, new DataOutputShapeHandler(this));
+  }
+
+  protected void handleDataInputs(ContainerShape container, List<DataInput> dataInputs) {
+    if (dataInputs == null) {
+      return;
+    }
+
+    for (DataInput input : dataInputs) {
+      handleDataInput(input, container);
+    }
+  }
+
+  private void handleDataInput(DataInput input, ContainerShape container) {
+    handleDiagramElement(input, container, new DataInputShapeHandler(this));
+  }
+
+  protected void handleArtifacts(ContainerShape container, List<Artifact> artifacts) {
+
+    for (Artifact artifact : artifacts) {
+      if (artifact instanceof Association) {
+        // association rendering is done deferred
+        handleAssociation((Association) artifact, container);
+      } else {
+        handleArtifact(artifact, container);
+      }
+    }
+  }
+
+  protected void handleAssociation(Association association, ContainerShape container) {
+
+    handleLater(new DeferredAction<Association>(association, container, new AssociationShapeHandler(this)));
+  }
+
+  /**
+   * processes all {@link FlowElement FlowElements} in a given container.
+   * 
+   * @param container
+   * @param flowElementsToBeDrawn
+   */
+  protected void handleFlowElements(ContainerShape container, List<FlowElement> flowElementsToBeDrawn) {
+
+    List<BoundaryEvent> boundaryEvents = new ArrayList<BoundaryEvent>();
+
+    for (FlowElement flowElement : flowElementsToBeDrawn) {
+
+      if (flowElement instanceof BoundaryEvent) {
+        boundaryEvents.add((BoundaryEvent) flowElement);
+      } else if (flowElement instanceof Gateway) {
+        handleGateway((Gateway) flowElement, container);
+
+      } else if (flowElement instanceof SubProcess) {
+        handleSubProcess((SubProcess) flowElement, container);
+
+      } else if (flowElement instanceof CallActivity) {
+        handleCallActivity((CallActivity) flowElement, container);
+
+      } else if (flowElement instanceof Task) {
+        handleTask((Task) flowElement, container);
+
+      } else if (flowElement instanceof Event) {
+        handleEvent((Event) flowElement, container);
+
+      } else if (flowElement instanceof DataObject) {
+        handleDataObject((DataObject) flowElement, container);
+
+      } else if (flowElement instanceof DataStoreReference) {
+        handleDataStoreReference((DataStoreReference) flowElement, container);
+
+      } else {
+        // System.out.println("Unhandled: " + flowElement);
+      }
+
+      if (flowElement instanceof Activity) {
+        Activity activity = (Activity) flowElement;
+
+        handleDataInputAssociations(activity.getDataInputAssociations(), container);
+        handleDataOutputAssociations(activity.getDataOutputAssociations(), container);
+      }
+    }
+
+    // handle boundary events last
+    for (BoundaryEvent boundaryEvent : boundaryEvents) {
+      handleEvent(boundaryEvent, container);
+    }
+  }
+
+  private void handleDataObject(DataObject flowElement, ContainerShape container) {
+
+    handleDiagramElement(flowElement, container, new DataObjectShapeHandler(this));
+  }
+
+  protected void handleSubProcess(SubProcess subProcess, ContainerShape container) {
+
+    // draw subprocess shape
+    ContainerShape subProcessContainer = (ContainerShape) handleDiagramElement(subProcess, container, new SubProcessShapeHandler(this));
+
+    // input and output associations for sub process
+    handleInputOutputSpecification(subProcess, subProcessContainer);
+
+    // descend into scope
+    List<FlowElement> flowElements = subProcess.getFlowElements();
+    handleFlowElements(subProcessContainer, flowElements);
+
+    handleSequenceFlows(subProcessContainer, flowElements);
+
+    // TODO: handle artifacts?
+  }
+
+  protected void handleArtifact(Artifact artifact, ContainerShape container) {
+    handleDiagramElement(artifact, container, new ArtifactShapeHandler(this));
+  }
+
+  protected void handleGateway(Gateway flowElement, ContainerShape container) {
+    handleDiagramElement(flowElement, container, new GatewayShapeHandler(this));
+  }
+
+  protected void handleMessageFlow(MessageFlow flowElement, ContainerShape container) {
+    handleDiagramElement(flowElement, container, new MessageFlowShapeHandler(this));
+  }
+
+  protected void handleMessage(Message message) {
+    handleDiagramElement(message, rootDiagram, new MessageShapeHandler(this));
   }
 
   protected void handleSequenceFlow(SequenceFlow flowElement, ContainerShape container) {
-		handleDiagramElement(flowElement, container, new SequenceFlowHandler(this));
-	}
+    handleDiagramElement(flowElement, container, new SequenceFlowHandler(this));
+  }
 
-	protected void handleEvent(Event flowElement, ContainerShape container) {
-		handleDiagramElement(flowElement, container, new EventShapeHandler(this));
-	}
-	
-	protected void handleCallActivity(CallActivity flowElement, ContainerShape container) {
-		handleDiagramElement(flowElement, container, new FlowNodeShapeHandler(this));		
-	}
+  protected void handleEvent(Event flowElement, ContainerShape container) {
+    handleDiagramElement(flowElement, container, new EventShapeHandler(this));
+  }
 
-	protected void handleTask(Task flowElement, ContainerShape container) {
-		handleDiagramElement(flowElement, container, new TaskShapeHandler(this));
-	}
-	
-	protected void handleDataStoreReference(DataStoreReference flowElement, ContainerShape container) {
-		handleDiagramElement(flowElement, container, new DatastoreReferenceShapeHandler(this));
-	}
-	
-	public <T extends BaseElement> PictogramElement handleDiagramElement(T flowElement, ContainerShape container,
-			AbstractDiagramElementHandler<T> flowNodeShapeHandler) {
-		
-		DiagramElement diagramElement = getDiagramElement(flowElement);
-		
-		if (diagramElement == null) {
-			return null;
-		}
-		
-		PictogramElement pictogramElement = flowNodeShapeHandler.handleDiagramElement(flowElement, diagramElement, container);
-		
-		if (pictogramElement != null) {
-			pictogramElements.put(flowElement, pictogramElement);
-		}
-		
-		return pictogramElement;
-	}
+  protected void handleCallActivity(CallActivity flowElement, ContainerShape container) {
+    handleDiagramElement(flowElement, container, new FlowNodeShapeHandler(this));
+  }
 
-	protected void handleLater(DeferredAction<?> deferredAction) {
-		deferredActions.add(deferredAction);
-	}
-	
-	// handling of DI Elements ///////////////////////////////////////////////////////////////
+  protected void handleTask(Task flowElement, ContainerShape container) {
+    handleDiagramElement(flowElement, container, new TaskShapeHandler(this));
+  }
 
-	protected void handleDIBpmnDiagram(BPMNDiagram bpmnDiagram) {
-		
-		BPMNPlane plane = bpmnDiagram.getPlane();
-		if (plane == null) {
-			throw new InvalidContentException("BPMNDiagram has no BPMNPlane", bpmnDiagram);
-		} else {
-			handleDIBpmnPlane(plane);
-		}
-	}
+  protected void handleDataStoreReference(DataStoreReference flowElement, ContainerShape container) {
+    handleDiagramElement(flowElement, container, new DatastoreReferenceShapeHandler(this));
+  }
 
-	protected void handleDIBpmnPlane(BPMNPlane plane) {
-		
-		BaseElement bpmnElement = plane.getBpmnElement();
-		if (bpmnElement == null || bpmnElement.eIsProxy()) {
-			// if we have a plane with missing bpmnElement, we can make the following assumption
-			if(collaboration == null && processes.size() == 1) {
-				bpmnElement = processes.get(0);
-			}else {
-				throw new UnmappedElementException("BPMNPlane references unexisting bpmnElement", plane);	
-			}
-		}
-		
-		List<DiagramElement> planeElement = plane.getPlaneElement();
-		for (DiagramElement diagramElement : planeElement) {
-			handleDIDiagramElement(diagramElement);
-		}
-				
-	}
+  public <T extends BaseElement> PictogramElement handleDiagramElement(T flowElement, ContainerShape container,
+      AbstractDiagramElementHandler<T> flowNodeShapeHandler) {
 
-	protected void handleDIDiagramElement(DiagramElement diagramElement) {
-		if (diagramElement instanceof BPMNShape) {
-			handleDIShape((BPMNShape) diagramElement);			
-		} else if(diagramElement instanceof BPMNEdge) {
-			handleDIEdge((BPMNEdge) diagramElement);
-		} else {
-			nonModelElements.add(diagramElement);
-		}
-	}
+    DiagramElement diagramElement = getDiagramElement(flowElement);
 
+    if (diagramElement == null) {
+      return null;
+    }
 
-	protected void handleDIEdge(BPMNEdge diagramElement) {
-		BaseElement bpmnElement = diagramElement.getBpmnElement();
-		if (bpmnElement == null || bpmnElement.eIsProxy()) {
-			ImportException exception = new UnmappedElementException("BPMNEdge references unexisting bpmnElement", diagramElement);
-			log(exception);
-		} else {
-			linkInDiagramElementMap(diagramElement, bpmnElement);
-		}
-	}
+    PictogramElement pictogramElement = flowNodeShapeHandler.handleDiagramElement(flowElement, diagramElement, container);
 
-	protected void handleDIShape(BPMNShape diagramElement) {
-		BaseElement bpmnElement = diagramElement.getBpmnElement();
-		if (bpmnElement == null || bpmnElement.eIsProxy()) {
-			ImportException exception = new UnmappedElementException("BPMNShape references unexisting bpmnElement", diagramElement);
-			log(exception);
-		} else {
-			linkInDiagramElementMap(diagramElement, bpmnElement);
-			Bounds bounds = diagramElement.getBounds();
-			if (bounds != null) {
-				importBounds.setRectangle(
-					(int) Math.min(bounds.getX(), importBounds.getX()), 
-					(int) Math.min(bounds.getY(), importBounds.getY()),
-					(int) Math.max(bounds.getX() + bounds.getWidth(), importBounds.getWidth()),
-					(int) Math.max(bounds.getY() + bounds.getHeight(), importBounds.getHeight())
-				);
-			}
-		}
-	}
-	
-	protected void linkInDiagramElementMap(DiagramElement diagramElement, BaseElement bpmnElement) {
-		// if it does not have a id, it can't be shown
-		if (bpmnElement.getId() == null) {
-			return;
-		}
-		
-		diagramElementMap.put(bpmnElement.getId(), diagramElement);
-	}
-	
-	protected void preProcess(DocumentRoot documentRoot) {
-	  resolveStructureDefinitionProxies(documentRoot);
-	}
-	
-	private void resolveStructureDefinitionProxies(DocumentRoot documentRoot) {
-	  Definitions definitions = documentRoot.getDefinitions();
-	  if (definitions == null)
-	    return;
-	  
-	  List<ItemDefinition> itemDefinitions = ModelUtil.getAllRootElements(definitions, ItemDefinition.class);
-	  for (ItemDefinition itemDefinition : itemDefinitions) {
-	    ItemDefinitionHandler.resolveStructureDefinitionProxy(itemDefinition, false);
-	  }
-	  
-	}
-	
-	
-	// Error logging ////////////////////////////////////////////
+    if (pictogramElement != null) {
+      pictogramElements.put(flowElement, pictogramElement);
+    }
+
+    return pictogramElement;
+  }
+
+  protected void handleLater(DeferredAction<?> deferredAction) {
+    deferredActions.add(deferredAction);
+  }
+
+  // handling of DI Elements
+  // ///////////////////////////////////////////////////////////////
+
+  protected void handleDIBpmnDiagram(BPMNDiagram bpmnDiagram) {
+
+    BPMNPlane plane = bpmnDiagram.getPlane();
+    if (plane == null) {
+      throw new InvalidContentException("BPMNDiagram has no BPMNPlane", bpmnDiagram);
+    } else {
+      handleDIBpmnPlane(plane);
+    }
+  }
+
+  protected void handleDIBpmnPlane(BPMNPlane plane) {
+
+    BaseElement bpmnElement = plane.getBpmnElement();
+    if (bpmnElement == null || bpmnElement.eIsProxy()) {
+      // if we have a plane with missing bpmnElement, we can make the following
+      // assumption
+      if (collaboration == null && processes.size() == 1) {
+        bpmnElement = processes.get(0);
+      } else {
+        throw new UnmappedElementException("BPMNPlane references unexisting bpmnElement", plane);
+      }
+    }
+
+    List<DiagramElement> planeElement = plane.getPlaneElement();
+    for (DiagramElement diagramElement : planeElement) {
+      handleDIDiagramElement(diagramElement);
+    }
+
+  }
+
+  protected void handleDIDiagramElement(DiagramElement diagramElement) {
+    if (diagramElement instanceof BPMNShape) {
+      handleDIShape((BPMNShape) diagramElement);
+    } else if (diagramElement instanceof BPMNEdge) {
+      handleDIEdge((BPMNEdge) diagramElement);
+    } else {
+      nonModelElements.add(diagramElement);
+    }
+  }
+
+  protected void handleDIEdge(BPMNEdge diagramElement) {
+    BaseElement bpmnElement = diagramElement.getBpmnElement();
+    if (bpmnElement == null || bpmnElement.eIsProxy()) {
+      ImportException exception = new UnmappedElementException("BPMNEdge references unexisting bpmnElement", diagramElement);
+      log(exception);
+    } else {
+      linkInDiagramElementMap(diagramElement, bpmnElement);
+    }
+  }
+
+  protected void handleDIShape(BPMNShape diagramElement) {
+    BaseElement bpmnElement = diagramElement.getBpmnElement();
+    if (bpmnElement == null || bpmnElement.eIsProxy()) {
+      ImportException exception = new UnmappedElementException("BPMNShape references unexisting bpmnElement", diagramElement);
+      log(exception);
+    } else {
+      linkInDiagramElementMap(diagramElement, bpmnElement);
+      Bounds bounds = diagramElement.getBounds();
+      if (bounds != null) {
+        importBounds.setRectangle((int) Math.min(bounds.getX(), importBounds.getX()), (int) Math.min(bounds.getY(), importBounds.getY()),
+            (int) Math.max(bounds.getX() + bounds.getWidth(), importBounds.getWidth()),
+            (int) Math.max(bounds.getY() + bounds.getHeight(), importBounds.getHeight()));
+      }
+    }
+  }
+
+  protected void linkInDiagramElementMap(DiagramElement diagramElement, BaseElement bpmnElement) {
+    // if it does not have a id, it can't be shown
+    if (bpmnElement.getId() == null) {
+      return;
+    }
+
+    diagramElementMap.put(bpmnElement.getId(), diagramElement);
+  }
+
+  protected void preProcess(DocumentRoot documentRoot) {
+    resolveStructureDefinitionProxies(documentRoot);
+  }
+
+  /**
+   * BPMN Data addition: We add {@link StructureDefinition} objects as
+   * extensions to {@link ItemDefinition} objects and also reference them there
+   * as structure reference. The XML loader will create a proxy there, so we
+   * resolve this right on the import and do not have to bother with it later
+   * on.
+   */
+  private void resolveStructureDefinitionProxies(DocumentRoot documentRoot) {
+    Definitions definitions = documentRoot.getDefinitions();
+    if (definitions == null)
+      return;
+
+    List<ItemDefinition> itemDefinitions = ModelUtil.getAllRootElements(definitions, ItemDefinition.class);
+    for (ItemDefinition itemDefinition : itemDefinitions) {
+      ItemDefinitionHandler.resolveStructureDefinitionProxy(itemDefinition, false);
+    }
+
+  }
+
+  // Error logging ////////////////////////////////////////////
 
   public void log(ImportException e) {
-		warnings.add(e);
-		ErrorLogger.log(e);
-	}
-	
-	/**
-	 * Log without outputting to eclipse console
-	 * @param e
-	 */
-	public void logSilently(ImportException e) {
-		warnings.add(e);
-	}
-	
-	public void logAndThrow(ImportException e) throws ImportException {
-		ErrorLogger.logAndThrow(e);
-	}
-	
-	public void logResourceErrors(Bpmn2Resource resource) {
-		List<Diagnostic> resourceErrors = resource.getErrors();
-		
-		// scan for xml load error
-		for (Diagnostic diagnostic : resourceErrors) {
-			if (diagnostic instanceof XMIException) {
-				XMIException ex = (XMIException) diagnostic;
-				// see if we deal with a xml load error
-				if (ex.getCause() instanceof SAXException) {
-					ImportException e = new ResourceImportException("Failed to load model xml", diagnostic);
-					logAndThrow(e);
-				}
-			}
-		}
-		
-		// log all other warnings
-		for (Diagnostic diagnostic: resourceErrors) {
-			logSilently(new ResourceImportException("Import warning", diagnostic));
-		}
-	}
-	
-	// Getters //////////////////////////////////////////////////
-	
-	public IFeatureProvider getFeatureProvider() {
-		return featureProvider;
-	}
-	
-	/**
-	 * 
-	 * @param bpmnElement
-	 * @return null if no diagram element was found, a warning will be added in this case
-	 */
-	public DiagramElement getDiagramElement(BaseElement bpmnElement) {
-		DiagramElement element = diagramElementMap.get(bpmnElement.getId());
-		if (element == null) {
-			UnmappedElementException exception = new UnmappedElementException("Diagram element not found, element will not be shown", bpmnElement);
-			log(exception);
-			return null;
-		}
-		return element;
-	}
-	
-	public IDiagramTypeProvider getDiagramTypeProvider() {
-		return diagramTypeProvider;
-	}
+    warnings.add(e);
+    ErrorLogger.log(e);
+  }
 
-	public Bpmn2Resource getResource() {
-		return resource;
-	}
-	
-	public Map<String, DiagramElement> getDiagramElementMap() {
-		return diagramElementMap;
-	}
+  /**
+   * Log without outputting to eclipse console
+   * 
+   * @param e
+   */
+  public void logSilently(ImportException e) {
+    warnings.add(e);
+  }
 
-	public List<DiagramElement> getNonModelElements() {
-		return nonModelElements;
-	}
-	
-	public Bpmn2Preferences getPreferences() {
-		return preferences;
-	}
+  public void logAndThrow(ImportException e) throws ImportException {
+    ErrorLogger.logAndThrow(e);
+  }
 
-	public List<ImportException> getImportWarnings() {
-		return warnings;
-	}
-	
-	public PictogramElement getPictogramElementOrNull(BaseElement node) {
-		return pictogramElements.get(node);
-	}
-	
-	public PictogramElement getPictogramElement(BaseElement node) {
-		PictogramElement element = getPictogramElementOrNull(node);
-		if (element == null) {
-			UnmappedElementException exception = new UnmappedElementException("Container or Pictogram element not yet processed, containment might be invalid", node);
-			log(exception);
-			return null;
-		}
-		
-		return element;
-	}
+  public void logResourceErrors(Bpmn2Resource resource) {
+    List<Diagnostic> resourceErrors = resource.getErrors();
 
-	// Deferred diagram element handling /////////////////////////////////////////////////////
-	
-	public class DeferredAction<T extends BaseElement>  {
+    // scan for xml load error
+    for (Diagnostic diagnostic : resourceErrors) {
+      if (diagnostic instanceof XMIException) {
+        XMIException ex = (XMIException) diagnostic;
+        // see if we deal with a xml load error
+        if (ex.getCause() instanceof SAXException) {
+          ImportException e = new ResourceImportException("Failed to load model xml", diagnostic);
+          logAndThrow(e);
+        }
+      }
+    }
 
-		private T flowElement;
-		private ContainerShape container;
-		private AbstractDiagramElementHandler<T> handler;
+    // log all other warnings
+    for (Diagnostic diagnostic : resourceErrors) {
+      logSilently(new ResourceImportException("Import warning", diagnostic));
+    }
+  }
 
-		public DeferredAction(T flowElement, ContainerShape container, AbstractDiagramElementHandler<T> handler) {
-			
-			this.flowElement = flowElement;
-			this.container = container;
-			this.handler = handler;
-		}
-		
-		/**
-		 * Handle the deferred diagram action
-		 */
-		public void handle() {
-			handleDiagramElement(flowElement, container, handler);
-		}
-	}
+  // Getters //////////////////////////////////////////////////
+
+  public IFeatureProvider getFeatureProvider() {
+    return featureProvider;
+  }
+
+  /**
+   * 
+   * @param bpmnElement
+   * @return null if no diagram element was found, a warning will be added in
+   *         this case
+   */
+  public DiagramElement getDiagramElement(BaseElement bpmnElement) {
+    DiagramElement element = diagramElementMap.get(bpmnElement.getId());
+    if (element == null) {
+      UnmappedElementException exception = new UnmappedElementException("Diagram element not found, element will not be shown", bpmnElement);
+      log(exception);
+      return null;
+    }
+    return element;
+  }
+
+  public IDiagramTypeProvider getDiagramTypeProvider() {
+    return diagramTypeProvider;
+  }
+
+  public Bpmn2Resource getResource() {
+    return resource;
+  }
+
+  public Map<String, DiagramElement> getDiagramElementMap() {
+    return diagramElementMap;
+  }
+
+  public List<DiagramElement> getNonModelElements() {
+    return nonModelElements;
+  }
+
+  public Bpmn2Preferences getPreferences() {
+    return preferences;
+  }
+
+  public List<ImportException> getImportWarnings() {
+    return warnings;
+  }
+
+  public PictogramElement getPictogramElementOrNull(BaseElement node) {
+    return pictogramElements.get(node);
+  }
+
+  public PictogramElement getPictogramElement(BaseElement node) {
+    PictogramElement element = getPictogramElementOrNull(node);
+    if (element == null) {
+      UnmappedElementException exception = new UnmappedElementException("Container or Pictogram element not yet processed, containment might be invalid", node);
+      log(exception);
+      return null;
+    }
+
+    return element;
+  }
+
+  // Deferred diagram element handling
+  // /////////////////////////////////////////////////////
+
+  public class DeferredAction<T extends BaseElement> {
+
+    private T flowElement;
+    private ContainerShape container;
+    private AbstractDiagramElementHandler<T> handler;
+
+    public DeferredAction(T flowElement, ContainerShape container, AbstractDiagramElementHandler<T> handler) {
+
+      this.flowElement = flowElement;
+      this.container = container;
+      this.handler = handler;
+    }
+
+    /**
+     * Handle the deferred diagram action
+     */
+    public void handle() {
+      handleDiagramElement(flowElement, container, handler);
+    }
+  }
 }

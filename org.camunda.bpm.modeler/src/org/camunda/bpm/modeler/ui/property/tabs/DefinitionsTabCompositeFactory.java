@@ -21,6 +21,8 @@ public class DefinitionsTabCompositeFactory extends AbstractTabCompositeFactory<
 	@Override
 	public Composite createCompositeForBusinessObject(Definitions definitions) {
 		new DefinitionsPropertiesBuilder(parent, section, definitions).create();
+		
+		// BPMN Data addition and extension: item definitions, imports, and schema mapping should be editable, too 
 		new ImportAndItemDefinitionPropertiesBuilder(parent, section, definitions).create();
 		new SchemaMappingsImportPropertiesBuilder(parent, section, definitions).create();
 		return parent;

@@ -17,79 +17,83 @@ import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 
+/**
+ * Updates the BPMN Data extension operation type (one of "", "new", "delete").
+ */
 public class UpdateDataObjectOperationTypeFeature extends AbstractUpdateFeature {
 
-	private static final String TYPE_ATTRIBUTE_NAME = "type";
-    private static final EStructuralFeature PRIMARY_KEY_FEATURE = BptPackage.eINSTANCE.getDocumentRoot_PrimaryKey();
-	
-	public UpdateDataObjectOperationTypeFeature(IFeatureProvider fp) {
-		super(fp);
-	}
+  private static final String TYPE_ATTRIBUTE_NAME = "type";
+  private static final EStructuralFeature PRIMARY_KEY_FEATURE = BptPackage.eINSTANCE.getDocumentRoot_PrimaryKey();
 
-	@Override
-	public boolean canUpdate(IUpdateContext context) {
-		Object o = getBusinessObjectForPictogramElement(context.getPictogramElement());
-		return o != null && o instanceof DataObject;
-	}
+  public UpdateDataObjectOperationTypeFeature(IFeatureProvider fp) {
+    super(fp);
+  }
 
-	@Override
-	public IReason updateNeeded(IUpdateContext context) {
-		ContainerShape container = (ContainerShape) context.getPictogramElement();
-		DataObject dataObject = (DataObject) getBusinessObjectForPictogramElement(container);
-		
-		PrimaryKeyType pkType = (PrimaryKeyType) ExtensionUtil.getExtension(dataObject, PRIMARY_KEY_FEATURE, TYPE_ATTRIBUTE_NAME);
-		String newValue = toDisplayValue(pkType);
-		String previouslyDisplayedValue = null;
-		
-		Shape primaryKeyShape = FeatureSupport.getChildShapeFulfillingProperty(context, Properties.IS_OPERATION_TYPE_SHAPE, Boolean.toString(true));
-		if (primaryKeyShape != null) {
-		    AbstractText dataStateShapeText = (AbstractText) primaryKeyShape.getGraphicsAlgorithm();
-			previouslyDisplayedValue = dataStateShapeText.getValue();
-		}
-		
-		if (newValue == null) {
-			return previouslyDisplayedValue != null ? Reason.createTrueReason() : Reason.createFalseReason();
-		} else if (previouslyDisplayedValue == null) {
-			return Reason.createTrueReason();
-		}
-		
-		if (previouslyDisplayedValue.equals(newValue)) {
-			return Reason.createFalseReason();
-		} else {
-			return Reason.createTrueReason();
-		}
-	}
+  @Override
+  public boolean canUpdate(IUpdateContext context) {
+    Object o = getBusinessObjectForPictogramElement(context.getPictogramElement());
+    return o != null && o instanceof DataObject;
+  }
 
-	private String toDisplayValue(PrimaryKeyType pkType) {
-        if (pkType == null) {
-            return "";
-        }
-        String literal = pkType.getLiteral();
-        return literal.isEmpty() ? literal : String.format("[%s]",pkType.getLiteral());
+  @Override
+  public IReason updateNeeded(IUpdateContext context) {
+    ContainerShape container = (ContainerShape) context.getPictogramElement();
+    DataObject dataObject = (DataObject) getBusinessObjectForPictogramElement(container);
+
+    PrimaryKeyType pkType = (PrimaryKeyType) ExtensionUtil.getExtension(dataObject, PRIMARY_KEY_FEATURE, TYPE_ATTRIBUTE_NAME);
+    String newValue = toDisplayValue(pkType);
+    String previouslyDisplayedValue = null;
+
+    Shape primaryKeyShape = FeatureSupport.getChildShapeFulfillingProperty(context, Properties.IS_OPERATION_TYPE_SHAPE, Boolean.toString(true));
+    if (primaryKeyShape != null) {
+      AbstractText dataStateShapeText = (AbstractText) primaryKeyShape.getGraphicsAlgorithm();
+      previouslyDisplayedValue = dataStateShapeText.getValue();
     }
 
-    @Override
-	public boolean update(IUpdateContext context) {
-		ContainerShape container = (ContainerShape) context.getPictogramElement();
-		DataObject dataObject = (DataObject) getBusinessObjectForPictogramElement(container);
+    if (newValue == null) {
+      return previouslyDisplayedValue != null ? Reason.createTrueReason() : Reason.createFalseReason();
+    } else if (previouslyDisplayedValue == null) {
+      return Reason.createTrueReason();
+    }
 
-		PrimaryKeyType currentPkType = (PrimaryKeyType) ExtensionUtil.getExtension(dataObject, PRIMARY_KEY_FEATURE, TYPE_ATTRIBUTE_NAME);
-		if (currentPkType == null) {
-			setPrimaryKeyType(context, PrimaryKeyType.DEFAULT);
-		} else {
-			setPrimaryKeyType(context, currentPkType);
-		}
+    if (previouslyDisplayedValue.equals(newValue)) {
+      return Reason.createFalseReason();
+    } else {
+      return Reason.createTrueReason();
+    }
+  }
 
-		return true;
-	}
-	
-	private void setPrimaryKeyType(IUpdateContext context, PrimaryKeyType pkType) {
-		Shape dataStateTextShape = FeatureSupport.getChildShapeFulfillingProperty(context, Properties.IS_OPERATION_TYPE_SHAPE, Boolean.toString(true));
-		
-		if (dataStateTextShape != null) {
-			Text textGa = (Text) dataStateTextShape.getGraphicsAlgorithm();
-			textGa.setValue(toDisplayValue(pkType));
-		}
-	}
+  /** Transforms the operation type to a string. */
+  private String toDisplayValue(PrimaryKeyType pkType) {
+    if (pkType == null) {
+      return "";
+    }
+    String literal = pkType.getLiteral();
+    return literal.isEmpty() ? literal : String.format("[%s]", pkType.getLiteral());
+  }
+
+  @Override
+  public boolean update(IUpdateContext context) {
+    ContainerShape container = (ContainerShape) context.getPictogramElement();
+    DataObject dataObject = (DataObject) getBusinessObjectForPictogramElement(container);
+
+    PrimaryKeyType currentPkType = (PrimaryKeyType) ExtensionUtil.getExtension(dataObject, PRIMARY_KEY_FEATURE, TYPE_ATTRIBUTE_NAME);
+    if (currentPkType == null) {
+      setPrimaryKeyType(context, PrimaryKeyType.DEFAULT);
+    } else {
+      setPrimaryKeyType(context, currentPkType);
+    }
+
+    return true;
+  }
+
+  private void setPrimaryKeyType(IUpdateContext context, PrimaryKeyType pkType) {
+    Shape dataStateTextShape = FeatureSupport.getChildShapeFulfillingProperty(context, Properties.IS_OPERATION_TYPE_SHAPE, Boolean.toString(true));
+
+    if (dataStateTextShape != null) {
+      Text textGa = (Text) dataStateTextShape.getGraphicsAlgorithm();
+      textGa.setValue(toDisplayValue(pkType));
+    }
+  }
 
 }

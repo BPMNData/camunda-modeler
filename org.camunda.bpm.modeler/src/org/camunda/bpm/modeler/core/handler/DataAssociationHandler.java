@@ -14,8 +14,6 @@ import org.eclipse.bpmn2.ThrowEvent;
 
 /**
  * Utility class for operations on {@link DataAssociation} objects.
- * @author Sebastian
- *
  */
 public class DataAssociationHandler {
 

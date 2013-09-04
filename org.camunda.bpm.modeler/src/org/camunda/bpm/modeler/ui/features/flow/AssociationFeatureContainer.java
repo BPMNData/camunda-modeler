@@ -247,6 +247,8 @@ public class AssociationFeatureContainer extends BaseElementConnectionFeatureCon
 
     @Override
     protected void postCreateHook(ICreateConnectionContext context, Association bo) {
+      // deprecated BPMN Data addition: Connect messages and message flows via association.
+      
       MessageFlow messageFlow = null;
       Message message = null;
       if (bo.getSourceRef() != null) {

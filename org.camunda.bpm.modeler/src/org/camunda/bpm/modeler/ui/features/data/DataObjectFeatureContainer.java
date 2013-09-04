@@ -77,6 +77,7 @@ public class DataObjectFeatureContainer extends AbstractDataFeatureContainer {
 		multiUpdate.addUpdateFeature(new UpdateMarkersFeature(fp));
 		multiUpdate.addUpdateFeature(new UpdateBaseElementNameFeature(fp));
 		multiUpdate.addUpdateFeature(new UpdateDataStateFeature(fp));
+		// BPMN Data: Add update features for the BPMN Data extensions.
 		multiUpdate.addUpdateFeature(new UpdateDataObjectPrimaryKeyFeature(fp));
 		multiUpdate.addUpdateFeature(new UpdateDataObjectForeignKeyFeature(fp));
 		multiUpdate.addUpdateFeature(new UpdateDataObjectOperationTypeFeature(fp));

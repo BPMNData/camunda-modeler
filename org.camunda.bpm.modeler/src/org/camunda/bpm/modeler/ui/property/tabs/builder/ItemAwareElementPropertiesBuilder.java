@@ -12,6 +12,12 @@ import org.eclipse.graphiti.ui.platform.GFPropertySection;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
+/**
+ * Builds the property panel that gives access to the following properties of {@link ItemAwareElement}:
+ * <ul>
+ * <li>{@link ItemAwareElement#getDataState()}</link>
+ * </ul>
+ */
 public class ItemAwareElementPropertiesBuilder extends
         AbstractPropertiesBuilder<ItemAwareElement> {
 

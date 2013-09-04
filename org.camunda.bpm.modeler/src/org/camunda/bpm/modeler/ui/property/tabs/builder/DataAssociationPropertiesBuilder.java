@@ -22,6 +22,14 @@ import org.eclipse.graphiti.ui.platform.GFPropertySection;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
+/**
+ * Properties builder for the BPMN Data data association extensions:
+ * <ul>
+ * <li>{@link Cardinality}</li>
+ * <li>{@link Condition}</li>
+ * </ul>
+ *
+ */
 public class DataAssociationPropertiesBuilder extends AbstractPropertiesBuilder<DataAssociation> {
 
   private static final EStructuralFeature CARDINALITY_FEATURE = BptPackage.eINSTANCE.getDocumentRoot_Cardinality();

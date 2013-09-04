@@ -137,6 +137,7 @@ public class MessageFlowFeatureContainer extends BaseElementConnectionFeatureCon
     @Override
     protected void postAddHook(IAddContext context, FreeFormConnection connection) {
       if (!isImport(context)) {
+        // BPMN Data addition: Automatically create a message for a new message flow.
         createMessage(context, connection);
       }
     }
@@ -151,14 +152,6 @@ public class MessageFlowFeatureContainer extends BaseElementConnectionFeatureCon
       return true;
     }
 
-    /**
-     * Creates a label for the newly created shape if any.
-     * 
-     * May be overridden by subclasses to perform actual actions.
-     * 
-     * @param context
-     * @param newShape
-     */
     protected void createMessage(IAddContext context, Connection connection) {
 
       MessageFlow messageFlow = getBusinessObject(context);
@@ -279,7 +272,7 @@ public class MessageFlowFeatureContainer extends BaseElementConnectionFeatureCon
     protected void postCreateHook(ICreateConnectionContext context, MessageFlow bo) {
       super.postCreateHook(context, bo);
 
-      // Ensure some BPMN conformance.
+      // BPMN Data: Ensure some BPMN conformance.
       // Add the message flow to a conversation.
       EObject diagramBo = BusinessObjectUtil.getBusinessObjectForPictogramElement(getDiagram());
       if (diagramBo == null || !(diagramBo instanceof Collaboration)) {
@@ -369,7 +362,7 @@ public class MessageFlowFeatureContainer extends BaseElementConnectionFeatureCon
     public void postReconnect(IReconnectionContext context) {
       super.postReconnect(context);
       
-      // Update the message refs of the newly connected tasks.
+      // BPMN Data: Update the message refs of the newly connected tasks.
       Connection connection = context.getConnection();
       MessageFlow messageFlow = BusinessObjectUtil.getFirstElementOfType(connection, MessageFlow.class);
       MessageHandler.ensureTaskMessageRefs(messageFlow);

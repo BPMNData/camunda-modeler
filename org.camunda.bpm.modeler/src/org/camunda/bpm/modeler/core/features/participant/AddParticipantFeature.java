@@ -83,7 +83,7 @@ public class AddParticipantFeature extends AbstractAddBpmnShapeFeature<Participa
     int width = newShapeBounds.getWidth();
     int height = newShapeBounds.getHeight();
 
-    BPMNShape bpmnShape = BusinessObjectUtil.getFirstElementOfType(newShape, BPMNShape.class);
+    BusinessObjectUtil.getFirstElementOfType(newShape, BPMNShape.class);
 
     drawParticipantLine(participant, newShape, width, height);
 

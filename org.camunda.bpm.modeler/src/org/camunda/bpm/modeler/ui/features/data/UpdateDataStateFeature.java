@@ -2,6 +2,7 @@ package org.camunda.bpm.modeler.ui.features.data;
 
 import org.camunda.bpm.modeler.core.features.data.Properties;
 import org.camunda.bpm.modeler.core.utils.FeatureSupport;
+import org.eclipse.bpmn2.DataObject;
 import org.eclipse.bpmn2.DataState;
 import org.eclipse.bpmn2.ItemAwareElement;
 import org.eclipse.graphiti.features.IFeatureProvider;
@@ -13,6 +14,10 @@ import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 
+
+/**
+ * Updates the state of a {@link DataObject} shape.
+ */
 public class UpdateDataStateFeature extends AbstractUpdateFeature {
 
     public UpdateDataStateFeature(IFeatureProvider fp) {

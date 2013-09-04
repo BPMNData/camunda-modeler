@@ -15,6 +15,7 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 
+/** Editing support provider for BPMN extensions in table editors. */
 public class ExtensionEditingSupportProvider extends
 		DefaultEditingSupportProvider {
 	

@@ -107,6 +107,7 @@ public class DataAssociationFeatureContainer extends BaseElementConnectionFeatur
       addCardinalityElement(newConnection, association);
     }
 
+    /** BPMN Data extension: Add a label for the condition extension. */
     private void addConditionElement(FreeFormConnection connection, DataAssociation association) {
 
       String currentCondition = (String) ExtensionUtil.getExtension(association, DATA_ASSOCIATION_CONDITION_FEATURE, "value");
@@ -118,6 +119,7 @@ public class DataAssociationFeatureContainer extends BaseElementConnectionFeatur
           .textProperty(IS_CONDITION_DECORATOR_PROPERTY, Boolean.toString(true)).build();
     }
 
+    /** BPMN Data extension: Add a label for the cardinality extension. */
     private void addCardinalityElement(FreeFormConnection connection, DataAssociation association) {
       String currentCardinality = (String) ExtensionUtil.getExtension(association, DATA_ASSOCIATION_CARDINALITY_FEATURE, "value");
 
@@ -131,6 +133,9 @@ public class DataAssociationFeatureContainer extends BaseElementConnectionFeatur
 
   }
 
+  /**
+   * Update feature for the BPMN Data condition extension.
+   */
   public static class UpdateConditionFeature extends AbstractUpdateFeature {
 
     public UpdateConditionFeature(IFeatureProvider fp) {
@@ -202,6 +207,9 @@ public class DataAssociationFeatureContainer extends BaseElementConnectionFeatur
     }
   }
 
+  /**
+   * Update feature for the BPMN Data cardinality extension.
+   */
   public static class UpdateCardinalityFeature extends AbstractUpdateFeature {
 
     public UpdateCardinalityFeature(IFeatureProvider fp) {

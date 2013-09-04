@@ -160,6 +160,7 @@ public class MessageFeatureContainer extends BaseElementFeatureContainer {
       protected void postMoveShape(IMoveShapeContext context) {
         super.postMoveShape(context);
         
+        // BPMN Data allow: to drag messages onto message flows
         Message message = getBusinessObject(context.getPictogramElement(), Message.class);
         if (message == null)
           return;

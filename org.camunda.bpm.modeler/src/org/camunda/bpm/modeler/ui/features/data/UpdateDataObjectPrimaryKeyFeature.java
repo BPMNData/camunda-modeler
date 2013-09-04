@@ -15,6 +15,9 @@ import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 
+/**
+ * Updates the primary key of a {@link DataObject} shape. This is a BPMN Data extension.
+ */
 public class UpdateDataObjectPrimaryKeyFeature extends AbstractUpdateFeature {
 
 	private static final EStructuralFeature PRIMARY_KEY_FEATURE = BptPackage.eINSTANCE.getDocumentRoot_PrimaryKey();

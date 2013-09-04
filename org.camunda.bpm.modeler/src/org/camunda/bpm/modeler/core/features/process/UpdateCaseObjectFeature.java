@@ -18,77 +18,81 @@ import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.ui.services.GraphitiUi;
 
+/**
+ * This feature is responsible of updating the case object display for a
+ * {@link Process}, which is a BPMN Data extension.
+ */
 public class UpdateCaseObjectFeature extends AbstractUpdateFeature {
 
-	private static final EStructuralFeature SCOPE_INFORMATION_FEATURE = BptPackage.eINSTANCE.getDocumentRoot_ScopeInformation();
-	private static final String CASE_OBJECT_ATTRIBUTE = "caseObject";
-	
-	public UpdateCaseObjectFeature(IFeatureProvider fp) {
-		super(fp);
-	}
+  private static final EStructuralFeature SCOPE_INFORMATION_FEATURE = BptPackage.eINSTANCE.getDocumentRoot_ScopeInformation();
+  private static final String CASE_OBJECT_ATTRIBUTE = "caseObject";
 
-	@Override
-	public boolean canUpdate(IUpdateContext context) {
-		Object o = getBusinessObjectForPictogramElement(context.getPictogramElement());
-		return o != null && (o instanceof Process || o instanceof SubProcess);
-	}
+  public UpdateCaseObjectFeature(IFeatureProvider fp) {
+    super(fp);
+  }
 
-	@Override
-	public IReason updateNeeded(IUpdateContext context) {
-		Shape container = (Shape) context.getPictogramElement();
-		BaseElement process = (BaseElement) getBusinessObjectForPictogramElement(container);
+  @Override
+  public boolean canUpdate(IUpdateContext context) {
+    Object o = getBusinessObjectForPictogramElement(context.getPictogramElement());
+    return o != null && (o instanceof Process || o instanceof SubProcess);
+  }
 
-		String caseObject = (String) ExtensionUtil.getExtension(process, SCOPE_INFORMATION_FEATURE, CASE_OBJECT_ATTRIBUTE);
-		String previouslyDisplayedCaseObject = null;
-		
-		Shape caseObjectShape = FeatureSupport.getChildShapeFulfillingProperty(context, Properties.IS_CASE_OBJECT_SHAPE, Boolean.toString(true));
-		if (caseObjectShape == null) {
-		    return Reason.createFalseReason();
-		}
-		Text caseObjectShapeText = (Text) caseObjectShape.getGraphicsAlgorithm();
-		previouslyDisplayedCaseObject = caseObjectShapeText.getValue();
-		if (previouslyDisplayedCaseObject != null) {
-		    String regex = Properties.CASE_OBJECT_PREFIX + "(.*)";
-		    previouslyDisplayedCaseObject = previouslyDisplayedCaseObject.replaceAll(regex, "$1");
-		}
-		
-		if (caseObject == null) {
-			return previouslyDisplayedCaseObject != null && !previouslyDisplayedCaseObject.isEmpty() ? Reason.createTrueReason() : Reason.createFalseReason();
-		} else if (previouslyDisplayedCaseObject == null || previouslyDisplayedCaseObject.isEmpty()) {
-			return Reason.createTrueReason();
-		}
-		
-		if (previouslyDisplayedCaseObject.equals(caseObject)) {
-			return Reason.createFalseReason();
-		} else {
-			return Reason.createTrueReason();
-		}
-	}
+  @Override
+  public IReason updateNeeded(IUpdateContext context) {
+    Shape container = (Shape) context.getPictogramElement();
+    BaseElement process = (BaseElement) getBusinessObjectForPictogramElement(container);
 
-	@Override
-	public boolean update(IUpdateContext context) {
-		PictogramElement pe = context.getPictogramElement();
-		BaseElement process = (BaseElement) getBusinessObjectForPictogramElement(pe);
+    String caseObject = (String) ExtensionUtil.getExtension(process, SCOPE_INFORMATION_FEATURE, CASE_OBJECT_ATTRIBUTE);
+    String previouslyDisplayedCaseObject = null;
 
-		String currentCaseObject = (String) ExtensionUtil.getExtension(process, SCOPE_INFORMATION_FEATURE, CASE_OBJECT_ATTRIBUTE);
-		if (currentCaseObject == null) {
-			setCaseObjectText(context, "");
-		} else {
-			setCaseObjectText(context, Properties.CASE_OBJECT_PREFIX + currentCaseObject);
-		}
+    Shape caseObjectShape = FeatureSupport.getChildShapeFulfillingProperty(context, Properties.IS_CASE_OBJECT_SHAPE, Boolean.toString(true));
+    if (caseObjectShape == null) {
+      return Reason.createFalseReason();
+    }
+    Text caseObjectShapeText = (Text) caseObjectShape.getGraphicsAlgorithm();
+    previouslyDisplayedCaseObject = caseObjectShapeText.getValue();
+    if (previouslyDisplayedCaseObject != null) {
+      String regex = Properties.CASE_OBJECT_PREFIX + "(.*)";
+      previouslyDisplayedCaseObject = previouslyDisplayedCaseObject.replaceAll(regex, "$1");
+    }
 
-		return true;
-	}
-	
-	private void setCaseObjectText(IUpdateContext context, String value) {
-		Shape caseObjectTextShape = FeatureSupport.getChildShapeFulfillingProperty(context, Properties.IS_CASE_OBJECT_SHAPE, Boolean.toString(true));
-		if (caseObjectTextShape != null) {
-			Text textGa = (Text) caseObjectTextShape.getGraphicsAlgorithm();
-			IDimension textDimensions = GraphitiUi.getUiLayoutService().calculateTextSize(value, textGa.getFont());
-			textGa.setHeight(textDimensions.getHeight());
-			textGa.setWidth(textDimensions.getWidth());
-			textGa.setValue(value);
-		}
-	}
+    if (caseObject == null) {
+      return previouslyDisplayedCaseObject != null && !previouslyDisplayedCaseObject.isEmpty() ? Reason.createTrueReason() : Reason.createFalseReason();
+    } else if (previouslyDisplayedCaseObject == null || previouslyDisplayedCaseObject.isEmpty()) {
+      return Reason.createTrueReason();
+    }
+
+    if (previouslyDisplayedCaseObject.equals(caseObject)) {
+      return Reason.createFalseReason();
+    } else {
+      return Reason.createTrueReason();
+    }
+  }
+
+  @Override
+  public boolean update(IUpdateContext context) {
+    PictogramElement pe = context.getPictogramElement();
+    BaseElement process = (BaseElement) getBusinessObjectForPictogramElement(pe);
+
+    String currentCaseObject = (String) ExtensionUtil.getExtension(process, SCOPE_INFORMATION_FEATURE, CASE_OBJECT_ATTRIBUTE);
+    if (currentCaseObject == null) {
+      setCaseObjectText(context, "");
+    } else {
+      setCaseObjectText(context, Properties.CASE_OBJECT_PREFIX + currentCaseObject);
+    }
+
+    return true;
+  }
+
+  private void setCaseObjectText(IUpdateContext context, String value) {
+    Shape caseObjectTextShape = FeatureSupport.getChildShapeFulfillingProperty(context, Properties.IS_CASE_OBJECT_SHAPE, Boolean.toString(true));
+    if (caseObjectTextShape != null) {
+      Text textGa = (Text) caseObjectTextShape.getGraphicsAlgorithm();
+      IDimension textDimensions = GraphitiUi.getUiLayoutService().calculateTextSize(value, textGa.getFont());
+      textGa.setHeight(textDimensions.getHeight());
+      textGa.setWidth(textDimensions.getWidth());
+      textGa.setValue(value);
+    }
+  }
 
 }

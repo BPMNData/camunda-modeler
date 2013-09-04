@@ -34,8 +34,6 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * Builds the property panel that allows to modify the BPMN Data extension
  * {@link MessageContentDefinition} for a message.
- * 
- * @author Sebastian
  */
 public class MessageContentDefinitionBuilder extends AbstractPropertiesBuilder<Message> implements SelectionListener {
 
@@ -58,8 +56,7 @@ public class MessageContentDefinitionBuilder extends AbstractPropertiesBuilder<M
   @Override
   public void create() {
     // Always cache the content definition, so its state is not lost, in case
-    // the user
-    // unintentionally detaches it from the message.
+    // the user unintentionally detaches it from the message.
     cachedContentDef = getOrMessageContentDefinition(bo);
 
     // ...controls

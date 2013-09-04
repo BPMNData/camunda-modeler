@@ -12,8 +12,13 @@ import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.ConnectionDecorator;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaService;
+import org.eclipse.graphiti.services.IPeService;
 import org.eclipse.graphiti.ui.services.GraphitiUi;
 
+/**
+ * This is a builder class that creates labels for {@link Connection} objects.
+ *
+ */
 public class ConnectionTextDecoratorBuilder {
 
 	private Connection connection;
@@ -31,6 +36,11 @@ public class ConnectionTextDecoratorBuilder {
 		return this;
 	}
 	
+	/**
+	 * Collects properties that will later on be set for the created label.
+	 * 
+	 * @see IPeService#setPropertyValue(org.eclipse.graphiti.mm.PropertyContainer, String, String)
+	 */
 	public ConnectionTextDecoratorBuilder textProperty(String key, String value) {
 		properties.put(key, value);
 		return this;
@@ -73,6 +83,7 @@ public class ConnectionTextDecoratorBuilder {
 		return decorator;
 	}
 	
+	/** Creates a new instance that builds a decorator for the given connection. */
 	public static ConnectionTextDecoratorBuilder newBuilder(Connection connectionToDecorate) {
 		ConnectionTextDecoratorBuilder builder = new ConnectionTextDecoratorBuilder();
 		builder.connection = connectionToDecorate;

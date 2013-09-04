@@ -33,6 +33,7 @@ public class TableColumnDescriptor {
    * Return the previously set column provider or a {@link SimpleLabelProvider} as default.
    */
   public ColumnLabelProvider getColumnLabelProvider() {
+    // BPMN Data addition
     if (this.labelProvider == null)
       return getDefaultColumnLabelProvider();
     return this.labelProvider;

@@ -42,6 +42,7 @@ public class DataOutputAssociationShapeHandler extends DataAssociationShapeHandl
 		// refer to spec 
 		// * Figure 10.50 - ItemAware class diagram
 		// * Figure 10.57 - InputOutputSpecification class diagram
+    // BPMN Data Update: We employ it.
 		
 		ItemAwareElement targetRef = bpmnElement.getTargetRef();
 

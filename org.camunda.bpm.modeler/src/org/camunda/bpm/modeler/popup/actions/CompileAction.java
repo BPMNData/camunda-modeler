@@ -61,9 +61,9 @@ import de.unipotsdam.hpi.bpmndata.schemamapping.SchemaMapping;
 
 /**
  * This action takes a BPMN resource with BPMN Data extensions and derives an
- * executable BPMN diagram.
- * 
- * @author Sebastian
+ * executable BPMN diagram.<br>
+ * <i>Notice: As this is part of a prototype, this class assumes that the used
+ * schema mapping is a {@link SchemaMapping} object.</i>
  */
 public class CompileAction implements IObjectActionDelegate {
 
@@ -160,8 +160,6 @@ public class CompileAction implements IObjectActionDelegate {
   /**
    * This class derives correlation keys from imported item definitions with
    * BPMN data extensions.
-   * 
-   * @author Sebastian
    */
   private class CorrelationKeyCreator {
 
@@ -220,10 +218,13 @@ public class CompileAction implements IObjectActionDelegate {
     }
 
     private CorrelationKey createCorrelationKey(Definitions definitions, ItemDefinition itemDefinition, List<String> correlationAttributes) {
+      // Set the name of the correlation key.
       CorrelationKey correlationKey = modelHandler.create(CorrelationKey.class);
       String name = ItemDefinitionHandler.getCorrelationKeyName(itemDefinition);
       correlationKey.setName(name);
 
+      // Extract its properties using the CI attributes of the referenced
+      // ItemDefinition.
       List<CorrelationProperty> correlationPropertyRef = correlationKey.getCorrelationPropertyRef();
       for (String correlationAttribute : correlationAttributes) {
         CorrelationProperty correlationProperty = modelHandler.create(CorrelationProperty.class);
@@ -231,6 +232,7 @@ public class CompileAction implements IObjectActionDelegate {
         definitions.getRootElements().add(correlationProperty);
         correlationPropertyRef.add(correlationProperty);
       }
+
       return correlationKey;
     }
 
@@ -253,6 +255,11 @@ public class CompileAction implements IObjectActionDelegate {
       }
     }
 
+    /**
+     * Creates an XPath expression that can retrieve the given correlation
+     * property from the given message. Then, the expression is linked into the
+     * model.
+     */
     private void applyCorrelationProperty(Message message, CorrelationKey correlationKey, CorrelationProperty correlationProperty) {
       CorrelationPropertyRetrievalExpression retrievalExpression = modelHandler.create(CorrelationPropertyRetrievalExpression.class);
       retrievalExpression.setMessageRef(message);
@@ -276,9 +283,6 @@ public class CompileAction implements IObjectActionDelegate {
   /**
    * This class can derive transformations to send tasks and from receive tasks
    * by evaluating BPMN Data extensions.
-   * 
-   * @author Sebastian
-   * 
    */
   private static class TransformationCreator {
 
@@ -314,6 +318,7 @@ public class CompileAction implements IObjectActionDelegate {
       createReceiveTaskTransformations(definitions);
     }
 
+    /** Creates transformations for the contained {@link SendTask} objects. */
     private void createSendTaskTransformations(Definitions definitions) {
       List<EObject> allReachableObjects = ModelUtil.getAllReachableObjects(definitions, Bpmn2Package.eINSTANCE.getSendTask());
       for (EObject reachableObject : allReachableObjects) {
@@ -326,8 +331,12 @@ public class CompileAction implements IObjectActionDelegate {
         }
 
         StringBuilder sb = new StringBuilder();
-        // XXX: Validation is possible at this point...
+        
+        // Index the mappings to convert local data to the given item definitions.
         Map<ItemDefinition, ClassMapping> globalClass2ClassMapping = collectMappings(contentDefinition);
+        // TODO: Validation is possible at this point...
+        
+        // Query building starts: Variable declaration
         for (ClassMapping classMapping : globalClass2ClassMapping.values()) {
           sb.append("let $").append(classMapping.getLocalClass()).append(" := ./DataObjects/").append(classMapping.getLocalClass()).append("\n");
         }
@@ -339,7 +348,9 @@ public class CompileAction implements IObjectActionDelegate {
         createPayloadPart(contentDefinition, sb, globalClass2ClassMapping);
 
         sb.append("</message>");
-        System.out.println(sb.toString());
+        // Query building done.
+        
+        // Create the FormalExpression.
         for (DataInputAssociation inputAssociation : inputAssociations) {
           FormalExpression formalExpression = modelHandler.create(FormalExpression.class);
           formalExpression.setLanguage("XQuery");
@@ -350,9 +361,20 @@ public class CompileAction implements IObjectActionDelegate {
 
     }
 
+    /**
+     * Builds the query part to create the correlation part of the message:<br>
+     * <code>
+     * &lt;correlation&gt;<br>
+     * &nbsp;(&lt;key name="[key name]"&gt;<br>
+     * &nbsp;&nbsp;(&lt;property name=[property name]&gt;...&lt;/property&gt;)+<br>
+     * &nbsp;&lt;/key&gt;)+<br>
+     * &lt;/correlation&gt;
+     * </code>
+     */
     private void createCorrelationPart(MessageContentDefinition contentDefinition, StringBuilder sb, Map<ItemDefinition, ClassMapping> globalClass2ClassMapping) {
       sb.append("<correlation>");
       for (ItemDefinition correlationItemDefinition : MessageHandler.getCorrelationObjects(contentDefinition)) {
+        // For each CI item definition, create a query part, that translates its CI attributes.
         List<String> correlationAttributes = ItemDefinitionHandler.getCorrelationAttributes(correlationItemDefinition);
         ClassMapping classMapping = globalClass2ClassMapping.get(correlationItemDefinition);
         sb.append("<key name=\"").append(classMapping.getGlobalClass()).append(">");
@@ -367,6 +389,16 @@ public class CompileAction implements IObjectActionDelegate {
       sb.append("</correlation>");
     }
 
+    /**
+     * Builds the query part to create the payload part of the message:<br>
+     * <code>
+     * &lt;payload&gt;<br>
+     * &nbsp;&lt;[global object name]&gt;<br>
+     * &nbsp;&nbsp;(&lt;[attribute name]&gt;...&lt;/[attribute name]&gt;)+<br>
+     * &nbsp;&lt;/[global object name]&gt;<br>
+     * &lt;/payload&gt;
+     * </code>
+     */
     private void createPayloadPart(MessageContentDefinition contentDefinition, StringBuilder sb, Map<ItemDefinition, ClassMapping> globalClass2ClassMapping) {
       ClassMapping payloadMapping = globalClass2ClassMapping.get(contentDefinition.getPayloadRef());
       sb.append("<payload><").append(payloadMapping.getGlobalClass()).append(">");
@@ -377,6 +409,9 @@ public class CompileAction implements IObjectActionDelegate {
       sb.append("</").append(payloadMapping.getGlobalClass()).append("></payload>");
     }
 
+    /**
+     * Collects all the {@link ClassMapping} that convert the given item definitions.
+     */
     private Map<ItemDefinition, ClassMapping> collectMappings(MessageContentDefinition contentDefinition) {
       Map<ItemDefinition, ClassMapping> classMappings = new HashMap<ItemDefinition, ClassMapping>();
       for (ItemDefinition itemDefinition : MessageHandler.getCorrelationObjects(contentDefinition)) {
@@ -386,6 +421,7 @@ public class CompileAction implements IObjectActionDelegate {
       return classMappings;
     }
 
+    /** Returns the {@link ClassMapping}, that tells how to convert the given {@link ItemDefinition}. */
     private ClassMapping findClassMappingByGlobalClass(ItemDefinition itemDefinition) {
       String name = ItemDefinitionHandler.getShortInterpretableName(itemDefinition);
       for (ClassMapping classMapping : schemaMapping.getClassMappings()) {
@@ -396,6 +432,7 @@ public class CompileAction implements IObjectActionDelegate {
       return null;
     }
 
+    /** Creates the transformations for all {@link ReceiveTask} objects. */
     private void createReceiveTaskTransformations(Definitions definitions) {
       List<EObject> allReachableObjects = ModelUtil.getAllReachableObjects(definitions, Bpmn2Package.eINSTANCE.getReceiveTask());
       for (EObject reachableObject : allReachableObjects) {
@@ -412,16 +449,24 @@ public class CompileAction implements IObjectActionDelegate {
           // This assumption should hold for valid models.
           String localClassName = ((DataObject) targetRef).getName();
           ClassMapping classMapping = findClassMappingByLocalClass(localClassName);
+          
+          // TODO: Validation possible at this point.
 
           StringBuilder sb = new StringBuilder();
+          
+          // Start of transformation: Variable declaration
           sb.append("let $msg := ./message/payload/").append(classMapping.getGlobalClass()).append("\n");
           sb.append("return <").append(classMapping.getLocalClass()).append(">");
+          
+          // For each attribute, tell how to extract it.
           for (AttributeMapping attributeMapping : classMapping.getAttributeMappings()) {
             sb.append("<").append(attributeMapping.getLocalAttribute()).append(">{$msg/").append(attributeMapping.getGlobalAttribute()).append("/text()}</")
                 .append(attributeMapping.getLocalAttribute()).append(">");
           }
+          
           sb.append("</").append(classMapping.getLocalClass()).append(">");
-          System.out.println(sb.toString());
+
+          // Create the FormalExpression object.
           FormalExpression formalExpression = modelHandler.create(FormalExpression.class);
           formalExpression.setLanguage("XQuery");
           formalExpression.setBody(sb.toString());
@@ -430,6 +475,7 @@ public class CompileAction implements IObjectActionDelegate {
       }
     }
 
+    /** Finds the {@link ClassMapping}, that tells how to transform to the local class. */
     private ClassMapping findClassMappingByLocalClass(String localClassName) {
       for (ClassMapping classMapping : schemaMapping.getClassMappings()) {
         if (classMapping.getLocalClass().equals(localClassName)) {
@@ -439,6 +485,7 @@ public class CompileAction implements IObjectActionDelegate {
       return null;
     }
 
+    /** Loads the {@link SchemaMapping} as specified in the given {@link SchemaMappingImport}. */
     private SchemaMapping loadSchemaMapping(SchemaMappingImport schemaMappingImport) {
       try {
         ResourceSet resourceSet = resource.getResourceSet();

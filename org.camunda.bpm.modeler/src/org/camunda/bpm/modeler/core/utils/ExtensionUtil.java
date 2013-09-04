@@ -366,6 +366,10 @@ public class ExtensionUtil {
         extensionElements.remove(extensionElements.size() - 1);
     }
 
+    /** 
+     * Enforces an EMF notification for the business object.
+     * @see #enforceNotification(List)
+     */
     public static void enforceNotification(EObject bo) {
         enforceNotification(getExtensionAttributeValues(bo));
     }

@@ -19,8 +19,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * Builds the property panel that gives access to the primary key etc. of a data
- * object.
+ * Builds the property panel part that gives access to the following BPMN Data extensions of a {@link Definitions} root:
+ * <ul>
+ * <li>{@link SchemaMappingImport}</li>
+ * </ol>
  */
 public class SchemaMappingsImportPropertiesBuilder extends AbstractPropertiesBuilder<Definitions> {
 

@@ -22,8 +22,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * Builds the property panel that gives access to the primary key etc. of a data
- * object.
+ * Builds the property panel part that gives access to the transformation of a {@link DataAssociation}.
  */
 public class TransformationPropertiesBuilder extends AbstractPropertiesBuilder<DataAssociation> implements SelectionListener {
 

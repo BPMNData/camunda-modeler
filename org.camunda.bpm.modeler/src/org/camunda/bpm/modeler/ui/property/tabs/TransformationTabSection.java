@@ -8,10 +8,9 @@ import org.eclipse.graphiti.ui.platform.GFPropertySection;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Tab section for the transformation of a data association.
+ * Tab section for the transformation of a {@link DataAssociation}.
  * 
- * @author Sebastian
- *
+ * @see DataAssociation#getTransformation()
  */
 public class TransformationTabSection extends AbstractTabSection {
 

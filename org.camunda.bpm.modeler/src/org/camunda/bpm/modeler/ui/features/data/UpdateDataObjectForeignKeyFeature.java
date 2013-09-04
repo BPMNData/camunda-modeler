@@ -16,6 +16,10 @@ import org.eclipse.graphiti.mm.algorithms.AbstractText;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 
+/**
+ * This update feature takes care of updating the foreign keys of a {@link DataObject} shape.
+ * This is a BPMN Data extension.
+ */
 public class UpdateDataObjectForeignKeyFeature extends AbstractUpdateFeature {
 
 	private static final String FOREIGN_KEY_PREFIX = "fk: ";
@@ -30,6 +34,7 @@ public class UpdateDataObjectForeignKeyFeature extends AbstractUpdateFeature {
 		return o != null && o instanceof DataObject;
 	}
 	
+	/** Converts the foreign keys to a comma-separated string. */
 	private String foreignKeysToString(List<ForeignKey> list) {
 		StringBuilder builder = new StringBuilder();
 		int i = 0;
@@ -80,15 +85,15 @@ public class UpdateDataObjectForeignKeyFeature extends AbstractUpdateFeature {
 
 		List<ForeignKey> currentForeignKeys = ExtensionUtil.getExtensions(dataObject, ForeignKey.class);
 		if (currentForeignKeys.isEmpty()) {
-			setPrimaryKeyText(context, "");
+			setForeignKeyText(context, "");
 		} else {
-			setPrimaryKeyText(context, FOREIGN_KEY_PREFIX + foreignKeysToString(currentForeignKeys));
+			setForeignKeyText(context, FOREIGN_KEY_PREFIX + foreignKeysToString(currentForeignKeys));
 		}
 
 		return true;
 	}
 	
-	private void setPrimaryKeyText(IUpdateContext context, String value) {
+	private void setForeignKeyText(IUpdateContext context, String value) {
 		Shape foreignKeysTextShape = FeatureSupport.getChildShapeFulfillingProperty(context, Properties.IS_FOREIGN_KEY_SHAPE, Boolean.toString(true));
 		
 		if (foreignKeysTextShape != null) {

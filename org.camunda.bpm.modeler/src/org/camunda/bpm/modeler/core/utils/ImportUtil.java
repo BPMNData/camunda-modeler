@@ -33,9 +33,6 @@ import org.w3c.dom.Node;
 /**
  * This class is in charge of loading {@link Import} files and create
  * appropriate {@link ItemDefinition} objects.
- * 
- * @author Sebastian
- * 
  */
 public class ImportUtil {
 
@@ -110,7 +107,7 @@ public class ImportUtil {
   }
 
   /**
-   * Reomves existing {@link ItemDefinition} objects that reference the same
+   * Removes existing {@link ItemDefinition} objects that reference the same
    * structure.
    */
   private static void removeExistingItemDefinition(ItemDefinition newItemDefinition, List<ItemDefinition> oldItemDefinitions, Definitions definitions) {
@@ -127,7 +124,6 @@ public class ImportUtil {
   }
 
   private static StructureDefinition getStructureDefinition(ItemDefinition itemDefinition) {
-//    resolveStructureDefinitionProxy(itemDefinition);
     Object structureRef = itemDefinition.getStructureRef();
     if (structureRef instanceof StructureDefinition) {
       return (StructureDefinition) structureRef;
@@ -163,9 +159,6 @@ public class ImportUtil {
   /**
    * An import exception describes that it was not possible to do an import as
    * specified by an {@link Import} object.
-   * 
-   * @author Sebastian
-   * 
    */
   public static class ImportException extends RuntimeException {
 
@@ -188,7 +181,6 @@ public class ImportUtil {
   /**
    * A specific loader can handle a specific import type.
    * 
-   * @author Sebastian
    * @see Import#getImportType()
    */
   public static interface Loader {
@@ -204,8 +196,6 @@ public class ImportUtil {
 
   /**
    * Loader for XML Schema files.
-   * 
-   * @author Sebastian
    */
   public static class XsdLoader extends AbstractLoader {
 

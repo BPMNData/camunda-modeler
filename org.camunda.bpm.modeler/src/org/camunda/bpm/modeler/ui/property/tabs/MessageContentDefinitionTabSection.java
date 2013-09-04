@@ -18,9 +18,6 @@ import org.eclipse.swt.widgets.Composite;
  * @see MessageObject
  * @see CorrelationInformation
  * @see MessageContentDefinition
- * 
- * @author Sebastian
- * 
  */
 public class MessageContentDefinitionTabSection extends AbstractTabSection {
 

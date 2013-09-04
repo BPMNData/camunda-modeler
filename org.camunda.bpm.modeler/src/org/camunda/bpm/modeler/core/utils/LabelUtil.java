@@ -116,7 +116,7 @@ public class LabelUtil {
   public static boolean canLabel(BaseElement element) {
     return element == null || ModelUtil.hasName(element);
   }
-  
+
   /**
    * Creates a label text based on the given element.
    */
@@ -125,10 +125,14 @@ public class LabelUtil {
       return "(no element)";
     else if (element instanceof Message)
       return createBpmnDataMessageLabel((Message) element);
-    
+
     return ModelUtil.getName(element);
   }
 
+  /**
+   * BPMN Data: create the label for a message from its
+   * {@link MessageContentDefinition}.
+   */
   private static String createBpmnDataMessageLabel(Message element) {
     MessageContentDefinition contentDef = MessageHandler.getMessageContentDefinition(element);
     if (contentDef == null)
@@ -138,7 +142,7 @@ public class LabelUtil {
 
     ItemDefinition payload = contentDef.getPayloadRef();
     sb.append(ItemDefinitionHandler.getShortInterpretableName(payload));
-    
+
     List<ItemDefinition> correlationObjects = MessageHandler.getCorrelationObjects(contentDef);
     if (!correlationObjects.isEmpty()) {
       sb.append("\n").append("CI: ");
@@ -148,7 +152,7 @@ public class LabelUtil {
         separator = ",\nCI: ";
       }
     }
-    
+
     return sb.toString();
   }
 

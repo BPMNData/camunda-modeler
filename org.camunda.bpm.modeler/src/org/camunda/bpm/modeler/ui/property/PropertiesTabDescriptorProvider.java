@@ -76,6 +76,7 @@ public class PropertiesTabDescriptorProvider implements ITabDescriptorProvider {
                 tabs.add(createMultiInstanceTabDescriptor());
             }
 
+            // BPMN Data addition: a tab for transformations
             if (businessObject instanceof DataAssociation) {
               tabs.add(createTransformationTabDescriptor());
             }
@@ -97,23 +98,23 @@ public class PropertiesTabDescriptorProvider implements ITabDescriptorProvider {
                 if (participant.getProcessRef() != null) {
                     tabs.add(createListenerTabDescriptor());
 
-                    // BPMNData ScopeInformation property
+                    // BPMN Data ScopeInformation property
                     tabs.add(createScopeInformationTabDescriptor());
                 }
             }
 
-            // BPMNData ScopeInformation property
+            // BPMN Data ScopeInformation property
             if (businessObject instanceof Process
                     || businessObject instanceof SubProcess) {
                 tabs.add(createScopeInformationTabDescriptor());
             }
 
-            // BPMNData Primary and foreign keys
+            // BPMN Data Primary and foreign keys
             if (businessObject instanceof DataObject) {
                 tabs.add(createRelationKeysTabDescriptor());
             }
             
-            // BPMNData Message Definition
+            // BPMN Data Message Definition
             if (businessObject instanceof Message) {
               tabs.add(createMessageContentDefinitionTabDescriptor());
             }

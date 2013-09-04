@@ -40,8 +40,11 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 
 /**
- * Builds the property panel that gives access to the primary key etc. of a data
- * object.
+ * Builds the property panel that gives access to the following properties of {@link Definitions}:
+ * <ul>
+ * <li>{@link Import}</li>
+ * <li>{@link ItemDefinition}</link>
+ * </ul>
  */
 public class ImportAndItemDefinitionPropertiesBuilder extends AbstractPropertiesBuilder<Definitions> {
 

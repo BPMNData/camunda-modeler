@@ -45,6 +45,7 @@ public class LayoutParticipantFeature extends LayoutLaneSetFeature {
 			Graphiti.getGaService().setLocation(ga, x, y);
 		}
 		
+		// BPMN Data: layout the case object shape
 		shape = FeatureSupport.getShape(containerShape, Properties.IS_CASE_OBJECT_SHAPE, Boolean.TRUE.toString());
 		if (shape != null) {
 		    GraphicsAlgorithm ga = shape.getGraphicsAlgorithm();

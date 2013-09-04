@@ -7,6 +7,12 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.graphiti.ui.platform.GFPropertySection;
 import org.eclipse.swt.widgets.Composite;
 
+/**
+ * Builder for the property UI of {@link DataObject} objects. Features:
+ * <ul>
+ * <li>{@link DataObject#isIsCollection}</li>
+ * </ul>
+ */
 public class DataObjectPropertiesBuilder extends
 		AbstractPropertiesBuilder<DataObject> {
 

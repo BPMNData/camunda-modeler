@@ -96,6 +96,7 @@ public class EObjectTableBuilder<T extends EObject> {
     return this;
   }
 
+  /** BPMN Data addition: allow to specify new context menu entries. */
   public EObjectTableBuilder<T> withCustomMenuItems(CustomMenuItemDescriptor... descriptors) {
     this.customMenuItemDescriptors.addAll(Arrays.asList(descriptors));
     return this;
@@ -107,6 +108,7 @@ public class EObjectTableBuilder<T extends EObject> {
     return this;
   }
 
+  /** BPMN Data addition: allow to specify labels dynamically for each column. */
   public EObjectTableBuilder<T> labelProviders(ColumnLabelProvider... columnLabelProviders) {
     this.columnLabelProviders = columnLabelProviders;
     return this;
