@@ -87,10 +87,14 @@ public class CompileAction implements IObjectActionDelegate {
       return;
     }
 
-    Bpmn2ResourceImpl bpmnResource = loadBpmnResource();
-    createCorrelationKeys(bpmnResource);
-    createTransformations(bpmnResource);
-    saveBpmnResource(bpmnResource);
+    try {
+      Bpmn2ResourceImpl bpmnResource = loadBpmnResource();
+      createCorrelationKeys(bpmnResource);
+      createTransformations(bpmnResource);
+      saveBpmnResource(bpmnResource);
+    } catch (Exception e) {
+      Activator.logError(e);
+    }
   }
 
   private void saveBpmnResource(Bpmn2ResourceImpl bpmnResource) {
@@ -190,14 +194,12 @@ public class CompileAction implements IObjectActionDelegate {
       // We assume that there is exactly one collaboration with a conversation
       List<Collaboration> collaborations = ModelUtil.getAllRootElements(definitions, Collaboration.class);
       if (collaborations.isEmpty()) {
-        Activator.logStatus(new Status(IStatus.WARNING, Activator.PLUGIN_ID, "No collaboration found for " + resource.getURI()));
-        return null;
+        throw new RuntimeException("No collaboration found for " + resource.getURI());
       }
       Collaboration collaboration = collaborations.get(0);
       List<ConversationNode> conversations = collaboration.getConversations();
       if (conversations.isEmpty()) {
-        Activator.logStatus(new Status(IStatus.WARNING, Activator.PLUGIN_ID, "No conversation found for " + resource.getURI()));
-        return null;
+        throw new RuntimeException("No conversation found for " + resource.getURI());
       }
       ConversationNode conversation = conversations.get(0);
       return conversation;
@@ -300,18 +302,17 @@ public class CompileAction implements IObjectActionDelegate {
     public void run() {
       Definitions definitions = documentRoot.getDefinitions();
       if (definitions == null) {
-        Activator.logWarning("No definitions found.");
+        throw new RuntimeException("No definitions found.");
       }
 
       SchemaMappingImport schemaMappingImport = ExtensionUtil.getExtension(definitions, BptPackage.eINSTANCE.getDocumentRoot_SchemaMappingImports());
       if (schemaMappingImport == null) {
-        Activator.logWarning("No schema mapping import found.");
+        throw new RuntimeException("No schema mapping import found.");
       }
 
       schemaMapping = loadSchemaMapping(schemaMappingImport);
       if (schemaMapping == null) {
-        Activator.logWarning("Could not load a schema mapping");
-        return;
+        throw new RuntimeException("Could not load a schema mapping");
       }
 
       createSendTaskTransformations(definitions);
@@ -327,15 +328,16 @@ public class CompileAction implements IObjectActionDelegate {
         Message message = sendTask.getMessageRef();
         MessageContentDefinition contentDefinition = MessageHandler.getMessageContentDefinition(message);
         if (contentDefinition == null) {
-          Activator.logWarning("No content definition found for message " + message.getId());
+          throw new RuntimeException("No content definition found for message " + message.getId());
         }
 
         StringBuilder sb = new StringBuilder();
-        
-        // Index the mappings to convert local data to the given item definitions.
-        Map<ItemDefinition, ClassMapping> globalClass2ClassMapping = collectMappings(contentDefinition);
+
+        // Index the mappings to convert local data to the given item
+        // definitions.
+        Map<ItemDefinition, ClassMapping> globalClass2ClassMapping = collectClassMappingsForMessage(contentDefinition);
         // TODO: Validation is possible at this point...
-        
+
         // Query building starts: Variable declaration
         for (ClassMapping classMapping : globalClass2ClassMapping.values()) {
           sb.append("let $").append(classMapping.getLocalClass()).append(" := ./DataObjects/").append(classMapping.getLocalClass()).append("\n");
@@ -349,7 +351,7 @@ public class CompileAction implements IObjectActionDelegate {
 
         sb.append("</message>");
         // Query building done.
-        
+
         // Create the FormalExpression.
         for (DataInputAssociation inputAssociation : inputAssociations) {
           FormalExpression formalExpression = modelHandler.create(FormalExpression.class);
@@ -374,9 +376,13 @@ public class CompileAction implements IObjectActionDelegate {
     private void createCorrelationPart(MessageContentDefinition contentDefinition, StringBuilder sb, Map<ItemDefinition, ClassMapping> globalClass2ClassMapping) {
       sb.append("<correlation>");
       for (ItemDefinition correlationItemDefinition : MessageHandler.getCorrelationObjects(contentDefinition)) {
-        // For each CI item definition, create a query part, that translates its CI attributes.
+        // For each CI item definition, create a query part, that translates its
+        // CI attributes.
         List<String> correlationAttributes = ItemDefinitionHandler.getCorrelationAttributes(correlationItemDefinition);
         ClassMapping classMapping = globalClass2ClassMapping.get(correlationItemDefinition);
+        if (classMapping == null) {
+          throw new RuntimeException("No class mapping found for " + ItemDefinitionHandler.getShortInterpretableName(correlationItemDefinition));
+        }
         sb.append("<key name=\"").append(classMapping.getGlobalClass()).append(">");
         for (AttributeMapping attributeMapping : classMapping.getAttributeMappings()) {
           if (!correlationAttributes.contains(attributeMapping.getGlobalAttribute()))
@@ -400,7 +406,11 @@ public class CompileAction implements IObjectActionDelegate {
      * </code>
      */
     private void createPayloadPart(MessageContentDefinition contentDefinition, StringBuilder sb, Map<ItemDefinition, ClassMapping> globalClass2ClassMapping) {
-      ClassMapping payloadMapping = globalClass2ClassMapping.get(contentDefinition.getPayloadRef());
+      ItemDefinition globalItemDefinition = contentDefinition.getPayloadRef();
+      ClassMapping payloadMapping = globalClass2ClassMapping.get(globalItemDefinition);
+      if (payloadMapping == null) {
+        throw new RuntimeException("No class mapping found for " + ItemDefinitionHandler.getShortInterpretableName(globalItemDefinition));
+      }
       sb.append("<payload><").append(payloadMapping.getGlobalClass()).append(">");
       for (AttributeMapping attributeMapping : payloadMapping.getAttributeMappings()) {
         sb.append("<").append(attributeMapping.getGlobalAttribute()).append(">{$").append(payloadMapping.getLocalClass()).append("/")
@@ -410,20 +420,27 @@ public class CompileAction implements IObjectActionDelegate {
     }
 
     /**
-     * Collects all the {@link ClassMapping} that convert the given item definitions.
+     * Collects all the {@link ClassMapping} that convert the given item
+     * definitions.
      */
-    private Map<ItemDefinition, ClassMapping> collectMappings(MessageContentDefinition contentDefinition) {
+    private Map<ItemDefinition, ClassMapping> collectClassMappingsForMessage(MessageContentDefinition contentDefinition) {
       Map<ItemDefinition, ClassMapping> classMappings = new HashMap<ItemDefinition, ClassMapping>();
       for (ItemDefinition itemDefinition : MessageHandler.getCorrelationObjects(contentDefinition)) {
         ClassMapping mapping = findClassMappingByGlobalClass(itemDefinition);
         classMappings.put(itemDefinition, mapping);
       }
+      ItemDefinition itemDefinition = contentDefinition.getPayloadRef();
+      ClassMapping mapping = findClassMappingByGlobalClass(itemDefinition);
+      classMappings.put(itemDefinition, mapping);
       return classMappings;
     }
 
-    /** Returns the {@link ClassMapping}, that tells how to convert the given {@link ItemDefinition}. */
-    private ClassMapping findClassMappingByGlobalClass(ItemDefinition itemDefinition) {
-      String name = ItemDefinitionHandler.getShortInterpretableName(itemDefinition);
+    /**
+     * Returns the {@link ClassMapping}, that tells how to convert the given
+     * {@link ItemDefinition}.
+     */
+    private ClassMapping findClassMappingByGlobalClass(ItemDefinition globalItemDefinition) {
+      String name = ItemDefinitionHandler.getShortInterpretableName(globalItemDefinition);
       for (ClassMapping classMapping : schemaMapping.getClassMappings()) {
         if (classMapping.getGlobalClass().equals(name)) {
           return classMapping;
@@ -437,6 +454,14 @@ public class CompileAction implements IObjectActionDelegate {
       List<EObject> allReachableObjects = ModelUtil.getAllReachableObjects(definitions, Bpmn2Package.eINSTANCE.getReceiveTask());
       for (EObject reachableObject : allReachableObjects) {
         ReceiveTask receiveTask = (ReceiveTask) reachableObject;
+        Message message = receiveTask.getMessageRef();
+        MessageContentDefinition contentDefinition = MessageHandler.getMessageContentDefinition(message);
+        if (contentDefinition == null) {
+          Activator.logWarning("No content definition found for message " + message.getId());
+          continue;
+        }
+        String globalClassName = ItemDefinitionHandler.getShortInterpretableName(contentDefinition.getPayloadRef());
+
         List<DataOutputAssociation> outputAssociations = receiveTask.getDataOutputAssociations();
         for (DataOutputAssociation outputAssociation : outputAssociations) {
           ItemAwareElement targetRef = outputAssociation.getTargetRef();
@@ -444,26 +469,34 @@ public class CompileAction implements IObjectActionDelegate {
             Activator.logWarning("Expected a data object as target for data association " + outputAssociation.getId());
             continue;
           }
-          // XXX: Since we did not (yet) apply item definitions, we assume, that
-          // the data object's name corresponds to the item definition name.
-          // This assumption should hold for valid models.
+
+          // XXX: Since we did not apply item definitions to data objects, we
+          // assume, that the data object's name corresponds to the item
+          // definition name.
+          // This assumption should hold for valid models, because in BPMN Data
+          // the data object name should correspond to the database table name,
+          // which in turn shold correspond to the class name in the local data
+          // model.
           String localClassName = ((DataObject) targetRef).getName();
-          ClassMapping classMapping = findClassMappingByLocalClass(localClassName);
-          
-          // TODO: Validation possible at this point.
+          ClassMapping classMapping = findClassMapping(localClassName, globalClassName);
+          if (classMapping == null) {
+            throw new RuntimeException("No class mapping found between "+globalClassName+" and "+localClassName);
+          }
+
+          // XXX: Validation possible at this point.
 
           StringBuilder sb = new StringBuilder();
-          
+
           // Start of transformation: Variable declaration
           sb.append("let $msg := ./message/payload/").append(classMapping.getGlobalClass()).append("\n");
           sb.append("return <").append(classMapping.getLocalClass()).append(">");
-          
+
           // For each attribute, tell how to extract it.
           for (AttributeMapping attributeMapping : classMapping.getAttributeMappings()) {
             sb.append("<").append(attributeMapping.getLocalAttribute()).append(">{$msg/").append(attributeMapping.getGlobalAttribute()).append("/text()}</")
                 .append(attributeMapping.getLocalAttribute()).append(">");
           }
-          
+
           sb.append("</").append(classMapping.getLocalClass()).append(">");
 
           // Create the FormalExpression object.
@@ -475,17 +508,23 @@ public class CompileAction implements IObjectActionDelegate {
       }
     }
 
-    /** Finds the {@link ClassMapping}, that tells how to transform to the local class. */
-    private ClassMapping findClassMappingByLocalClass(String localClassName) {
+    /**
+     * Finds the {@link ClassMapping}, that tells how to transform to the local
+     * class from the global class.
+     */
+    private ClassMapping findClassMapping(String localClassName, String globalClassName) {
       for (ClassMapping classMapping : schemaMapping.getClassMappings()) {
-        if (classMapping.getLocalClass().equals(localClassName)) {
+        if (classMapping.getLocalClass().equals(localClassName) && classMapping.getGlobalClass().equals(globalClassName)) {
           return classMapping;
         }
       }
       return null;
     }
 
-    /** Loads the {@link SchemaMapping} as specified in the given {@link SchemaMappingImport}. */
+    /**
+     * Loads the {@link SchemaMapping} as specified in the given
+     * {@link SchemaMappingImport}.
+     */
     private SchemaMapping loadSchemaMapping(SchemaMappingImport schemaMappingImport) {
       try {
         ResourceSet resourceSet = resource.getResourceSet();
