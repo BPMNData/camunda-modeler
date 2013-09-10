@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import org.camunda.bpm.modeler.core.model.Bpmn2ModelerFactory;
 import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.Bpmn2Factory;
+import org.eclipse.bpmn2.Bpmn2Package;
 import org.eclipse.bpmn2.Collaboration;
 import org.eclipse.bpmn2.Definitions;
 import org.eclipse.bpmn2.ExtensionAttributeValue;
@@ -17,6 +18,7 @@ import org.eclipse.bpmn2.Process;
 import org.eclipse.bpmn2.di.BPMNDiagram;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMap.Entry;
@@ -325,6 +327,14 @@ public class ExtensionUtil {
         }
 
         return null;
+    }
+    
+    /**
+     * Removes all extensions from a {@link BaseElement}, including the {@link ExtensionAttributeValue}.
+     */
+    public static void removeAllExtensions(BaseElement baseElement) {
+      EReference extensionValuesFeature = Bpmn2Package.eINSTANCE.getBaseElement_ExtensionValues();
+      baseElement.eUnset(extensionValuesFeature);
     }
 
     public static void updateExtension(EObject object,

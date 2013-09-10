@@ -67,6 +67,8 @@ import de.unipotsdam.hpi.bpmndata.schemamapping.SchemaMapping;
  */
 public class CompileAction implements IObjectActionDelegate {
 
+  public static final String SEND_TASK_IMPLEMENTATION_URI = "http://bpt.hpi.uni-potsdam.de/Public/BPMNData";
+
   private Shell shell;
 
   private IFile file;
@@ -92,10 +94,29 @@ public class CompileAction implements IObjectActionDelegate {
       deleteNonExecutableProcesses(bpmnResource);
       createCorrelationKeys(bpmnResource);
       createTransformations(bpmnResource);
+      removeSchemaMappingImport(bpmnResource);
+      setSendTaskImplementations(bpmnResource);
       saveBpmnResource(bpmnResource);
     } catch (Exception e) {
       Activator.logError(e);
     }
+  }
+
+  /** Sets {@link SendTask#getImplementation()} to {@value #SEND_TASK_IMPLEMENTATION_URI}. */
+  private void setSendTaskImplementations(Bpmn2ResourceImpl bpmnResource) {
+    Definitions definitions = ModelHandler.getDefinitions(bpmnResource);
+    ExtensionUtil.removeExtensionByFeature(definitions, BptPackage.eINSTANCE.getDocumentRoot_SchemaMappingImports());
+    List<EObject> allReachableObjects = ModelUtil.getAllReachableObjects(definitions, Bpmn2Package.eINSTANCE.getSendTask());
+    for (EObject reachableObject : allReachableObjects) {
+      SendTask sendTask = (SendTask) reachableObject;
+      sendTask.setImplementation(SEND_TASK_IMPLEMENTATION_URI);
+    }
+  }
+
+  /** Removes the schema mapping import definition, because the engine cannot handle it. */
+  private void removeSchemaMappingImport(Bpmn2ResourceImpl bpmnResource) {
+    Definitions definitions = ModelHandler.getDefinitions(bpmnResource);
+    ExtensionUtil.removeAllExtensions(definitions);
   }
 
   /** Removes any {@link Process} from the model that is not executable. */
