@@ -1,5 +1,7 @@
 package org.camunda.bpm.modeler.ui.property.tabs.builder;
 
+import java.util.List;
+
 import org.camunda.bpm.modeler.core.ModelHandler;
 import org.camunda.bpm.modeler.core.utils.ExtensionUtil;
 import org.camunda.bpm.modeler.runtime.engine.model.EndPointAddress;
@@ -11,9 +13,12 @@ import org.camunda.bpm.modeler.ui.property.tabs.binding.ModelTextBinding;
 import org.camunda.bpm.modeler.ui.property.tabs.binding.change.EAttributeChangeSupport;
 import org.camunda.bpm.modeler.ui.property.tabs.util.PropertyUtil;
 import org.eclipse.bpmn2.Bpmn2Package;
+import org.eclipse.bpmn2.Definitions;
+import org.eclipse.bpmn2.EndPoint;
 import org.eclipse.bpmn2.Participant;
 import org.eclipse.bpmn2.ParticipantMultiplicity;
 import org.eclipse.bpmn2.Process;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
@@ -93,7 +98,9 @@ public class ParticipantPropertiesBuilder extends AbstractPropertiesBuilder<Part
 
     // BPMN Data: Make endpoint available (via an extension)
     Text endPointAddressText = PropertyUtil.createUnboundText(section, parent, "End-Point Address");
-    ModelTextBinding<String> endPointAddressBinding = new ModelTextBinding<String>(bo, ModelPackage.eINSTANCE.getDocumentRoot_Address(), endPointAddressText) {
+    ModelTextBinding<String> endPointAddressBinding = new ModelTextBinding<String>(bo, Bpmn2Package.eINSTANCE.getParticipant_EndPointRefs(), endPointAddressText) {
+
+      private final EReference ADDRESS_EXTENSION_FEATURE = ModelPackage.eINSTANCE.getDocumentRoot_Address();
 
       @Override
       protected String toString(String value) {
@@ -115,7 +122,16 @@ public class ParticipantPropertiesBuilder extends AbstractPropertiesBuilder<Part
 
       @Override
       public String getModelValue() {
-        return (String) ExtensionUtil.getExtension(model, feature, ModelPackage.eINSTANCE.getEndPointAddress_Value().getName());
+        List<EndPoint> endPoints = bo.getEndPointRefs();
+        if (endPoints.isEmpty())
+          return null;
+        
+        EndPoint endPoint = endPoints.get(0);
+        EndPointAddress address = getAddressExtension(endPoint);
+        if (address == null)
+          return null;
+        
+        return address.getValue();
       }
 
       @Override
@@ -124,17 +140,46 @@ public class ParticipantPropertiesBuilder extends AbstractPropertiesBuilder<Part
         domain.getCommandStack().execute(new UpdateAddressCommand(domain, value));
       }
 
-      protected void updateUrl(String url) {
-        EndPointAddress address = ExtensionUtil.getExtension(bo, feature);
-        if (address == null) {
-          address = (EndPointAddress) ModelHandler.create(model.eResource(), ModelPackage.eINSTANCE.getEndPointAddress());
+      protected void setEndpoint(String url) {
+        List<EndPoint> endPoints = bo.getEndPointRefs();
+
+        EndPoint endPoint;
+        if (endPoints.isEmpty()) {
+          endPoint = (EndPoint) ModelHandler.create(model.eResource(), Bpmn2Package.eINSTANCE.getEndPoint());
+          Definitions definitions = ModelHandler.getDefinitions(bo.eResource());
+          definitions.getRootElements().add(endPoint);
+          bo.getEndPointRefs().add(endPoint);
+        } else {
+          endPoint = endPoints.get(0);
         }
+
+        EndPointAddress address;
+        address = getAddressExtension(endPoint);
+        if (address == null) {
+          address = addAddressExtension(endPoint);
+        }
+
         address.setValue(url);
-        ExtensionUtil.updateExtension(model, feature, address);
+        ExtensionUtil.enforceNotification(bo);
       }
 
-      protected void removeExtension() {
-        ExtensionUtil.removeExtensionByFeature(model, feature);
+      private EndPointAddress getAddressExtension(EndPoint endPoint) {
+        return ExtensionUtil.getExtension(endPoint, ADDRESS_EXTENSION_FEATURE);
+      }
+
+      private EndPointAddress addAddressExtension(EndPoint endPoint) {
+        EndPointAddress address = (EndPointAddress) ModelHandler.create(model.eResource(), ModelPackage.eINSTANCE.getEndPointAddress());
+        ExtensionUtil.addExtension(endPoint, ADDRESS_EXTENSION_FEATURE, address);
+        return address;
+      }
+
+      protected void removeEndpoint() {
+        List<EndPoint> endPoints = bo.getEndPointRefs();
+        Definitions definitions = ModelHandler.getDefinitions(bo.eResource());
+        for (EndPoint endPoint : endPoints) {
+          definitions.getRootElements().remove(endPoint);
+        }
+        endPoints.clear();
       }
 
       /** Command that updates the address extension in the bound bo. */
@@ -150,9 +195,9 @@ public class ParticipantPropertiesBuilder extends AbstractPropertiesBuilder<Part
         @Override
         protected void doExecute() {
           if (newValue == null || newValue.trim().isEmpty()) {
-            removeExtension();
+            removeEndpoint();
           } else {
-            updateUrl(newValue.trim());
+            setEndpoint(newValue.trim());
           }
         }
       }
