@@ -6,6 +6,8 @@ import org.camunda.bpm.modeler.ui.property.tabs.util.HelpText;
 import org.camunda.bpm.modeler.ui.property.tabs.util.PropertyUtil;
 import org.camunda.bpm.modeler.ui.util.Browser;
 import org.eclipse.bpmn2.BaseElement;
+import org.eclipse.bpmn2.Bpmn2Package;
+import org.eclipse.bpmn2.ReceiveTask;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.transaction.RecordingCommand;
@@ -32,6 +34,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 public class ActivityPropertiesBuilder extends RetryEnabledPropertiesBuilder {
 
 	private static final EStructuralFeature ASYNC_FEATURE = ModelPackage.eINSTANCE.getDocumentRoot_Async();
+	private static final EStructuralFeature INSTANTIATE_FEATURE = Bpmn2Package.eINSTANCE.getReceiveTask_Instantiate();
 	
 	public ActivityPropertiesBuilder(Composite parent, GFPropertySection section, BaseElement bo) {
 		super(parent, section, bo);
@@ -40,6 +43,10 @@ public class ActivityPropertiesBuilder extends RetryEnabledPropertiesBuilder {
 	@Override
 	public void create() {
 		
+	  if (bo instanceof ReceiveTask) {
+	    PropertyUtil.createCheckbox(section, parent, "Instantiate", INSTANTIATE_FEATURE, bo);
+	  }
+	  
 		boolean async = (Boolean) bo.eGet(ASYNC_FEATURE);
 
 		// <async-link> <!-- Async link and help text -->

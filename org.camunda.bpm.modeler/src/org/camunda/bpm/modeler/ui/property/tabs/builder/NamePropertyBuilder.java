@@ -8,6 +8,7 @@ import org.eclipse.bpmn2.CallableElement;
 import org.eclipse.bpmn2.Collaboration;
 import org.eclipse.bpmn2.FlowElement;
 import org.eclipse.bpmn2.Lane;
+import org.eclipse.bpmn2.Message;
 import org.eclipse.bpmn2.MessageFlow;
 import org.eclipse.bpmn2.Participant;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
@@ -57,6 +58,9 @@ public class NamePropertyBuilder extends AbstractPropertiesBuilder<BaseElement> 
 		} else
 		if (bo instanceof MessageFlow) {
 			NAME_FEATURE = Bpmn2Package.eINSTANCE.getMessageFlow_Name();
+		} else
+		if (bo instanceof Message) {
+		  NAME_FEATURE = Bpmn2Package.eINSTANCE.getMessage_Name();
 		} else {
 			// Unsupported base element: Do nothing
 		}

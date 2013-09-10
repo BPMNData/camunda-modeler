@@ -46,6 +46,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -149,7 +150,9 @@ public class CompileAction implements IObjectActionDelegate {
     URI fileUri = URI.createPlatformResourceURI(path.toString(), false);
     bpmnResource.setURI(fileUri);
     try {
-      bpmnResource.save(null);
+      Map<Object, Object> options = new HashMap<Object, Object>();
+      options.put(XMLResource.OPTION_SAVE_TYPE_INFORMATION, Boolean.FALSE);
+      bpmnResource.save(options);
     } catch (IOException e) {
       throw new RuntimeException("Could not save the compiled resource: " + fileUri, e);
     }
@@ -386,7 +389,7 @@ public class CompileAction implements IObjectActionDelegate {
           sb.append("let $").append(classMapping.getLocalClass()).append(" := ./DataObjects/").append(classMapping.getLocalClass()).append("\n");
         }
 
-        sb.append("return <message name=\"").append(message.getId()).append("\">");
+        sb.append("return <message name=\"").append(message.getName()).append("\">");
 
         createCorrelationPart(contentDefinition, sb, globalClass2ClassMapping);
 
@@ -426,7 +429,7 @@ public class CompileAction implements IObjectActionDelegate {
         if (classMapping == null) {
           throw new RuntimeException("No class mapping found for " + ItemDefinitionHandler.getShortInterpretableName(correlationItemDefinition));
         }
-        sb.append("<key name=\"").append(classMapping.getGlobalClass()).append(">");
+        sb.append("<key name=\"").append(classMapping.getGlobalClass()).append("\">");
         for (AttributeMapping attributeMapping : classMapping.getAttributeMappings()) {
           if (!correlationAttributes.contains(attributeMapping.getGlobalAttribute()))
             continue;
@@ -457,7 +460,7 @@ public class CompileAction implements IObjectActionDelegate {
       sb.append("<payload><").append(payloadMapping.getGlobalClass()).append(">");
       for (AttributeMapping attributeMapping : payloadMapping.getAttributeMappings()) {
         sb.append("<").append(attributeMapping.getGlobalAttribute()).append(">{$").append(payloadMapping.getLocalClass()).append("/")
-            .append(attributeMapping.getLocalAttribute()).append("/text()</").append(attributeMapping.getGlobalAttribute()).append(">");
+            .append(attributeMapping.getLocalAttribute()).append("/text()}</").append(attributeMapping.getGlobalAttribute()).append(">");
       }
       sb.append("</").append(payloadMapping.getGlobalClass()).append("></payload>");
     }
