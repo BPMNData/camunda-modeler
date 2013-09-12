@@ -8,6 +8,8 @@ For this purpose, three artifacts are considered:
 * the schema mapping,
 * and the process model.
 
+An eclipse update site can be found [here](https://www.dropbox.com/sh/1zn3en8hje92xrk/Rf8hE0XeF-). Please install the camunda Modeler and the Schema Mapping modeler.
+
 Data Models
 -----------
 
