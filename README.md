@@ -18,6 +18,10 @@ Features
 * Property Tabs
   * For BPMN 2.0 properties
   * For [camunda engine](http://camunda.org/implement.html) and [Activiti](http://activiti.org) extensions
+* Extensions for modeling and enacting of
+ * Local data dependencies
+ * Choreography data
+ * Please refer to the [documentation](https://github.com/BPMNData/camunda-modeler/blob/bpmn_data/documentation/BPMNData.md).
 
 Resources
 ---------------
