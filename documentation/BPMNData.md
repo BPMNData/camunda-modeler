@@ -13,6 +13,8 @@ An eclipse update site can be found [here](https://www.dropbox.com/sh/1zn3en8hje
 Data Models
 -----------
 
+![Data model](https://raw.github.com/BPMNData/camunda-modeler/bpmn_data/documentation/images/data-model.png)
+
 The modeler does not ship with an editor for data model. However, we designated XML Schema as description language for the data models and there is already an XSD ditor in eclipe. Follow this workflow to create your data models:
 
 1. For the local and global data model, create an .xsd file each.
@@ -67,6 +69,9 @@ Example for a global model:
 Schema Mapping
 --------------
 
+![Schema mapping](https://raw.github.com/BPMNData/camunda-modeler/bpmn_data/documentation/images/schema-mapping.png)
+
+
 The modeler ships with a very simple schema mapping editor. In a valid schema mapping of this kind, all the attributes of a global class must correspond to attributes from one local class. To create a schema mapping, do the following steps:
 
 1. Open the _File_ menu > _New_ > _Other_ > the _New_ wizard appears.
@@ -81,6 +86,8 @@ The modeler ships with a very simple schema mapping editor. In a valid schema ma
 
 Process Model
 -------------
+
+![Process model](https://raw.github.com/BPMNData/camunda-modeler/bpmn_data/documentation/images/bpmndata-shot.png)
 
 Creating the process model is the complexest part. This document does not describe the whole functionality of the camunda Modeler, but only points out the import aspects with respect to the BPMN Data extensions.
 
@@ -100,17 +107,17 @@ _Note that the properties of the currently selected element in the Modeler are f
 3. Primary key, foreign keys, and operation type of data objects can be set in the _BPMN Data Keys_ tab.
 4. Furthermore, we added a option for data stata and data collections in the _General_ tab.
 
-### Message Definition
-
-1. When creating a message flow, a new message is created, that is associated to this message flow. When another message should be associated with it, it can be drag'n'dropped onto the message flow line. You can see the currently associated message in the _General_ tab when selecting a message flow.
-2. The global ID (according to BPMN Data) of the message corresponds to the message name, which can be edited in the _General_ tab.
-3. In the _BPMN Data Message_ tab, the payload object and correlation identifiers of messages can be established. This only works if a valid global data model has been imported beforehand, as possible payload objects and correlation identifiers are automatically extracted from it. Moreover, if a the payload class also contains a correlation identifier, this is automatically added to the message. An arbitrary second one can be added. In principle, more correlation identifiers could be added, but we found this interface sufficient and comfortable.
-
 ### Send and Receive Tasks
 
 1. When the task has a message flow that is associated with a message, then the right data objects have to be provided to this task according to schema mapping. For send tasks, use data input associations, for receive tasks, use data output associations.
 2. If not done yet, you can specify the endpoint of the other participant in terms of a URL by selecting this participant and providing the _End-Point Address_ in the _General_ tab. This way, messages will be sent to the correct address when executing this model.
 3. If a receive task shall instantiate its surrounding process, make sure to check its _Instantiate_ property in the _General_ tab.
+
+### Message Definition
+
+1. When creating a message flow, a new message is created, that is associated to this message flow. When another message should be associated with it, it can be drag'n'dropped onto the message flow line. You can see the currently associated message in the _General_ tab when selecting a message flow.
+2. The global ID (according to BPMN Data) of the message corresponds to the message name, which can be edited in the _General_ tab.
+3. In the _BPMN Data Message_ tab, the payload object and correlation identifiers of messages can be established. This only works if a valid global data model has been imported beforehand, as possible payload objects and correlation identifiers are automatically extracted from it. Moreover, if a the payload class also contains a correlation identifier, this is automatically added to the message. An arbitrary second one can be added. In principle, more correlation identifiers could be added, but we found this interface sufficient and comfortable.
 
 ### Compiling the Process Model
 
