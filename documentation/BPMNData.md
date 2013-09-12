@@ -1,6 +1,8 @@
 BPMN Data Extensions
 ====================
 
+_If you are interested in contributing or simply building the sources yourself, please check the updated [contribution guide](https://github.com/BPMNData/camunda-modeler/blob/bpmn_data/CONTRIBUTING.md)._
+
 This document describes how to use the BPMN Data extensions in the modeler.
 For this purpose, three artifacts are considered:
 
