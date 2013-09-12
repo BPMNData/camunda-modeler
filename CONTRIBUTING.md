@@ -17,7 +17,7 @@ Development Setup
 * Examine the sources
     * `org.camunda.bpm.modeler` contains the modeler
     * `org.camunda.bpm.modeler.tests` contains the modeler test suite
-    * for the BPMN Data changes, check commits since d3a915d0861f68553f9a7bd36e373c0be8ce7422
+    * for the BPMN Data changes, check commits since [d3a915d](d3a915d0861f68553f9a7bd36e373c0be8ce7422)
 * Run / Test
     * Start the Modeler from `org.camunda.bpm.modeler` via `Run As -> Eclipse Application`
     * Run the test suite in `org.camunda.bpm.modeler.tests` via `Run As -> JUnit Plugin-Tests`
