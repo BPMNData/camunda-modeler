@@ -121,6 +121,7 @@ _Note that the properties of the currently selected element in the Modeler are f
 
 When a task creates multiple new data objects with primary-foreign key relations to each other, one has to ensure that the objects are written in the correct order, i.e., first the primary objects, then the dependent objects referencing the primary objects.
 The engine currently does not compute dependencies between multiple new objects, so **the modeler has to ensure a correct write order**. This write order can be achieved in the plain XML code of the .bpmn process model. 
+
 1. Open your .bpmn-model with the XML-Editor.
 2. Locate the task that creates multiple new objects. It contains multiple `bpmn2:dataOutputAssociation` elements. Each element describes the write of one data object.
 3. Put the `bpmn2:dataOutputAssociation` elements in the right order such a data object *B* which references a data object *A* via a foreign key comes in the list **after** the `bpmn2:dataOutputAssociation` for data object *A*.
