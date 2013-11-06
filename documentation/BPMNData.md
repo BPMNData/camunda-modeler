@@ -117,6 +117,14 @@ _Note that the properties of the currently selected element in the Modeler are f
 2. If not done yet, you can specify the endpoint of addressed participant in terms of a URL by selecting this participant and providing the _End-Point Address_ in the _General_ tab. This way, messages will be sent to the correct address when executing this model.
 3. If a receive task shall instantiate its surrounding process, make sure to check its _Instantiate_ property in the _General_ tab.
 
+### Order of Output Data Objects
+
+When a task creates multiple new data objects with primary-foreign key relations to each other, one has to ensure that the objects are written in the correct order, i.e., first the primary objects, then the dependent objects referencing the primary objects.
+The engine currently does not compute dependencies between multiple new objects, so **the modeler has to ensure a correct write order**. This write order can be achieved in the plain XML code of the .bpmn process model. 
+1. Open your .bpmn-model with the XML-Editor.
+2. Locate the task that creates multiple new objects. It contains multiple `bpmn2:dataOutputAssociation` elements. Each element describes the write of one data object.
+3. Put the `bpmn2:dataOutputAssociation` elements in the right order such a data object *B* which references a data object *A* via a foreign key comes in the list **after** the `bpmn2:dataOutputAssociation` for data object *A*.
+
 ### Message Definition
 
 1. When creating a message flow, a new message is created, that is associated to this message flow. When a different message should be associated to it, it can be drag-and-dropped onto the message flow. You can see the currently associated message for a message flow in its _General_ tab.
